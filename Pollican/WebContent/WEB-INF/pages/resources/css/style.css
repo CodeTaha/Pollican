@@ -1,0 +1,160 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13-Feb-2014, 15:56:30
+    Author     : root
+*/
+
+#logo
+{
+  background-color: #FFFFFF;
+    
+  height: 52px;
+    margin-left: -16px;
+    margin-top: -16px;
+    width: 163px;
+}
+
+.header
+{
+    background-color: #800030;//#1E74C5;
+}
+
+li.header
+{
+    color:#fff;
+    background-color: pink;
+}
+
+a {
+	color: #000;
+	font-weight:bold;
+	text-decoration: none;
+}
+a:hover {
+	color:#333;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #fff;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background-color: white;
+    color: #F1306D;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:before {
+    background-color: white;
+
+    color: #F1326F;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background-color: white;
+    color: #F1326F;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:after {
+    background-color: white;
+   
+    color: #F1326F;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: white;
+    color: #F1306D;
+}
+
+.navbar-default .navbar-nav > li > a:active {
+    background-color: white;
+    color: #F1306D;
+}
+.main-content{
+    margin:0;
+    margin-left: 200px;
+    padding-top: 70px;
+    padding-left: 70px;
+    width:auto;
+    height:100%;
+    float:right;
+    position:relative;
+    }
+.side-bar{
+    position:fixed;
+    float: left;
+    height: auto;
+    width: auto;
+    margin-top: 50px;
+    border:0px solid;
+    border-radius:5px; 
+    }
+
+    #footer
+    {
+        background-color: #800030;
+        
+        color:white;
+        
+        
+    }
+    
+    #footer a
+    {
+        color:white;
+    }
+    .box1{
+    margin:0;
+    margin-left: 20px;
+    padding-top: 70px;
+    padding-left: 30px;
+    
+    height:100%;
+    float:contour ;
+    position:relative;
+    }
+    
+    .box_main
+    {
+        clear:both;
+    }
+   .box1.image
+    {
+        width:200px;
+        height:200px;
+    }
+    
+    // style for ui-vertical tabs
+  .ui-tabs-vertical { width: 55em; }
+  .ui-tabs-vertical .ui-tabs-nav { padding: .2em .2em .2em .2em; float: left; width: auto; }
+  .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em -2; }
+  .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+  .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+  .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+  
+  
+  //sidebar
+  .ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {// sidebar tabs radius
+    border-radius: 3px;
+}
+
+.ui-widget-header {
+    background: none repeat-x scroll 94% 50% #E0E0E7;
+    border: 7px solid #7D7D7D;
+    color: #000000;
+    font-weight: bold;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {//tabs 
+    background: repeat-x scroll 50% 50% #9B9B9B;
+    border: 1px solid #D3D3D3;
+    color: #555555;
+    font-weight: normal;
+}
+//text within tabs
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    color: #800030;
+    text-decoration: none;
+}
