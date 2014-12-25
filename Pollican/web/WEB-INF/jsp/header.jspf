@@ -1,0 +1,265 @@
+<%@page import="com.google.gson.Gson"%>
+<!DOCTYPE html>
+<html lang="en">
+<% 
+/*Cookie[] cookies = request.getCookies();
+String handle="";
+int uid=0;
+//User_Detail user_detail;
+Gson gson=new Gson();
+        boolean foundCookie = false;
+
+        for(int i = 0; i < cookies.length; i++) { 
+            Cookie cookie1 = cookies[i];
+            if(cookie1.getName().equals("handle"))
+            {
+                handle=cookie1.getValue();
+                foundCookie = true;
+            }
+            else if(cookie1.getName().equals("uid"))
+            {
+                uid=Integer.parseInt(cookie1.getValue());
+                foundCookie = true;
+            }
+            else if(cookie1.getName().equals("User_Obj"))
+            {
+                System.out.println(cookie1.getValue());
+               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
+                foundCookie = true;
+            }
+        }  
+
+        */
+      
+        
+%>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  <!-- jQuery -->
+    <script src="${delimiter}pages/resources/template/js/jquery.js"></script>
+  <script src="${delimiter}pages/resources/template/js/bootstrap.min.js"></script>
+  <script src="${delimiter}pages/resources/js/jquery-ui.js"></script>
+  <script type="text/javascript" src="${delimiter}pages/resources/js/jquery.datetimepicker.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+   
+<script src="${delimiter}pages/resources/select2/select2.js"></script>
+      <!-- <script src="${delimiter}pages/resources/js/ui.core.js"></script>-->
+            <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
+    <%-- Morris Charts JavaScript
+    <script src="${delimiter}pages/resources/template/js/plugins/morris/raphael.min.js"></script>
+    <script src="${delimiter}pages/resources/template/js/plugins/morris/morris.min.js"></script>
+    <script src="${delimiter}pages/resources/template/js/plugins/morris/morris-data.js"></script>--%>
+    <title>Welcome ${handle}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="${delimiter}pages/resources/template/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS-->
+    <link href="${delimiter}pages/resources/template/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS 
+    <link href="pages/resources/template/css/plugins/morris.css" rel="stylesheet">-->
+
+    <!-- Custom Fonts -->
+    <link href="${delimiter}pages/resources/template/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+   <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.css">
+   <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.min.css">
+   <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.theme.css">
+   <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery.datetimepicker.css" >
+   <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.structure.css" >
+   <link rel="stylesheet" href="${delimiter}pages/resources/select2/select2.css"/>
+   <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
+   <script>/*Script for notifications*/
+   var notify_temp;   
+    var notify=new Array();
+    var ts="";
+    var canLoadMore=true;
+   $("#alert_box").hide();
+     
+          
+                loadData();
+          
+         
+            function loadData()
+            {
+                if(canLoadMore)
+                {
+                $.ajax({
+           type: "POST",       // the dNodeNameefault
+           url: "${delimiter}getNotifications",
+           data: {ts:ts },
+           success: function(data){
+                
+               notify_temp=null;
+               notify_temp=JSON.parse(data);
+               console.log("notify_temp");
+               console.log(notify_temp);
+               if(notify_temp==[] || notify_temp==null || notify_temp=="")
+               {
+                   console.log("end of data reached");
+                   canLoadMore=false;
+                
+                   
+               }
+               else
+               {
+               ts=notify_temp[notify_temp.length-1]['ts'];
+               console.log("ts="+ts);
+               
+               createNotifyDivs();
+                 //alert(data);
+             }
+                   
+            }
+            });
+    }
+    
+            }
+          
+                
+                function createNotifyDivs()
+            {
+                for(var i=0; i<notify_temp.length;i++)
+                     { 
+                         notify.push(notify_temp[i]);
+                      for(var i=0; i<notify_temp.length;i++)
+                      {
+                          //$("#notifications").append("<div id=n_"+notify_temp[i]["nid"]+" onclick=openLink("+notify_temp[i]["checked"]+","+notify_temp[i]["nid"]+")><a href="+notify_temp[i]["link"]+" target='blank'>"+notify_temp[i]["notification"]+"</a></div>");
+                          if(notify_temp[i]["checked"]===0)
+                          {
+                              //$("#notifications").append("<div id=n_"+notify_temp[i]["nid"]+" onclick=openLink("+notify_temp[i]["checked"]+","+notify_temp[i]["nid"]+")><a href="+notify_temp[i]["link"]+" target='blank'>"+notify_temp[i]["notification"]+"</a></div>");
+                              $("#notifications").append("<div class='row' style='background-color:#D7FFEF;'><div class='col-xs-12' onclick=openLink("+notify_temp[i]["checked"]+","+notify_temp[i]["nid"]+")><a href='${delimiter}"+notify_temp[i]["link"]+"' style='text-decoration: none;'>"+notify_temp[i]["notification"]+" <span class='label label-danger'>new</span></a></div></div>");
+                              //$("#n_"+notify_temp[i]["nid"]).css("background-color","white");
+                          }
+                          else
+                          {
+                              $("#notifications").append("<div class='row' style='background-color:white;'><div class='col-xs-12'><a href='${delimiter}"+notify_temp[i]["link"]+"' style='text-decoration: none;'>"+notify_temp[i]["notification"]+" <span class='label label-default'>seen</span></a></div></div>");
+                              //$("#n_"+notify_temp[i]["nid"]).css("background-color","grey");
+                          }
+                      }
+                  $("#notifications").append("<li class='divider'></li><li><a href='notification'>View All</a></li>");
+                      /* 
+                      <li class="divider"></li>
+                        <li>
+                            <a href="#">View All</a>
+                        </li>
+             */   
+                     }
+            }
+            
+            function openLink(checked, ref_nid)
+            {
+                if(checked==0)
+                {
+                $("#n_"+ref_nid).css("background-color","grey");
+                $.ajax({
+           type: "POST",       // the dNodeNameefault
+           url: "${delimiter}clearNotificationChecked",
+           data: {nid:ref_nid },
+           success: function(data){}
+                });
+                }
+            }
+            /* make the API call */
+function Alerts(alert_type,alert_mesg)
+  {
+       $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
+  }
+   </script>
+</head>
+
+<body>
+<div id='alert_box'>
+        
+</div>
+   
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+         <img src="${delimiter}pages/resources/img/logo.png" style="width: 45px;height: 45px;margin-left: 35px;padding-top: 5px;"/>
+                <a class="navbar-brand" href="index"  style="width:50px; height:50px;">Pollican</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav loggedin">
+            <li class="${dashboard_active}"><a href="${delimiter}home"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a></li>
+            <li class="${viewpoll_active}"><a href="${delimiter}viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a></li>
+            <li class="${createpoll_active}"><a href="${delimiter}createPoll"><i class="fa fa-fw fa-edit"></i> Create Poll</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" id="loggedin">
+              <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification_window" ><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown" id="notifications" style="max-height: 260px;
+ overflow: auto; width:200px;">
+                        
+                        
+                    </ul>
+                </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${profile_pic}" class="img-circle" style="width:20px; height:20px"/><!--<img src="${profile_pic}" style="width:20px; height:20px"/><i class="fa fa-user"></i>--> ${handle}<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="${delimiter}profile/${handle}"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        
+                        <li class="divider"></li>
+                        <li>
+                            <a href="${delimiter}logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+          </ul>
+                     
+        </div>
+      </div>
+    </nav>
+    
+    <%-- <div id="wrapper">    
+    <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="pages/resources/img/Pollican-logo.png" style="width: 45px;height: 45px;margin-left: 35px;padding-top: 5px;"/>
+                <a class="navbar-brand" href="index"  style="width:50px; height:50px;">Pollican</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification_window" ><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown" id="notifications" style="max-height: 260px;
+ overflow: auto; width:200px;">
+                        
+                        
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <%=handle %> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="profile/<%=handle%>"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        
+                        <li class="divider"></li>
+                        <li>
+                            <a href="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>--%>
