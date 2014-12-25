@@ -212,7 +212,7 @@
                                 url: "SignUpReg",
                                 data: {handle:handle,name:name,email:email_i,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb, password:hashedpassword},
                                 success: function(data){
-                                    alert(data)
+                                  
                                        if(red_url!=="")
                                                 {
                                                    window.location.assign(red_url);
