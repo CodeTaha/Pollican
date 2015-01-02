@@ -39,8 +39,12 @@ Gson gson=new Gson();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+   
     <meta name="author" content="">
+        
+        <meta name="description" content="${meta_description}">
+         <meta name="keywords" content="${meta_keywords_org}">
+
   <!-- jQuery -->
     <script src="${delimiter}pages/resources/template/js/jquery.js"></script>
   <script src="${delimiter}pages/resources/template/js/bootstrap.min.js"></script>
@@ -55,7 +59,7 @@ Gson gson=new Gson();
     <script src="${delimiter}pages/resources/template/js/plugins/morris/raphael.min.js"></script>
     <script src="${delimiter}pages/resources/template/js/plugins/morris/morris.min.js"></script>
     <script src="${delimiter}pages/resources/template/js/plugins/morris/morris-data.js"></script>--%>
-    <title>Welcome ${handle}</title>
+    <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="${delimiter}pages/resources/template/css/bootstrap.css" rel="stylesheet">
@@ -207,7 +211,7 @@ function Alerts(alert_type,alert_mesg)
                     </ul>
                 </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${profile_pic}" class="img-circle" style="width:20px; height:20px"/><!--<img src="${profile_pic}" style="width:20px; height:20px"/><i class="fa fa-user"></i>--> ${handle}<b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${profile_pic}" class="img-circle" style="width:18px; height:18px"/><!--<img src="${profile_pic}" style="width:20px; height:20px"/><i class="fa fa-user"></i>--> ${handle}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="${delimiter}profile/${handle}"><i class="fa fa-fw fa-user"></i> Profile</a>

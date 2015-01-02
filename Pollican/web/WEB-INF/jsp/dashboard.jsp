@@ -1,7 +1,5 @@
 <%@include file="header.jspf" %>
-      <body>
 
-</body>
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
 

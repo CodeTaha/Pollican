@@ -140,6 +140,10 @@ public class AjaxController extends Parent_Controller{
    {
     
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+       
+       String cat_names="";
+       String title="";
+       String description="";
        if(checkSetCookie(request)!=2)
        {
         model.addAttribute("uid",0);
@@ -159,6 +163,15 @@ public class AjaxController extends Parent_Controller{
         int cansolve=conn.solvable(pid,uid);
         Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
         Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+        List<Category> list1 = poll_tbl.getCat_list();
+        
+        System.out.print("alia bhatt :-* :-* "+list1);
+        
+        
+       cat_names = cat_names + gson.toJson(list1);
+       System.out.print("alia bhatt :-* "+cat_names);
+        title= title+poll_tbl.getTitle();
+        description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
         if(!poll_tbl.getPoll_link().equals(ref_url))
             {System.out.println("incorrect reflink="+poll_tbl.getPoll_link());
                 response.sendRedirect(poll_tbl.getPoll_link());
@@ -176,7 +189,12 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("profile_pic",ud.getProfile_pic());
 	
    }
+       String keywords="pollican,viewpolls,polls,surveys"+cat_names;
        model.addAttribute("page", "solvePoll");
+       model.addAttribute("title",title);
+       model.addAttribute("meta_description",description);
+        model.addAttribute("meta_keywords_org",keywords );
+   
           return "solvePoll";
    }
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
@@ -192,12 +210,14 @@ public class AjaxController extends Parent_Controller{
         String poll_title=request.getParameter("poll_title");
         String poll_link=request.getParameter("poll_link");
         String cid_JSON = request.getParameter("poll_cat");
+        String ipaddress= request.getParameter("ip");
+        String geolocation_JSON=request.getParameter("geolocation");
        // String exp = request.getParameter("exp");
         System.out.print("ALIA BHAT cid JSON   "+cid_JSON);
        // System.out.print("ALIA BHAT exp   "+exp);
         Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
         String notification= "Congratulations!! @"+ ud.getHandle() +" has solved your poll, "+poll_title+" and you earned "+(int)fish/2+" fish for that!!";
-        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_link,notification );
+        boolean rslt= poll_tblJDBCTemplate.submitPoll(finalJSON, anonymous,poll_uid,poll_link,notification,ipaddress,geolocation_JSON );
         if(anonymous==0)
         {
         boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fish,1);// adding fish for solving poll and not anonymously

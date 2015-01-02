@@ -394,15 +394,28 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
     }
     public boolean updateExp(int uid,String cid_JSON,String exp)
     {
-       //Exp_Json user_exp; 
-       //String tempSQL ="";
            System.out.println(" tk uid "+uid +" cid "+cid_JSON + " exp "+ exp);
        try
         {
        String cid_split[]= cid_JSON.split(",");
+        int k = 0;
+            String cid_splitted[]=cid_JSON.split(",");
+            int cid_splitt[]=new int[cid_splitted.length];
+            for(k=0;k<cid_splitted.length;k++)
+                    cid_splitt[k]=Integer.parseInt(cid_splitted[k]);
+            
+            
+                 SQL = "UPDATE uid_cid_mapper SET exp=exp+10 WHERE uid=? and cid IN ("+cid_JSON+")";
+                
+                 jdbcTemplateObject.update(SQL,uid);
+               /* SQL = "UPDATE uid_cid_mapper SET exp=exp+10 WHERE uid=? and cid=?";
+                int what=0;
+                for(k=0;k<cid_splitt.length;k++)
+                {  what =   jdbcTemplateObject.update(SQL,uid,cid_splitt[k]);
+                     System.out.println("exp updated what new"+what);
+                }*/
        
-       
-        int count=0;
+       /* int count=0;
         for(int i=0;i<cid_split.length;i++)
         {
             if(exp.contains("cid="+cid_split[i]+".0"))
@@ -432,16 +445,20 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
        //[{cid=1.0, exp=1010.0}, {cid=2.0, exp=1010.0}, {cid=4.0, exp=1010.0}, {cid=5.0, exp=1000.0}, {cid=95.0, exp=1000.0}, {cid=141.0, exp=1000.0}]
        //[{"cid":1,"exp":1000},{"cid":2,"exp":1000},{"cid":4,"exp":1000},{"cid":5,"exp":1010},{"cid":95,"exp":1000},{"cid":141,"exp":1000}]
       // [{"cid":1,"exp":1010},{"cid":2,"exp":1010},{"cid":4,"exp":1010},{"cid":5,"exp":1000},{"cid":95,"exp":1000},{"cid":141,"exp":1000}]
-        SQL="UPDATE user_store SET exp_json=? where uid=?";
-         int what =   jdbcTemplateObject.update(SQL,exp,uid);
-        System.out.println("exp updated "+what);
         
-        }
+           
+                
+                String SQL2="UPDATE user_store SET exp_json=? where uid=?";
+                 int what2 =   jdbcTemplateObject.update(SQL2,exp,uid);
+                     System.out.println("exp updated what old"+what2);*/
+        
+        }    
         catch(DataAccessException e)
         {
             System.out.println("Error occured in User_TblJDBC>updating experiences "+e);
            return false;
         }
+       
        return true;
        
        

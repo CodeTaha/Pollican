@@ -104,6 +104,10 @@ public class UrlController extends Parent_Controller{
             model.addAttribute("page", "dashboard");
             model.addAttribute("profile_pic",ud.getProfile_pic());
            model.addAttribute("user",gson.toJson(get_UserDetails(request)));
+           model.addAttribute("meta_description","Dashboard");
+        //   model.addAttribute("meta_keywords_categs", ud.getCategory_list_json());
+           model.addAttribute("meta_keywords_org", "pollican,dashboard,polls,surveys");
+             model.addAttribute("title", "Pollican-Dashboard");
            return "dashboard";
        }
        else
@@ -131,6 +135,9 @@ public class UrlController extends Parent_Controller{
            model.addAttribute("createpoll_active", "active");
             model.addAttribute("page", "createPoll");
             model.addAttribute("profile_pic",ud.getProfile_pic());
+           model.addAttribute("meta_description","Create a poll or a survey and experience the people-power.");
+           model.addAttribute("meta_keywords_org", "pollican,polls,surveys");
+             model.addAttribute("title", "Pollican - Create Poll or Survey");
             return "createPoll";
             }
             else
@@ -160,6 +167,10 @@ public class UrlController extends Parent_Controller{
             model.addAttribute("page", "viewPoll");
             model.addAttribute("profile_pic",ud.getProfile_pic());
             model.addAttribute("user",gson.toJson(get_UserDetails(request)));
+             model.addAttribute("meta_description","View lists of polls and surveys that suit your interests!");
+        //   model.addAttribute("meta_keywords_categs", ud.getCategory_list_json());
+           model.addAttribute("meta_keywords_org", "pollican,viewpolls,polls,surveys");
+             model.addAttribute("title", "Pollican - View Polls");
            return "viewPolls";
        }
        else
@@ -294,6 +305,9 @@ public class UrlController extends Parent_Controller{
         {
             ud=null;
         }
+             String greet = ""+profile.getName()+" @"+profile.getHandle();
+        model.addAttribute("title", greet);
+       
        model.addAttribute("profile", rslt);
        System.out.println("fol=");
        if(ud != null)
@@ -321,6 +335,10 @@ public class UrlController extends Parent_Controller{
         model.addAttribute("handle","");
        }
        model.addAttribute("page", "profile");
+          
+        model.addAttribute("meta_description","Profile");
+        model.addAttribute("meta_keywords_org", "pollican,viewpolls,polls,surveys");
+
 	   return "profile";
    }
   @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
@@ -341,6 +359,11 @@ public class UrlController extends Parent_Controller{
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
         model.addAttribute("profile_pic",ud.getProfile_pic());
+        model.addAttribute("meta_description","Dashboard");
+        //   model.addAttribute("meta_keywords_categs", ud.getCategory_list_json());
+           model.addAttribute("meta_keywords_org", "pollican,dashboard,polls,surveys");
+             model.addAttribute("title", "Pollican-Dashboard");
+          
            return "dashboard";
        }
        else

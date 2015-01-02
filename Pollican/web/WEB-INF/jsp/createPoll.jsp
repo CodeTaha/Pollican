@@ -1,7 +1,5 @@
 
 <%@include file="header.jspf" %>
-
-       
         <div id="page-wrapper">
 
             <div class="container-fluid">
@@ -71,8 +69,8 @@
                                  
                                 </div>
                             </div>
-                        <div id="afterPollCreation" >
-                            <button class="btn btn-primary btn-group-sm" onclick="window.location.reload()" id="createAnother">Create Another Poll</button>
+                        <div id="afterPollCreation">
+                            <br><br><button class="btn btn-primary btn-group-sm" onclick="window.location.reload()" id="createAnother">Create Another Poll</button>
                         </div>
  
 
@@ -571,8 +569,7 @@ $(document).ready(function(){
       //  var startdate=new Date(sd).getTime();
         var ed=$("#ed").val();
       //  var enddate=new Date(ed).getTime();
-        alert(sd);
-        alert(ed);
+      
         //console.log(ansArray);
         //, std:startdate,etd:enddate
         console.log("alia bhatt details "+detailJSON);

@@ -41,6 +41,25 @@
         <script>
                 //console.log("In solvePoll");
                // var pollJSON;
+               var fulljson;
+               var ip;
+               	$(document).ready(function() {
+
+	$(document).ready(function() {
+	$.getJSON("http://www.telize.com/geoip?callback=?",
+		function(json) {
+    	//	document.write("Geolocation information for IP address : ", json.ip);
+    	//	document.write("Country : ", json.country);
+    	//	document.write("Latitude : ", json.latitude);
+	//    	document.write("Longitude : ", json.longitude);
+	        ip=json.ip;
+                fulljson=JSON.stringify(json);
+                //alert(fulljson);
+            }
+	);
+});
+
+});
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
@@ -54,19 +73,7 @@
                 var uid=${uid};
               //  var profile=${profile};
                  
-                function set_metadata(title,description,catl,author)
-                {
-                    var keywords="PollingDuck, Polls, Surveys";
-                    for(var i=0; i<catl.length; i++)
-                    {
-                        keywords=keywords+", "+catl[i]['category_name'];
-                    }
-                    //console.log(catl);
-                  $("title").empty().append(title);
-                    $("head").append("<meta name='keywords' content='"+keywords+"'>")
-                            .append("<meta name='description' content='"+description+"'>")
-                            .append("<meta name='author' content='"+author+"'>");  
-                }
+                
                 
                 $('#anonymous').click(function() {
                     
@@ -92,10 +99,8 @@
                 
                 pollJSON=${obj};
                 fish=pollJSON['reward'];
-                set_metadata(pollJSON['title'],pollJSON['description'],pollJSON['cat_list'],pollJSON['user']['name']);
                  
                   
-        
                 if(solvable===1)
                  {
                // console.log("dataIn solvePoll");
@@ -407,9 +412,9 @@
         $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "${delimiter}submitPollAns",
-                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish, poll_uid:pollJSON["uid"], poll_title:pollJSON["poll_title"],poll_link:pollJSON["poll_link"],poll_cat:pollJSON["cid_json"]},
+                                data: { finalJSON: finalJSON, anonymous:anonymous, fish:fish, poll_uid:pollJSON["uid"], poll_title:pollJSON["poll_title"],poll_link:pollJSON["poll_link"],poll_cat:pollJSON["cid_json"],ip:ip,geolocation:fulljson},
                                 success: function(data){
-                                        console.log("op")
+                                        console.log("ajax submitPollAns data :");
                                         console.log(data);
                                         if(data)
                                         {

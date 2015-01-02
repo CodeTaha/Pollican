@@ -1,8 +1,5 @@
 <%@include file="header.jspf" %>
-        <body>
 
-
-</body>
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
                 <div class="container-fluid" id="pollList">
@@ -172,10 +169,12 @@
                console.log(pollJson_obj);
                var poll_js=pollJSONvp;
               
-       dialog.dialog( "open" );
+              var win = window.open("solvePoll/"+pollJson_obj['pid']+"/df", '_blank');
+                win.focus();
+      /* dialog.dialog( "open" );
        $( "#dialog-modal" ).load( "solvePoll", { pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1} ); 
+       */
        
-   
    pollJSONvp=poll_js;
    }
           
