@@ -341,14 +341,22 @@ public class AjaxController extends Parent_Controller{
         response.setContentType("text/html;charset=UTF-8");
         System.out.println("in AjaxConnt>viewMyPollsData");
         PrintWriter out = response.getWriter();
-        int  uidasked = Integer.parseInt(request.getParameter("uidp"));
+        int uidasked = Integer.parseInt(request.getParameter("uidp"));
+        int created_solved=Integer.parseInt(request.getParameter("created_solved"));
         System.out.print("tk 8july"+uidasked);
        if(checklogin(request))
        {
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
       
-        List<Poll_Tbl> poll_tbl=poll_tblJDBCTemplate.ListMyPolls(uidasked);
-         
+        List<Poll_Tbl> poll_tbl;
+         if(created_solved==1)
+         {
+              poll_tbl=poll_tblJDBCTemplate.ListMyPolls(uidasked);
+         }
+         else
+         {
+             poll_tbl=poll_tblJDBCTemplate.ListMySolvedPolls(uidasked);
+         }
          //String pollJSON=gson.toJson(alist);
          String pollJSON=gson.toJson(poll_tbl);
          System.out.println("view Polls PollJSON="+pollJSON);

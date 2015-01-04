@@ -52,13 +52,9 @@ Gson gson=new Gson();
   <script type="text/javascript" src="${delimiter}pages/resources/js/jquery.datetimepicker.js"></script>
     <!-- Bootstrap Core JavaScript -->
    
-<script src="${delimiter}pages/resources/select2/select2.js"></script>
-      <!-- <script src="${delimiter}pages/resources/js/ui.core.js"></script>-->
-            <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
-    <%-- Morris Charts JavaScript
-    <script src="${delimiter}pages/resources/template/js/plugins/morris/raphael.min.js"></script>
-    <script src="${delimiter}pages/resources/template/js/plugins/morris/morris.min.js"></script>
-    <script src="${delimiter}pages/resources/template/js/plugins/morris/morris-data.js"></script>--%>
+    <script src="${delimiter}pages/resources/select2/select2.js"></script>
+    <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
+ 
     <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->
@@ -66,9 +62,6 @@ Gson gson=new Gson();
 
     <!-- Custom CSS-->
     <link href="${delimiter}pages/resources/template/css/sb-admin.css" rel="stylesheet">
-
-    <!-- Morris Charts CSS 
-    <link href="pages/resources/template/css/plugins/morris.css" rel="stylesheet">-->
 
     <!-- Custom Fonts -->
     <link href="${delimiter}pages/resources/template/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -176,6 +169,64 @@ function Alerts(alert_type,alert_mesg)
   {
        $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
+   function createPollDivs(poll_div_id,poll_obj,div_size)
+            {
+                var size1="col-sm-6 col-md-4 col-lg-3 col-md-offset-0 col-lg-offset-0";
+                var size2="col-sm-12 col-md-8 col-lg-7 col-md-offset-0 col-lg-offset-0";
+                var size;
+              if(div_size==1)
+              {
+                 size=size1;
+              }
+              else if(div_size==2)
+              {
+                  size=size2;
+              }
+                         var tags=poll_obj["cat_list"][0]["category_name"];
+                         for(var j=1;j<poll_obj["cat_list"].length;j++)
+                         {
+                           tags=tags+", "+poll_obj["cat_list"][j]["category_name"];
+                         }
+                         
+                         $(poll_div_id).append("\n\
+                    <div class='"+size+"'>\n\
+                           <div class='panel panel-primary'>\n\
+                                <div class='panel-heading'>\n\
+                                    <div class='row'>\n\
+                                        <div class='col-sm-8 col-md-8 col-lg-8'>\n\
+                                            <h3 class='panel-title'>"+poll_obj["pid"]+":"+poll_obj["title"]+"</h3>\n\
+                                        </div>\n\
+                                        <div class='col-sm-4 col-md-4 col-lg-4  pull-right'>\n\
+                                            <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/pollicoins.png' title='You will earn these Pollicoins which can\nbe redeemed by creating new Polls/Surveys'> "+poll_obj["reward"]+" \n\
+                                            <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/bulb.png' title='Your Experience in the given tags will increase\nby "+poll_obj["reward"]+" pts'> "+poll_obj["reward"]+"\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                               \n\
+                                <div class='panel-body'>\n\
+                                    <div class='row'>\n\
+                                        <a href='profile/"+poll_obj["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+poll_obj["user"]["profile_pic"]+"' alt='"+poll_obj["user"]["handle"]+"'>\n\
+                                            "+poll_obj["user"]["name"]+" @ "+poll_obj["user"]["handle"]+"</a>\n\
+                                    </div>\n\
+                                    <div class='row'>\n\
+                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
+                                    </div>\n\
+                                    <div class='row'>\n\
+                                        <div class='col-sm-6 pull-right' >\n\
+                                            <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(poll_obj["pid"])+")'>Solve</button>\n\
+                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(poll_obj["pid"])+")'>Report</button>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                    </div>\n\
+                ");
+                    /*
+                     * <div id='fb-root'></div>      <div class='fb-share-button' data-href='http://localhost:8080/Pollican/solvePoll/"+parseInt(poll_obj["pid"])+"/' data-layout='button'></div>  \n\
+<a href='twitter.com/share' data-text='Solve this awesome Poll!!!' data-url='http://localhost:8080/Pollican/solvePoll/"+parseInt(poll_obj["pid"])+"/' class='twitter-share-button' data-via='pollican' data-lang='en' >Tweet</a>\n\
+                     */  
+                     
+            }
    </script>
 </head>
 

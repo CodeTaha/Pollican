@@ -3,7 +3,10 @@
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
 
-            <div class="container-fluid" id="pollList">
+            <div class="container-fluid" >
+                <div class="row" id="pollList">
+                    
+                </div>
                
                 <!-- model for boxes
                 <div class='row'>
@@ -88,8 +91,24 @@
                {
                ts=pollJSONtemp[pollJSONtemp.length-1]['start_ts'];
                console.log("ts="+ts);
+               var i=0;
+               /*var animationLoop = function(){
+                             pollJSON.push(pollJSONtemp[i]);
+                              createPollDivs("#pollList",pollJSONtemp[i]);
+                                i++;
+                                if(i<pollJSONtemp.length)
+                                {
+                                    setTimeout(animationLoop, 1000/5);
+                                }
+                            
+                                }
+                    animationLoop();*/
+                 for(var i=0; i<pollJSONtemp.length;i++)
+                     { 
+                         pollJSON.push(pollJSONtemp[i]);
+                         createPollDivs("#pollList",pollJSONtemp[i],1);
+                     }
                
-               createPollDivs();
                  //alert(data);
              }
                    
@@ -106,66 +125,7 @@
                         loadData();
                     }
                 });
-            function createPollDivs()
-            {
- 
-                for(var i=0; i<pollJSONtemp.length;i++)
-                     { var tags=pollJSONtemp[i]["cat_list"][0]["category_name"];
-                         for(var j=1;j<pollJSONtemp[i]["cat_list"].length;j++)
-                         {
-                           tags=tags+", "+pollJSONtemp[i]["cat_list"][j]["category_name"];
-                         }
-                         pollJSON.push(pollJSONtemp[i]);
-                         $("#pollList").append("<div class='row'>\n\
-                    <div class='col-sm-8 col-md-6 col-lg-4 col-md-offset-1 col-lg-offset-1'>\n\
-                           <div class='panel panel-primary'>\n\
-                                <div class='panel-heading'>\n\
-                                    <div class='row'>\n\
-                                        <div class='col-sm-8'>\n\
-                                            <h3 class='panel-title'>"+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+"</h3>\n\
-                                        </div>\n\
-                                        <div class='col-sm-4'>\n\
-                                            <img style='width:10px;height:auto' src='pages/resources/images/pollicoins.png'> "+pollJSONtemp[i]["reward"]+" \n\
-                                            <img style='width:10px;height:auto' src='pages/resources/images/bulb.png'> "+pollJSONtemp[i]["reward"]+"\n\
-                                        </div>\n\
-                                    </div>\n\
-                                </div>\n\
-                               \n\
-                                <div class='panel-body'>\n\
-                                    <div class='row'>\n\
-                                        <a href='profile/"+pollJSONtemp[i]["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+pollJSONtemp[i]["user"]["profile_pic"]+"' alt='"+pollJSONtemp[i]["user"]["handle"]+"'>\n\
-                                            "+pollJSONtemp[i]["user"]["name"]+" @ "+pollJSONtemp[i]["user"]["handle"]+"</a>\n\
-                                    </div>\n\
-                                    <div class='row'>\n\
-                                        <div class='col-sm-7'>\n\
-                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
-                                        </div>\n\
-                                        <div class='col-sm-5'>\n\
-                                            <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(pollJSONtemp[i]["pid"])+")'>Solve</button>\n\
-      <div id='fb-root'></div>      <div class='fb-share-button' data-href='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' data-layout='button'></div>  \n\
-<a href='twitter.com/share' data-text='Solve this awesome Poll!!!' data-url='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' class='twitter-share-button' data-via='pollican' data-lang='en' >Tweet</a>\n\
-                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
-                                        </div>\n\
-                                    </div>\n\
-                                </div>\n\
-                            </div>\n\
-                    </div>\n\
-                </div>");
-                      /*$("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
-                      <h3>'+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+'</h3>\n\
-                         \n\<a href="/Pollican/profile/'+pollJSONtemp[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSONtemp[i]["user"]["profile_pic"]+"'></a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'>"+pollJSONtemp[i]["user"]["name"]+"</a>  <a href='/Pollincan/profile/"+pollJSONtemp[i]["user"]["handle"]+"'  >@"+pollJSONtemp[i]["user"]["handle"]+'</a>\n\
-                          \n\<h4>'+pollJSONtemp[i]["description"] +'</h4><h5> YOUR CATCH :'+pollJSONtemp[i]["reward"]+'</h5>\n\
-                        <h6>FOLLOWERS :'+pollJSONtemp[i]["user"]["follow"]["followers"].length  +  ' FOLLOWING :'  +pollJSONtemp[i]["user"]["follow"]["following"].length+'</h6></div>'
-                          );
-                  $("#pid"+pollJSONtemp[i]["pid"]).append("<b><i>TAGS</i></b> :  ");
-                         for(var j=0;j<pollJSONtemp[i]["cat_list"].length;j++)
-                           $("#pid"+pollJSONtemp[i]["pid"]).append('<b>'+pollJSONtemp[i]["cat_list"][j]["category_name"]+"</b> ");
-                         $("#pid"+pollJSONtemp[i]["pid"]).append('<br><button onclick="openPoll('+parseInt(pollJSONtemp[i]["pid"])+')">Take Poll</button>');
-                         $("#pid"+pollJSONtemp[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSONtemp[i]["pid"])+')">Results</button>');
-                      */
-                         
-                     }
-            }
+           
            function openPoll(i)
        {
            var ind;

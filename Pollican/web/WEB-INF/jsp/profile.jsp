@@ -1,60 +1,20 @@
-
-<%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
-Cookie[] cookies = request.getCookies();
-String handle="";
-int uid=0;
-//User_Detail user_detail;
-        boolean foundCookie = false;
-        for(int i = 0; i < cookies.length; i++) { 
-            Cookie cookie1 = cookies[i];
-            if(cookie1.getName().equals("handle"))
-            {
-                handle=cookie1.getValue();
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("uid"))
-            {
-                uid=Integer.parseInt(cookie1.getValue());
-                foundCookie = true;
-            }
-            else if(cookie1.getName().equals("User_Obj"))
-            {
-                System.out.println(cookie1.getValue());
-               // user_detail=gson.fromJson(cookie1.getValue(), User_Detail.class);
-                foundCookie = true;
-            }
-           
-            
-        }  
-        if (!foundCookie) {
-            System.out.println("cookies not found 2");
-            //response.sendRedirect("index");
-        }
-        
-       
-%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-      <link rel="stylesheet" href="../pages/resources/css/jquery-ui.css">
-  <script src="../pages/resources/js/jquery.min.js"></script>
-  <script src="../pages/resources/js/jquery-ui.js"></script>
-  <script src="../pages/resources/bootstrap/js/bootstrap.js"></script>
-  <link rel="stylesheet" href="../pages/resources/bootstrap/css/bootstrap.css">
+<%@include file="header.jspf" %>
     <script>
         var followers,following;
          var profile=${profile}; 
         var loggedin=${loggedin};
-        var uid=<%=uid%>;
+        var uid=${uid};
         followers=${followers};
-        following=${following};           
+        following=${following};    
+        var redirect=${redirect};
         $(document).ready(function(){
             
-            
+                 if(redirect)
+                 {
+                     
+                     window.location.assign("${delimiter}index?red_url=${red_url}");
+                     return;
+                 }
                 if(loggedin)
                 {console.log("user is logged in");
                    
@@ -147,16 +107,17 @@ $("#createdPolls").append('<br/><br/><br/><br/>');
                 $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewMyPollsData",
-           data: { uidp:profile['uid'] },
+           data: { uidp:profile['uid'],created_solved:1  },
            success: function(data){
               
                mypollJSON=JSON.parse(data);
                
                  for(var i=0; i<mypollJSON.length;i++)
-                 {  $("#createdPolls").append("<p><b>Title </b>"+mypollJSON[i]['title']+"</p>");
+                 {  /*$("#createdPolls").append("<p><b>Title </b>"+mypollJSON[i]['title']+"</p>");
                  $("#createdPolls").append("<p><b>Description </b>"+mypollJSON[i]['description']+"</p>");
                  $("#createdPolls").append('<button type="button" class="btn btn-primary" onclick="pollResult('+parseInt(mypollJSON[i]["pid"])+')">Results</button>');
-                 
+                 */
+                   createPollDivs("#createdPolls",mypollJSON[i],2);         
                  }
             }
 });
@@ -166,18 +127,20 @@ $("#solvedPolls").append('<br/><br/><br/></br/>');
             
                 $.ajax({
            type: "POST",       // the dNodeNameefault
-           url: "../viewMySolvedPollsData",
-           data: { uidp : profile['uid'] },
+           url: "../viewMyPollsData",
+           //url: "../viewMySolvedPollsData",
+           data: { uidp : profile['uid'],created_solved:2 },
            success: function(data){
                
                mysolvedpollJSON=JSON.parse(data);
               
                 for(var i=0; i<mysolvedpollJSON.length;i++)
-                 {  $("#solvedPolls").append("<p><b>Poll ID : </b>"+mysolvedpollJSON[i]['pid']+"</p>");
-                 $("#solvedPolls").append("<p><b>Poll Ans Key: </b>"+mysolvedpollJSON[i]['poll_ans_key']+"</p>");
-           $("#solvedPolls").append('<button type="button" class="btn btn-primary" onclick="pollResult('+parseInt(mysolvedpollJSON[i]["pid"])+')">Results</button>');
-                     
-        }   
+                 {  
+                    //$("#solvedPolls").append("<p><b>Poll ID : </b>"+mysolvedpollJSON[i]['pid']+"</p>");
+                    //$("#solvedPolls").append("<p><b>Poll Ans Key: </b>"+mysolvedpollJSON[i]['poll_ans_key']+"</p>");
+                    //$("#solvedPolls").append('<button type="button" class="btn btn-primary" onclick="pollResult('+parseInt(mysolvedpollJSON[i]["pid"])+')">Results</button>');
+                    createPollDivs("#solvedPolls",mysolvedpollJSON[i],2);
+                  }   
             }
            });
            
@@ -254,9 +217,8 @@ function follow(cmd)
     });
 }
     </script>
-    </head>
-    <body data-spy="scroll" data-target="#info">
-        <div id="page-wrapper" >
+   
+        <div id="page-wrapper" data-spy="scroll" data-target="#info">
              <div class="container-fluid" >
                  <div class="row col-md-12"  >
                   

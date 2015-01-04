@@ -2,9 +2,11 @@
 
             <!-- /.navbar-collapse do not change uptil here-->
             <div id="page-wrapper">
-                <div class="container-fluid" id="pollList">
-              
-            </div>
+                <div class="container-fluid">
+                    <div class="row" id="pollList">
+                    
+                    </div>
+                </div>
             </div>
             
                
@@ -30,7 +32,7 @@
        $.getScript('${delimiter}pages/resources/js/social.js', function() {});
     });
     var pollJSONtemp;   
-    var pollJSONvp=new Array();
+    var pollJSON=new Array();
     var ts="";
     var canLoadMore=true;
     //var dialog=  $("#selector1").dialog({autoOpen: true,height: 550,width: 830,modal: true});
@@ -69,8 +71,12 @@
                {
                ts=pollJSONtemp[pollJSONtemp.length-1]['start_ts'];
                console.log("ts="+ts);
+                for(var i=0; i<pollJSONtemp.length;i++)
+                     { 
+                         pollJSON.push(pollJSONtemp[i]);
+                         createPollDivs("#pollList",pollJSONtemp[i],1);
+                     }
                
-               createPollDivs();
                  //alert(data);
              }
                    
@@ -87,75 +93,18 @@
                         loadData();
                     }
                 });
-            function createPollDivs()
-            {
-                for(var i=0; i<pollJSONtemp.length;i++)
-                     { var tags=pollJSONtemp[i]["cat_list"][0]["category_name"];
-                         pollJSONvp.push(pollJSONtemp[i]);
-                         for(var j=1;j<pollJSONtemp[i]["cat_list"].length;j++)
-                         {
-                           tags=tags+", "+pollJSONtemp[i]["cat_list"][j]["category_name"];
-                         }
-                        
-                         $("#pollList").append("<div class='row'>\n\
-                    <div class='col-sm-8 col-md-6 col-lg-4 col-md-offset-1 col-lg-offset-1'>\n\
-                           <div class='panel panel-primary'>\n\
-                                <div class='panel-heading'>\n\
-                                    <div class='row'>\n\
-                                        <div class='col-sm-8'>\n\
-                                            <h3 class='panel-title'>"+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+"</h3>\n\
-                                        </div>\n\
-                                        <div class='col-sm-4'>\n\
-                                            <img style='width:10px;height:auto' src='pages/resources/images/pollicoins.png'> "+pollJSONtemp[i]["reward"]+" \n\
-                                            <img style='width:10px;height:auto' src='pages/resources/images/bulb.png'> "+pollJSONtemp[i]["reward"]+"\n\
-                                        </div>\n\
-                                    </div>\n\
-                                </div>\n\
-                               \n\
-                                <div class='panel-body'>\n\
-                                    <div class='row'>\n\
-                                        <a href='profile/"+pollJSONtemp[i]["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+pollJSONtemp[i]["user"]["profile_pic"]+"' alt='"+pollJSONtemp[i]["user"]["handle"]+"'>\n\
-                                            "+pollJSONtemp[i]["user"]["name"]+" @ "+pollJSONtemp[i]["user"]["handle"]+"</a>\n\
-                                    </div>\n\
-                                    <div class='row'>\n\
-                                        <div class='col-sm-7'>\n\
-                                             <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
-                                        </div>\n\
-                                         <div class='col-sm-10'>\n\
-                                        <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(pollJSONtemp[i]["pid"])+")'>Solve</button>\n\
-                                     <div id='fb-root'></div>   <div class='fb-share-button' data-href='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' data-layout='button'></div>  \n\
-<a href='twitter.com/share' data-text='Solve this awesome Poll!!!' data-url='http://localhost:8080/Pollican/solvePoll/"+parseInt(pollJSONtemp[i]["pid"])+"/' class='twitter-share-button' data-via='pollican' data-lang='en' >Tweet</a>\n\
- <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(pollJSONtemp[i]["pid"])+")'>Report</button>\n\
-                                    </div>\n\
-                                </div>\n\
-                            </div>\n\
-                    </div>\n\
-                </div>");
-                      /*$("#pollList").append('<hr><div id="pid'+pollJSONtemp[i]["pid"]+'">\n\
-                      <h3>'+pollJSONtemp[i]["pid"]+":"+pollJSONtemp[i]["title"]+'</h3>\n\
-                         \n\<a href="/Pollican/profile/'+pollJSONtemp[i]["user"]["handle"]+'"><img width="50" height = "50" src='+pollJSONtemp[i]["user"]["profile_pic"]+"></a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'>"+pollJSONtemp[i]["user"]["name"]+"</a>  <a href='/Pollican/profile/"+pollJSONtemp[i]["user"]["handle"]+"'  >@"+pollJSONtemp[i]["user"]["handle"]+'</a>\n\
-                          \n\<h4>'+pollJSONtemp[i]["description"] +'</h4><h5>REWARD :'+pollJSONtemp[i]["reward"]+'</h5></div>'
-                          );
-                  $("#pid"+pollJSONtemp[i]["pid"]).append("<b><i>TAGS</i></b> :  ");
-                         for(var j=0;j<pollJSONtemp[i]["cat_list"].length;j++)
-                           $("#pid"+pollJSONtemp[i]["pid"]).append('<b>'+pollJSONtemp[i]["cat_list"][j]["category_name"]+"</b> ");
-                         $("#pid"+pollJSONtemp[i]["pid"]).append('<br><button onclick="openPoll('+parseInt(pollJSONtemp[i]["pid"])+')">Take Poll</button>');
-                         $("#pid"+pollJSONtemp[i]["pid"]).append('<button onclick="pollResult('+parseInt(pollJSONtemp[i]["pid"])+')">Results</button>');
-                      */
-                         
-                     }
-            }
+        
            function openPoll(i)
        {
-           var poll_js=pollJSONvp;
+           var poll_js=pollJSON;
           // alert();
            //$("#dialog-modal").empty();
            var ind;
-           console.log('pollJSONvp=');
-           console.log(pollJSONvp)
-           for(k=0; k<pollJSONvp.length; k++)
+           console.log('pollJSON=');
+           //console.log(pollJSONvp)
+           for(k=0; k<pollJSON.length; k++)
            {//console.log(pollJSONvp[k])
-               if(pollJSONvp[k]['pid']===i)
+               if(pollJSON[k]['pid']===i)
                {
                    ind=k;
                    console.log("k="+k);
@@ -164,10 +113,10 @@
            }
           
                  
-               var pollJson_obj=pollJSONvp[ind];
+               var pollJson_obj=pollJSON[ind];
                console.log("In OpenPoll");
                console.log(pollJson_obj);
-               var poll_js=pollJSONvp;
+               var poll_js=pollJSON;
               
               var win = window.open("solvePoll/"+pollJson_obj['pid']+"/df", '_blank');
                 win.focus();
@@ -175,7 +124,7 @@
        $( "#dialog-modal" ).load( "solvePoll", { pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1} ); 
        */
        
-   pollJSONvp=poll_js;
+   pollJSON=poll_js;
    }
           
            function pollResult(pid)

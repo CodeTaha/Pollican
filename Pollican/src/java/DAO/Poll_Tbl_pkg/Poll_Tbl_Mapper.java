@@ -34,7 +34,7 @@ public class Poll_Tbl_Mapper implements RowMapper<Poll_Tbl>{
         poll_tbl.setTitle(rs.getString("title"));
         poll_tbl.setDescription(rs.getString("description"));
         poll_tbl.setQtn_json(rs.getString("qtn_json"));
-        poll_tbl.setAns_json(rs.getString("ans_json"));
+        //poll_tbl.setAns_json(rs.getString("ans_json"));
         poll_tbl.setPoll_link(rs.getString("poll_link"));
         poll_tbl.setStart_ts(rs.getString("start_ts"));
         poll_tbl.setEnd_ts(rs.getString("end_ts"));

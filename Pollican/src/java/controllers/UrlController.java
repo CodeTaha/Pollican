@@ -295,16 +295,10 @@ public class UrlController extends Parent_Controller{
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
        
         User_Detail profile=user.get_profile(handle);
-        User_Detail ud;
+        //User_Detail ud;
+        User_Detail ud=get_UserDetails(request);
         String rslt=gson.toJson(profile);
-        if(checklogin(request))
-        {
-            ud=get_UserDetails(request);
-        }
-        else
-        {
-            ud=null;
-        }
+      
              String greet = ""+profile.getName()+" @"+profile.getHandle();
         model.addAttribute("title", greet);
        
@@ -315,9 +309,10 @@ public class UrlController extends Parent_Controller{
           Follow follow=ud.getFollow();
            String foll=gson.toJson(follow.getFollowers());
            System.out.println("fol="+foll);
-          
+           model.addAttribute("redirect",false);
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
+        model.addAttribute("profile_pic",ud.getProfile_pic());
            model.addAttribute("followers", gson.toJson(follow.getFollowers()));
            model.addAttribute("following", gson.toJson(follow.getFollowing()));
            model.addAttribute("loggedin", true);
@@ -329,15 +324,25 @@ public class UrlController extends Parent_Controller{
        }
        else
        {
+           int [] temp_follow=new int[1];
+           temp_follow[0]=0;
            model.addAttribute("loggedin", false);
-          
+            model.addAttribute("redirect",true);
+        model.addAttribute("red_url",request.getRequestURI());
+         model.addAttribute("followers", gson.toJson(temp_follow));
+         model.addAttribute("following", gson.toJson(temp_follow)); 
         model.addAttribute("uid",0);
         model.addAttribute("handle","");
        }
+        String keywords="pollican,profile,polls,surveys";
+      
+       model.addAttribute("title","@"+handle);
+       model.addAttribute("meta_description","Pollican Profile page of @"+handle);
+        model.addAttribute("meta_keywords_org",keywords );
        model.addAttribute("page", "profile");
-          
-        model.addAttribute("meta_description","Profile");
-        model.addAttribute("meta_keywords_org", "pollican,viewpolls,polls,surveys");
+       model.addAttribute("header", "header.jspf");
+         model.addAttribute("delimiter", "../");
+        
 
 	   return "profile";
    }

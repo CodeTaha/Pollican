@@ -587,7 +587,7 @@ $(document).ready(function(){
                    
                }   
                else 
-               {    alert('Your Poll has been created Successfully');
+               {    Alerts("alert-success",'Your Poll has been created Successfully');
                    //window.location.reload();
                    $("#page-wrapper").hide();
                   $("#afterPollCreation").show();

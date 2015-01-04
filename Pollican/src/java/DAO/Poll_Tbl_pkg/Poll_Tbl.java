@@ -27,7 +27,7 @@ public class Poll_Tbl {
     private String title;
     private String description;
     //private String qtn_json;
-    private String ans_json;
+    //private String ans_json;
     private String poll_link;
     private String start_ts;
     private String end_ts;
@@ -104,14 +104,9 @@ public class Poll_Tbl {
         this.description = description;
     }
     
-    public String getAns_json() {
-        return ans_json;
-    }
+    
 
-    public void setAns_json(String ans_json) {
-        this.ans_json = ans_json;
-    }
-
+   
     public String getPoll_link() {
         return poll_link;
     }

@@ -11,8 +11,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../../pages/resources/js/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../../pages/resources/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="../../pages/resources/css/c3.css">
   <link rel="stylesheet" type="text/css" href="../../pages/resources/media/css/TableTools.css">
 
+<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
+<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
 
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/jquery.dataTables.js"></script>
@@ -103,7 +106,8 @@
         
         <button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>
         <div id="whole" style="background-color:whitesmoke">
-        <script src="../../pages/resources/js/d3.min.js"></script> 
+        <script src="../../pages/resources/js/d3.min.js"></script>
+        <script src="../../pages/resources/js/c3.js"></script>
         <script src="../../pages/resources/js/jspdf.js"></script>
         <script src="../../pages/resources/js/canvg.js"></script>
         
@@ -125,7 +129,7 @@
                         $("#whole").append("<p>still not a member..hurry..<a href='../../index'>sign up nw</a></p>");
   // $(document).ready(function(){       
                 $("#whole").append("<div class='container'><div class='row' ><h1><center>TITLE : "+poll['title']+"</center></h1></div></div>");
-                $("#whole").append("<h2><center>POLL BY : <a href='../../profile/"+poll['user']['handle']+"'>\n\
+                $("#whole").append("<h2><center>Poll created by: <a href='../../profile/"+poll['user']['handle']+"'>\n\
                                     <img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> \n\
                                    <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a>\n\
                            <i><a href='../../profile/"+poll['user']['handle']+"'>\n\
@@ -251,7 +255,7 @@
                     }
                     k++;
                   
-                  var ret=plotBar(qtn_div,j);
+                  var ret=plotBar(jsonArr,qtn_div,j);
                     
                     var retu=tablegen(qtn_div,j);
                 }
@@ -446,7 +450,7 @@
                     
                     second=arrayOptions;
                      
-                      var ret=plotBar(qtn_div,j);
+                      var ret=plotBar(jsonArr,qtn_div,j);
                       if(ret===0)
                       plotpie(qtn_div,j);
                     var retu=tablegen(qtn_div,j);
@@ -501,10 +505,11 @@
                     {
                         //console.log("q_id working");
                     var arrayRows=poll['qtn_json'][j]['rows'];
-                    //console.log(arrayRows);
+                  //  console.log(arrayRows);
                      var noOfRows=poll['qtn_json'][j]['rows'].length;
                      var arrayColumns=poll['qtn_json'][j]['columns'];
-                    //console.log(arrayColumns);
+                  //  console.log(arrayColumns);
+                    
                      var noOfColumns=poll['qtn_json'][j]['columns'].length;
                     var ans=result[i]['qtn'][j]['ans'];
                     //console.log(ans);
@@ -513,17 +518,20 @@
                     for(var ii=0;ii<ans.length;ii++)
                     {
                         //console.log(ans[0][0]+"poi"+ans[0][2]);
-                        if((count[ans[ii][0]][ans[ii][2]]++) ===null);
+                        var tech=count[ans[ii][0]][ans[ii][2]] +1;
+                        if(tech ===null);
                         else
+                        {
                             count[ans[ii][0]][ans[ii][2]]++;
+                        }
                     }
                 }
                 }
                 }
                 }
             
+            for(var l=0;l<noOfColumns;l++)
            for(var k=0;k<noOfRows;k++)
-                        for(var l=0;l<noOfColumns;l++)
                     {
                         //console.log(count[k][l]);
                          if(count[k][l]>colmax)
@@ -531,6 +539,8 @@
                         colmax=count[k][l];
                     }
                     }
+                    //console.log(count);
+                    console.log("diff");
                     var maxticks=0;
             //console.log("ansarray");
             var p=0;
@@ -580,7 +590,8 @@
                     //console.log("call");
                     //console.log(jsonArr);
                     
-                    var ret=plotBar(qtn_div,j);
+                    var ret=plotBarmoc(count,arrayRows,arrayColumns,qtn_div,j);
+                   // var ret=plotBar(jsonArr,qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
             }
@@ -705,7 +716,8 @@
                     
                     k++;
                     
-                   var ret=plotBar(qtn_div,j);
+                  // var ret=plotBar(jsonArr,qtn_div,j);
+                  var ret=plotBarmoc(count,arrayRows,arrayColumns,qtn_div,j);
                     var retu=tablegen(qtn_div,j);
                 }
                 }
@@ -759,133 +771,288 @@
         }//forloop
     //});
     
- function plotBar(qtn_div_pie,p)
+ function plotBar(jsonArr,qtn_div_pie,p)
  {
+     var jsonArr=JSON.stringify(jsonArr);
+     //console.log(jsonArr);
      qtn_div_pie="#"+qtn_div_pie;
      var svg_id="svg_"+p;
-     //console.log("in");
-var margin = {top: 20, right: 20, bottom: 15+bot*1, left: 40},
-width = document.body.offsetWidth*0.29- margin.left - margin.right,
-height = document.body.offsetWidth*0.24 - margin.top - margin.bottom+bot;
-// Parse the label / time
-//var parseDate = d3.time.format("%Y-%m").parse;
-var animheight=height;
-color = d3.scale.ordinal()
-        //.range(["red", "orange", "green", "violet", "blue", "steelblue", "grey"])
-  .range(["grey", "blue", "steelblue", "yellow", "green", "indigo", "orange"])
-  .domain([0,1,2,3,4,5,6]);
-var x = d3.scale.ordinal().rangeRoundBands([0, width], .6);
-var y = d3.scale.linear().range([height, 0]);
+     
+                $(qtn_div_pie).append("<button class='btn btn-info' onclick='verticalbar("+svg_id+","+jsonArr+")'>vertical bar</button> ");
+           //     console.log("herre what happens");
+           //     console.log("<button onclick='verticalbar("+svg_id+","+jsonArr+")'>vertical bar</button> ");
+                $(qtn_div_pie).append("<button class='btn btn-info' onclick='horizontalbar("+svg_id+","+jsonArr+")'>horizontal bar</button>");
+                $(qtn_div_pie).append("<button class='btn btn-info' onclick='spline("+svg_id+","+jsonArr+")'>spline</button> ");
+                $(qtn_div_pie).append("<button class='btn btn-info' onclick='line("+svg_id+","+jsonArr+")'>line</button> ");
+                $(qtn_div_pie).append("<button class='btn btn-info' onclick='area("+svg_id+","+jsonArr+")'>area</button> ");
+    
+    
+     $(qtn_div_pie).append("<div id='"+svg_id+"'></div>");
+ //   var chart="chart";
+     svg_id="#"+svg_id;
+   //  $(svg_id).append("<div id='"+chart+"'></div>");*/
+     
+     jsonArr=JSON.parse(jsonArr);
+   var chart=verticalbar(svg_id,jsonArr);
+   
 
-var xAxis = d3.svg.axis()
-.scale(x)
-.orient("bottom")
-.ticks(4);
-var yAxis = d3.svg.axis()
-.scale(y)
-.orient("left")
-.ticks(maxticks);
-width=width + margin.left + margin.right;
-var svg = d3.select(qtn_div_pie).append("svg")
-.attr("id", "svg_"+p)
-.attr("style","background-color:whitesmoke")
-.attr("width", width)
-.attr("height", height + margin.top + margin.bottom+30+bot*3)
-.append("g")
-.attr("transform",
-"translate(" + margin.left + "," + margin.top + ")");
 
-//d3.json("bars", function() {
-  
-  var data=jsonArr.slice();
-data.forEach(function(d) {
-d.label = d.label;
-d.n = +d.n;
-});
-x.domain(data.map(function(d) { return d.label; }));
-y.domain([0, d3.max(data, function(d) { return d.n; })]);
 
-svg.append("g")
-.attr("class", "x axis")
-.attr("transform", "translate(0," + height + ")")
-.call(xAxis)
-.selectAll("text")
-.style("text-anchor", "end")
-.attr("dx", "-.8em")
-.attr("dy", "-.55em")
-.attr("transform", "rotate(-90)" );
-svg.append("g")
-.attr("class", "y axis")
-.call(yAxis)
-.append("text")
-.attr("transform", "rotate(-90)")
-.attr("y", 6)
-//Bar Charts 254
-.attr("dy", ".71em")
-.style("text-anchor", "end")
-.text("no of votes");
-svg.selectAll("bar")
-.data(data)
-.enter().append("rect")
-.style("fill", function(d) { return color(d.n*6/colmax); })
-.attr("x", function(d) { return x(d.label); })
-.attr("width", x.rangeBand())
-.attr("y", function(d) { return height; })
-.attr("height", function(d) { return 0; })
-.on("mouseover", function(){d3.select(this).style("fill", "green")})
-            .on("mouseout", function(){d3.select(this).style("fill", function(d) { return color(d.n*6/colmax); })})
 
-.transition().delay(function (d,i){ return i * 300;})
- .duration(3000)
- .attr("height", function(d) {  return +animheight-y(d.n) + .1; })
- .attr("y", function(d) { return +y(d.n) - .1; })
 
- ;
-//});
-//console.log("colmax"+colmax);
-//console.log("out");
+
 var canvasvar="canvas_"+p;
-console.log(canvasvar);
-var mylink="myALink_"+p;
+
+var down="download"+p;
 var imgname="qtn"+p+".png";
- $("#qtn_div_"+p).append('<br><a id="myALink_'+p+'" class="btn btn-success" role="button">Download as image</a></br>');
- //<a href="#" class="btn btn-info" role="button">Link Button</a>
- $("#qtn_div_"+p).append('<div  id="can" style="background-color:whitesmoke" ><canvas id="canvas_'+p+'" width="300" height="320" style="background-color:white"></canvas> </div>');
- 
-        document.getElementById(mylink).addEventListener('click', function() {
-    downloadCanvas(this, canvasvar, imgname); // <- this can be a dynamic name
+ $("#qtn_div_"+p).append("<canvas hidden width='500' height='300' id='canvas_"+p+"'>Sorry, no canvas available</canvas>\n\
+<a class='btn btn-success' id='download"+p+"'>Download as image</a><br>")
+
+        document.getElementById(down).addEventListener('click', function() {
+    downloadCanvas(this, canvasvar, imgname);
 }, false);
+
+//canvg('canvas_'+p, document.getElementById('svg_'+p).innerHTML);
 return 0;
  }
  
- function downloadCanvas(link, canvasId, filename) {
-   for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
+ function plotBarmoc(count,arrayRows,arrayColumns,qtn_div_pie,p)
+ {
+     qtn_div_pie="#"+qtn_div_pie;
+     var svg_id="svg_"+p;
+     
+     $(qtn_div_pie).append("<div id='"+svg_id+"'></div>");
+     
+     svg_id="#"+svg_id;
+     
+      var ansrows=arrayRows;
+           var anscol=arrayColumns;
+           console.log("rows");
+           console.log(ansrows);
+           console.log("columns");
+           console.log(anscol);
+           var count=count;
+           console.log("count");
+        console.log(count);
+         var fakerow=[];
+      //  var countrev=[];
+        for(var i=0;i<ansrows.length+1;i++)
+        {
+           // for(var j=0;j<ansrows.length+1;j++)
+            {
+              fakerow[i]=[];
+            }
+        }
+       /* for(var i=0;i<ansrows.length;i++)
+        {
+           {
+             countrev[i]=[];
+            }
+        }
+        for(var i=0;i<ansrows.length;i++)
+        {
+            for(var j=0;j<anscol.length;j++)
+            {
+                countrev[i][j]=count[j][i];
+            }
+        }
+        console.log("countrev");
+        console.log(countrev);*/
+        for(var i=0;i<ansrows.length+1;i++)
+        {
+            for(var j=0;j<anscol.length+1;j++)
+            {
+                if(i===0)
+                {
+                    if(j===0)
+                    {
+                        fakerow[i][j]='x';                        
+                    }
+                    else
+                    {
+                        fakerow[i][j]=anscol[j-1];
+                    }
+                }
+                else
+                {
+                    if(j===0)
+                    {
+                        fakerow[i][j]=ansrows[i-1];
+                    }
+                    else
+                    {
+                        console.log(i+"seo"+j);
+                        fakerow[i][j]=count[i-1][j-1];
+                    }
+                }
+                
+            }
+            
+        }
+        
+        
+        console.log("fake");
+        console.log(fakerow);
+            var reprows=[
+            ['x', 'c1', 'c2', 'c3'],
+            ['r1', 2,1, 0],
+            ['r2', 0, 1, 1],
+            ['r3', 0, 0, 1],
+        ];
+          var chart = c3.generate({
+              bindto: svg_id,
+    data: {
+        x : 'x',
+        rows: fakerow,
+        type: 'bar',
+        labels: true,
+    },
+    axis: {
+        x: {
+            type: 'category' // this needed to load string x value
+        }
+    }
+});
+
+
+
+var canvasvar="canvas_"+p;
+
+var down="download"+p;
+var imgname="qtn"+p+".png";
+ $("#qtn_div_"+p).append("<canvas hidden width='500' height='300' id='canvas_"+p+"'>Sorry, no canvas available</canvas>\n\
+<a class='btn btn-success' id='download"+p+"'>Download as image</a>")
+
+        document.getElementById(down).addEventListener('click', function() {
+    downloadCanvas(this, canvasvar, imgname);
+}, false);
+
+return 0;
+ }
+ 
+ 
+ 
+ 
+  function downloadCanvas(link, canvasId, filename) {
+         for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
    {
        if(poll['qtn_json'][lkj]['qtn_type']==="tb")
        {}
        else
-    canvg('canvas_'+lkj, $("#qtn_div_"+lkj).html());
-    
+       {
+       //    console.log("this is canvas id ");
+       //    console.log('canvas_'+lkj);
+       //    console.log("this is svg");
+       //    console.log(document.getElementById('svg_'+lkj).innerHTML);
+    canvg('canvas_'+lkj, document.getElementById('svg_'+lkj).innerHTML);
+       }
    }
     link.href = document.getElementById(canvasId).toDataURL();
     link.download = filename;
 }
+ 
+ 
+ 
+ 
+ function verticalbar(svg_id,jsonArr)
+   {
+      // console.log("inside vertical");
+     //  console.log(svg_id);
+      var chart = c3.generate({
+           bindto: svg_id,
+    data: {
+        x : 'x',
+        json :jsonArr,
+    type:'bar',
+    labels: true,
+        keys: {
+            x: 'label',
+            value: ['n']
+        }
+    },
+    axis: {
+        rotated:false,
+        x: {
+            type: 'category',
+            tick: {
+                rotate: 0,
+                multiline: true
+            },
+           // height: 130,
+            
+        },
+        y: {
+            
+            label: 'no of votes'
+        }
+    }
+});
+return chart;
+   }
+   
+   function horizontalbar(svg_id,jsonArr)
+   {
+      // console.log(svg_id);
+        var chart = c3.generate({
+           bindto: svg_id,
+    data: {
+        x : 'x',
+        json :jsonArr,
+    type:'bar',
+    labels: true,
+        keys: {
+            x: 'label',
+            value: ['n']
+        }
+    },
+    axis: {
+        rotated:true,
+        x: {
+            type: 'category',
+            tick: {
+                rotate: 0,
+                multiline: true
+            },
+           // height: 130,
+            
+        },
+        y: {
+            
+            label: 'no of votes'
+        }
+    }
+});
+   }
+   function spline(svg_id,jsonArr)
+   {
+       var chart=verticalbar(svg_id,jsonArr);
+       chart.transform('spline');
+   }
+   function line(svg_id,jsonArr)
+   {
+       var chart=verticalbar(svg_id,jsonArr);
+       chart.transform('line');
+   }
+   function area(svg_id,jsonArr)
+   {
+       var chart=verticalbar(svg_id,jsonArr);
+       chart.transform('area');
+   }
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+
  function downloadCanvasPie(link, canvasId, filename) {
    
     link.href = document.getElementById(canvasId).toDataURL();
     link.download = filename;
 }
 
- for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
-   {
-            if(poll['qtn_json'][lkj]['qtn_type']==="tb")
-       {}
-       else
-       {
-    var im = document.getElementById('canvas_'+lkj);
-        im.style.display = 'none';
-    }     
-   }
  function plotpie(qtn_div,p)
  {
      qtn_div="#"+qtn_div;
@@ -941,10 +1108,10 @@ var svg = d3.select(qtn_div)
 
 //});
 var canvasvar="canvas_pie_"+p;
-console.log(canvasvar);
+//console.log(canvasvar);
 var mylink="myALink_pie_"+p;
 var imgname="qtn"+p+".png";
- $("#qtn_div_"+p).append('<br> <a id="myALink_pie_'+p+'">Download as image</a> ');
+ $("#qtn_div_"+p).append('<br> <a class="btn btn-success" id="myALink_pie_'+p+'">Download as image</a> ');
  $("#qtn_div_"+p).append('<div id="can"> <canvas hidden id="canvas_pie_'+p+'" width="351px" height="351px"></canvas> </div>');
  canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());
  
@@ -1031,8 +1198,8 @@ var relist=new Array();
            
        
          
-         console.log("relist data");
-         console.log(relist);
+      //   console.log("relist data");
+      //   console.log(relist);
       }
       
         
@@ -1141,8 +1308,8 @@ var relist=new Array();
              
          
                  relist.push(mcssArr);   
-         console.log("relist data");
-         console.log(relist);
+     //    console.log("relist data");
+     //    console.log(relist);
       }
       
               
@@ -1248,7 +1415,7 @@ var relist=new Array();
              
                     //var tUID="<td>"+result[i]['uid']+"</td>"; 
            mocArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
-           console.log("f1 "+mocArr[0]);
+       //    console.log("f1 "+mocArr[0]);
            var i12=1;
                     
             for(var pdr = 0; pdr < noOfRows ; pdr++)
@@ -1393,7 +1560,7 @@ var relist=new Array();
                     //var tUID="<td>"+result[i]['uid']+"</td>";
                     //<i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i>
            momcArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
-           console.log("f1 "+momcArr[0]);
+        //   console.log("f1 "+momcArr[0]);
            var i12=1;
            
                     
@@ -1552,7 +1719,7 @@ var relist=new Array();
        {}
        else
        {
-        canvg('canvas_'+lkj, $("#svg_"+lkj).html());
+        canvg('canvas_'+lkj, document.getElementById('svg_'+lkj).innerHTML);
         pdfseo.addImage(document.getElementById('canvas_'+lkj), 'png', 35, y, 80, 80);
           y=y+80;
       }

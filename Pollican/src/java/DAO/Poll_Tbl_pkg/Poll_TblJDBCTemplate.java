@@ -191,7 +191,13 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
    
    public List<Poll_Tbl> ListMyPolls(int uid) {
        
-      String SQL = "select * from poll_tbl where uid=?";
+      String SQL = "select * from poll_tbl where uid=? ORDER BY start_ts DESC;";
+      List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper(conn));
+      return poll_tbl;
+}
+   public List<Poll_Tbl> ListMySolvedPolls(int uid) {
+       
+      String SQL = "select * from poll_tbl where pid IN(Select pid from poll_ans_tbl where uid=?) ORDER BY start_ts DESC;";
       List <Poll_Tbl> poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{uid}, new Poll_Tbl_Mapper(conn));
       return poll_tbl;
 }

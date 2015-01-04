@@ -37,7 +37,8 @@
             </div>
                 
             </div>
-</div>       
+</div>      
+</div>
         <script>
                 //console.log("In solvePoll");
                // var pollJSON;
@@ -71,7 +72,7 @@
                 var k1=0,k2=0;
                 var redirect=${redirect}
                 var uid=${uid};
-              //  var profile=${profile};
+            
                  
                 
                 
@@ -142,14 +143,14 @@
                       $("#pollArea").append("<div class='panel panel-primary'>\n\
                                                 <div class='panel-heading'>\n\
                                                     <div class='row'>\n\
-                                                        <div class='col-sm-8'>\n\
+                                                        <div class='col-sm-12'>\n\
                                                             <h3 class='panel-title'>"+qtnJSON[i]['qtn_id']+":"+qtnJSON[i]['qtn']+"</h3>\n\
                                                         </div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                               <div class='panel-body'>\n\
                                                 <div class='row'>\n\
-                                                    <div class='col-sm-8' id='qtndiv_"+i+"'>\n\
+                                                    <div class='col-sm-12' id='qtndiv_"+i+"'>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
