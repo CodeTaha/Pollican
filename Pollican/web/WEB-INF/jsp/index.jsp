@@ -470,14 +470,13 @@ function Logout()
 	background-position: center center;
 }
 .slide1 {
-	background-image: url(https://storage.googleapis.com/clipular-clips/15322063/4815855382691840?GoogleAccessId=clipular2012@appspot.gserviceaccount.com&Expires=1420586086&Signature=nF4DMq%2FY9CfVOL03rNxrkk0jyXPOMp%2BiYhvNlEvzB28gwuCxaZs8xeuSFOXjenTkCLmSaB2fCNxqtNosCs%2BtzJ1vJdZKcfGoUQu58HgLaahu5Pw2luw4F885B7hdJVa5gVOoCxy%2FX66%2BckG%2BGBNIiLyElhaMOXIHcTNziKjlhrM%3D&md5=bc7dfdd6c13382f241ecae087b4a4f2d&NOT_A_LINK);
+	background-image: url(${delimiter}pages/resources/img/slide1.png);
 }
-.slide2 {//https://storage.googleapis.com/clipular-clips/15322063/4815855382691840?GoogleAccessId=clipular2012@appspot.gserviceaccount.com&Expires=1420586086&Signature=nF4DMq%2FY9CfVOL03rNxrkk0jyXPOMp%2BiYhvNlEvzB28gwuCxaZs8xeuSFOXjenTkCLmSaB2fCNxqtNosCs%2BtzJ1vJdZKcfGoUQu58HgLaahu5Pw2luw4F885B7hdJVa5gVOoCxy%2FX66%2BckG%2BGBNIiLyElhaMOXIHcTNziKjlhrM%3D&md5=bc7dfdd6c13382f241ecae087b4a4f2d&NOT_A_LINK
-	//background-image: url(http://placekitten.com/1100/300);
-        background-image: url(https://storage.googleapis.com/clipular-clips/15322063/4681236847001600?GoogleAccessId=clipular2012@appspot.gserviceaccount.com&Expires=1420585833&Signature=O3z%2Fi9XzC%2BeoROuSTYTd2N%2Bm0qZ0L5o390QgV2ZLvAkXIRhHgQ0RswO7DH411jNPTt4An4CQSqA4M%2F8QGz7%2BXsWbzr38Cj5O2uds8aRDL0yyflQN%2BCnIwZH2A1u2h7os0Eqk7QNZvZKQx2mqyvIQDJGTlLcEQrL%2FvjEQRbJp5iw%3D&md5=bfac3af54974924c6c94af5fd35880dd&NOT_A_LINK);
+.slide2 {
+        background-image: url(${delimiter}pages/resources/img/slide2.png);
 }
 .slide3 {
-	background-image: url(https://storage.googleapis.com/clipular-clips/15322063/5549734297075712?GoogleAccessId=clipular2012@appspot.gserviceaccount.com&Expires=1420585921&Signature=O8MkNKUTsJujf3kTbmrbHSX0pyqZuGxKbVRHecIWMnMUH8XalerIPpAI482jeGkIvFb6QXGFeI07%2B4Dg%2FM6NEHCjkA2mrqZ4B48QMC8527unSHa3VgkE8dP53U8Zmo8lMpU%2FoVZmd4JAV%2Byf93KpR9n1HNiyzCqZDYlKsCa4Mis%3D&md5=2be4c98912e5a3bd47923bb65f2ffc39&NOT_A_LINK);
+	background-image: url(${delimiter}pages/resources/img/slide3.png);
 }
 /* Carousel Fade Effect */
 .carousel.carousel-fade .item {
@@ -579,8 +578,8 @@ function Logout()
         </div>
     </div><!-- .carousel-inner --> 
     <div class="container carousel-overlay text-center">
-        <h1>Create Polls/Surveys, Get Answers, Take the Right Decisions</h1>
-        <h2>It's Absolutely Free!</h2>
+        <h1 style="color: #1c1b1e;">Create Polls/Surveys, Get Answers, Take the Right Decisions</h1>
+        <h2 style="color: #1c1b1e;">It's Absolutely Free!</h2>
         <button class="btn btn-facebook btn-lg" onclick="Login()" id='fb_login_btn2'><i class="fa fa-facebook"></i> | Connect with Facebook</button>
        
     </div>
