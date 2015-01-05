@@ -125,44 +125,7 @@
                         loadData();
                     }
                 });
-           
-           function openPoll(i)
-       {
-           var ind;
-           console.log('pollJSON=');
-           console.log(pollJSON)
-           for(k=0; k<pollJSON.length; k++)
-           {console.log(pollJSON[k])
-               if(pollJSON[k]['pid']===i)
-               {
-                   ind=k;
-                   console.log("k="+k);
-                   break;
-               }
-           }
-          
-                 
-               var pollJson_obj=pollJSON[ind];
-               console.log("In OpenPoll");
-               console.log(pollJson_obj);
-               var win = window.open("solvePoll/"+pollJson_obj['pid']+"/df", '_blank');
-                win.focus();
-               /*dialog.dialog( "open" );
-       $( "#dialog-modal" ).load( "solvePoll", { pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1} ); 
-       */
-           
-   }
-          
-           function pollResult(pid)
-           {
-                var win = window.open("result/"+pid, '_blank');
-                win.focus();
-                /*$( "#dialog-modal").empty().load( 'pollResult.jsp', {pid: pid}, function( response, status, xhr ) {
-                if ( status === "error" ) {
-                var msg = "Sorry but there was an error: ";
-                $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );*/
-            }
-           
+       
         </script>
     </body>
 </html>

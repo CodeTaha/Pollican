@@ -183,18 +183,20 @@ function Alerts(alert_type,alert_mesg)
                   size=size2;
               }
                          var tags=poll_obj["cat_list"][0]["category_name"];
+                         //var tags=new Array();
                          for(var j=1;j<poll_obj["cat_list"].length;j++)
                          {
                            tags=tags+", "+poll_obj["cat_list"][j]["category_name"];
+                          // tags.push(poll_obj["cat_list"][j]["category_name"])
                          }
                          
                          $(poll_div_id).append("\n\
                     <div class='"+size+"'>\n\
-                           <div class='panel panel-primary'>\n\
+                           <div class='panel panel-primary'  style='min-height: 200px;max-height:200px;'>\n\
                                 <div class='panel-heading'>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-8 col-md-8 col-lg-8'>\n\
-                                            <h3 class='panel-title'>"+poll_obj["pid"]+":"+poll_obj["title"]+"</h3>\n\
+                                            <h4 class='panel-title'>"+poll_obj["pid"]+":"+poll_obj["title"]+"</h4>\n\
                                         </div>\n\
                                         <div class='col-sm-4 col-md-4 col-lg-4  pull-right'>\n\
                                             <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/pollicoins.png' title='You will earn these Pollicoins which can\nbe redeemed by creating new Polls/Surveys'> "+poll_obj["reward"]+" \n\
@@ -209,7 +211,9 @@ function Alerts(alert_type,alert_mesg)
                                             "+poll_obj["user"]["name"]+" @ "+poll_obj["user"]["handle"]+"</a>\n\
                                     </div>\n\
                                     <div class='row'>\n\
+                                     <div class='col-sm-12' >\n\
                                              <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
+                                     </div>\n\
                                     </div>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-6 pull-right' >\n\
@@ -227,6 +231,25 @@ function Alerts(alert_type,alert_mesg)
                      */  
                      
             }
+            
+       
+           function openPoll(i)
+       {
+        var win = window.open("${delimiter}solvePoll/"+i+"/a", '_blank');
+                win.focus();   
+           
+        }
+          
+           function pollResult(pid)
+           {
+                var win = window.open("result/"+pid, '_blank');
+                win.focus();
+                /*$( "#dialog-modal").empty().load( 'pollResult.jsp', {pid: pid}, function( response, status, xhr ) {
+                if ( status === "error" ) {
+                var msg = "Sorry but there was an error: ";
+                $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );*/
+            }
+                    
    </script>
 </head>
 
