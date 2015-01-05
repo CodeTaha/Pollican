@@ -16,49 +16,50 @@
             <input type="text" class="form-control" id="name" placeholder="Enter your FullName">
             </div>
         </div>-->
-                        <div id='d1'>
+                        <div id='d1' class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-0 col-md-offset-1 col-lg-offset-2">
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">Title:</label>
-                                <div class="col-sm-6">
+                                <label class="control-label col-sm-3" for="title">Title:</label>
+                                <div class="col-sm-9">
                                 <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="desc">Description:</label>
-                                <div class="col-sm-6">
+                                <label class="control-label col-sm-3" for="desc">Description:</label>
+                                <div class="col-sm-9">
                                 <textarea class="form-control" id="desc" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="category">Tag Categories:</label>
-                                <div class="col-sm-6" >
+                                <label class="control-label col-sm-3" for="category">Tag Categories:</label>
+                                <div class="col-sm-9" >
                                     <select id="category" multiple="multiple"  tabindex="-1" class="select2-offscreen" style="width: 150px;" required></select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-2" for="sd">Start Time <small>Poll will start on this time</small>:</label>
-                                <div class="col-sm-2">
+                                <label class="control-label col-sm-3" for="sd">Start Time <small>Poll will start on this time</small>:</label>
+                                <div class="col-sm-3">
                                 <input type="text" class="form-control" id="sd" name="sd"/>
                                 </div>
-                                <label class="control-label col-sm-2" for="ed">End Time:</label>
-                                <div class="col-sm-2">
+                                <label class="control-label col-sm-3" for="ed">End Time:</label>
+                                <div class="col-sm-3">
                                 <input type="text" class="form-control" id="ed" name="ed"/>
                                 </div>
                             </div>
+                            <div class="form-group" id='d2'>
+                                
+                            </div>
+                            <div class="form-group" id='d3'>
+                                
+                            </div>
                            
+                            <div class="form-group" id="tk">
+                            <button class="btn btn-primary btn-group-sm" onclick="addQuestion()" id="addQuestion">Add Question</button>
+                           
+                            <input class="btn btn-success pull-right" type='button' onclick="send()" value='Submit Survey' id='Submit'>
+                            </div>
                         </div>
-                        <div id='d2'>
-
-
-                        </div>
-                        <div id='d3'>
-                            
-                        </div>
-                        <div id="tk">
-                            <br><br><button class="btn btn-primary btn-group-sm" onclick="addQuestion()" id="addQuestion">Add Question</button>
-
-                            <input class="btn btn-success" type='button' onclick="send()" value='Submit Survey' id='Submit'>
-                        </div>
+                       
+                        
                         
                     </div>
                 </div>

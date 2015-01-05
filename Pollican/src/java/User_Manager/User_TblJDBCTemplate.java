@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,21 +60,28 @@ public class User_TblJDBCTemplate {
       
     }
 
-    public User_Detail authenticate(String username, String password, int loginType) {
+    public User_Detail authenticate(String username, String password, int loginType) throws Exception {
       User_Detail user_detail=null;
+       try{
       switch(loginType)
       {
           case 1: {
-              SQL =   "select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
+              SQL =   "select A.uid,A.followers,A.following,A.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and B.handle=?) \n" +
                       "OR \n" +
                       "(A.uid=B.uid and A.uid=C.uid and A.email=?);";
           }break;
           case 2: {System.out.println("authenticating for fb username="+username+" email="+password);
           SQL="select A.uid,A.followers,A.following,B.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.fb=?)OR (A.uid=B.uid and A.uid=C.uid and A.email=?);";
-          }
+          user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
+          }break;
+          case 3: {System.out.println("authenticating for Direct username="+username+" password="+password);
+          String tempPass=encrypt(password);
+          SQL="select A.uid,A.followers,A.following,A.handle,C.category_list_json from login_tbl A, user_detail B, user_store C where (A.uid=B.uid and A.uid=C.uid and A.email=? and A.hashed_password=?)OR (A.uid=B.uid and A.uid=C.uid and A.handle=? and A.hashed_password=?);";
+          user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,tempPass,username,tempPass}, new User_Detail_Mapper(1));
+          }break;
       }
-       try{
-           user_detail=jdbcTemplateObject.queryForObject(SQL, new Object[]{username,password}, new User_Detail_Mapper(1));
+      
+           
        }
        catch(DataAccessException e)
        {System.out.println("User does not exist "+e);
@@ -81,7 +89,17 @@ public class User_TblJDBCTemplate {
        }
       return user_detail;
     }
-    
+    private String encrypt(String x) throws Exception {
+   MessageDigest m = MessageDigest.getInstance("MD5");
+    m.update(x.getBytes("UTF8"));
+    byte s[] = m.digest();
+    String result = "";
+    for (int i = 0; i < s.length; i++) {
+      result += Integer.toHexString((0x000000ff & s[i]) | 0xffffff00).substring(6);
+    }
+    //return d.digest();
+    return result;
+  }
     public int[] get_category_list_json(int uid)
     {
         SQL="select category_list_json from user_store where uid=?";
@@ -116,11 +134,12 @@ public class User_TblJDBCTemplate {
                 FileOutputStream fos = new FileOutputStream("C:/Users/Taha/Documents/GitHub/PollingDuck-Spring/PollingDuck-Spring/web/WEB-INF/pages/profile_pics/"+profile_pic1);
                 fos.write(response1);
                 fos.close();*/
-    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb, String hashedpassword ) throws SQLException, FileNotFoundException, IOException
+    public boolean createUser(String handle,String name,String email,String country,String state,String city,String zip,String religion,String sex,String dob,String phone,String profile_pic,int category[], String fb, String hashedpassword ) throws SQLException, FileNotFoundException, IOException, Exception
    {
        System.out.println("In User_Tbl_JDBCTemplate> createUser");
-        System.out.println(" Handle "+handle +" name "+name+" email "+email+" country "+country+" state "+state+" city "+city+" zip "+zip+" religion "+ religion+" sex "+sex+" dob "+dob+" phone "+phone+" profile_pic "+profile_pic+" categ "+ category +" fb "+fb+"hashed password "+hashedpassword);
-        
+        System.out.println(" Handle "+handle +" name "+name+" email "+email+" country "+country+" state "+state+" city "+city+" zip "+zip+" religion "+ religion+" sex "+sex+" dob "+dob+" phone "+phone+" profile_pic "+profile_pic+" categ "+ Arrays.toString(category) +" fb "+fb+"hashed password "+hashedpassword);
+        String password=encrypt(hashedpassword);
+        //System.out.println(testpass);
         /* Code for User_Store */
           /*  URL url = new URL(profile_pic);
             ByteArrayOutputStream out1;
@@ -154,7 +173,7 @@ public class User_TblJDBCTemplate {
             
             
             String category_list_json=Arrays.toString(category);
-            System.out.println("Category list="+category_list_json);
+            //System.out.println("Category list="+category_list_json);
             List<Exp_Json> exp = new ArrayList();
             Exp_Json obj = null;
             for(int i=0; i<category.length; i++)
@@ -168,7 +187,7 @@ public class User_TblJDBCTemplate {
                 }
                 
             }
-            System.out.println("next up is callablestatement");
+           // System.out.println("next up is callablestatement");
             String exp_json=gson.toJson(exp);
              CallableStatement st;
        /* (IN handle_i varchar(45),IN username_i varchar(45),IN email_i varchar(45),IN country_i varchar(45),
@@ -179,7 +198,7 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
              con=conn.getDataSource().getConnection();
              System.out.println("10 dec 4pm"); 
              st=con.prepareCall("call createUser2('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
-                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+",'"+hashedpassword+"')");
+                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+",'"+password+"')");
              st.executeQuery();
              con.close();
              System.out.println("11 dec 2am");

@@ -177,7 +177,7 @@
                                                 $("#qtn"+(i+1)).append('<option value="'+(j+1)+'">'+answers[j]+'</option>'); 
                                             }
                                             //$("#pollArea").append('</select>');
-                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,width:100,emptyText: "select"});
+                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,emptyText: "select"});
                                             
                                       }break;
                            case "tb":{

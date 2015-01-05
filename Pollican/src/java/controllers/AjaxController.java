@@ -236,7 +236,7 @@ public class AjaxController extends Parent_Controller{
    
     @RequestMapping(value = "/SignUpReg", method = RequestMethod.POST)
     @SuppressWarnings("empty-statement")
-   public void SignUpReg(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+   public void SignUpReg(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, Exception {
       System.out.println("in AjaxController > SignUpReg");
         User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
         User_Detail ud;
@@ -297,8 +297,9 @@ public class AjaxController extends Parent_Controller{
    }
    
    @RequestMapping(value = "/loginFB", method = RequestMethod.POST)
-   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
+   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException, Exception {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+       User_Detail ud=get_UserDetails(request);
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         cookies= request.getCookies();
@@ -306,15 +307,15 @@ public class AjaxController extends Parent_Controller{
        
         String username= request.getParameter("username");
         String password= request.getParameter("password");// its actually e-mail
-        user_detail=user.authenticate(username,password,2);
-        if(user_detail!=null)
+        ud=user.authenticate(username,password,2);
+        if(ud!=null)
         {
         
-        System.out.println("Adding cookie handle"+user_detail.getHandle());
-        Cookie cookie=set_Cookie("handle",user_detail.getHandle(),24);
+        System.out.println("Adding cookie handle"+ud.getHandle());
+        Cookie cookie=set_Cookie("handle",ud.getHandle(),24);
         response.addCookie(cookie); 
-        System.out.println("Adding cookie uid"+user_detail.getUid());
-        cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
+        System.out.println("Adding cookie uid"+ud.getUid());
+        cookie=set_Cookie("uid",String.valueOf(ud.getUid()),24);
         response.addCookie(cookie);
        
         //System.out.print("obj json="+gson.toJson(user_detail));
@@ -336,6 +337,41 @@ public class AjaxController extends Parent_Controller{
    
    }
     
+    @RequestMapping(value = "/directLogin", method = RequestMethod.POST)
+   private void directLogin(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException, Exception {
+       User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+       User_Detail ud=get_UserDetails(request);
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        cookies= request.getCookies();
+      
+       
+        String username= request.getParameter("username");
+        String password= request.getParameter("password");// its actually e-mail
+        ud=user.authenticate(username,password,3);
+        if(ud!=null)
+        {
+        
+        System.out.println("Adding cookie handle"+ud.getHandle());
+        Cookie cookie=set_Cookie("handle",ud.getHandle(),24);
+        response.addCookie(cookie); 
+        System.out.println("Adding cookie uid"+ud.getUid());
+        cookie=set_Cookie("uid",String.valueOf(ud.getUid()),24);
+        response.addCookie(cookie);
+       
+        //System.out.print("obj json="+gson.toJson(user_detail));
+        //cookie=set_Cookie("",gson.toJson(user_detail),24);
+        //response.addCookie(cookie);
+        //response.sendRedirect("dashboard");
+       out.println(1);
+       
+        }
+        else   
+        {
+            out.println(0);
+        }
+   
+   }
    @RequestMapping(value = "/viewMyPollsData", method = RequestMethod.POST)
    public void viewMyPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
