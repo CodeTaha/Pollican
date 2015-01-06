@@ -87,9 +87,11 @@ public class AjaxController extends Parent_Controller{
         
     //    boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),","+detail[3]+",",detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
         boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,0);
-      
+      ArrayList poll_share=new ArrayList();//for sharing poll links
+      poll_share.add(detail[1]);
+      poll_share.add("/"+rslt+"/"+poll_link);
 	//if(rslt==true && rslt2==true) out.println(true);
-      if(rslt>0 && rslt2 == true) out.println(rslt);
+      if(rslt>0 && rslt2 == true) out.println(gson.toJson(poll_share));
       else out.println(0);
    }
      
@@ -542,6 +544,7 @@ public class AjaxController extends Parent_Controller{
         
    }
    
+   
    @RequestMapping(value = "/viewFollowings", method = RequestMethod.POST)
    public void viewFollowings(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -564,6 +567,7 @@ public class AjaxController extends Parent_Controller{
         int l1;
         System.out.print("Uid Followings received : "+followersString);
         
+         
         if(followersString.contains(","))
         {  String followersArr[] = followersString.split(",");
          
@@ -576,11 +580,31 @@ public class AjaxController extends Parent_Controller{
          l1=followersArr.length;
          int i,j;
         User_Detail ud ;
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array"+f_array[tk]);
+        }
         String temp = null;
+        
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               
+              // for(int k=0;k<f_array.length;k++)
+               // { if(f_array[k]==Integer.parseInt(followersArr[i]))
+                 //   { if(Integer.parseInt(followersArr[i])==uid)
+                   //     followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                     // else
+                     // followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+                     
+                  //  i++;
+                    //}
+              //  }
+                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                
+               
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)
@@ -592,6 +616,13 @@ public class AjaxController extends Parent_Controller{
             String followersArr[] = new String[1];
             followersArr[0]=followersString;
             User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
+        
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array"+f_array[tk]);
+        }
         
          l1=followersArr.length;
          int i,j;
@@ -600,7 +631,16 @@ public class AjaxController extends Parent_Controller{
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+              // if(f_array[0]==Integer.parseInt(followersArr[i]))
+              // {    if(Integer.parseInt(followersArr[i])==uid)
+               //    followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+               //    else
+                //   followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+               
+             //  }   
+               //else
+                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                   
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)
@@ -617,8 +657,10 @@ public class AjaxController extends Parent_Controller{
         System.out.println("in AjaxConnt > viewFollowers");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-      
+        System.out.println("uid is"+uid);
         String  followersString = request.getParameter("uidfollowings");
+      
+        
          System.out.print("Uid Followings received : "+followersString);
        
          if (followersString.equalsIgnoreCase("[]"))
@@ -640,15 +682,34 @@ public class AjaxController extends Parent_Controller{
         
         
        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
-         
          l1=followersArr.length;
          int i,j;
         User_Detail ud ;
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array_doubt"+f_array[tk]);
+        }
         String temp = null;
+        
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               
+             //  for(int k=0;k<f_array.length;k++)
+              //  { if(f_array[k]==Integer.parseInt(followersArr[i]))
+                //    { if(Integer.parseInt(followersArr[i])==uid)
+                  //      followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                  //    else
+                    //  followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+                     
+                  //  i++;
+                 //   }
+                //}
+                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                
+               
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)
@@ -660,7 +721,14 @@ public class AjaxController extends Parent_Controller{
             String followersArr[] = new String[1];
             followersArr[0]=followersString;
             User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
        
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array"+f_array[tk]);
+        }
+        
          l1=followersArr.length;
          int i,j;
         User_Detail ud ;
@@ -668,7 +736,16 @@ public class AjaxController extends Parent_Controller{
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+              // if(f_array[0]==Integer.parseInt(followersArr[i]))
+              // {    if(Integer.parseInt(followersArr[i])==uid)
+                //   followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                 //  else
+                  // followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+               
+             //  }   
+             //  else
+                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                   
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)

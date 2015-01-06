@@ -73,6 +73,7 @@ Gson gson=new Gson();
    <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.structure.css" >
    <link rel="stylesheet" href="${delimiter}pages/resources/select2/select2.css"/>
    <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
+   <link rel="stylesheet" href="${delimiter}pages/resources/template/css/social-buttons.css" />
    <script>/*Script for notifications*/
    var notify_temp;   
     var notify=new Array();

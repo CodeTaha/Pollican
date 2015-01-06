@@ -111,13 +111,14 @@ $("#createdPolls").append('<br/><br/><br/><br/>');
            success: function(data){
               
                mypollJSON=JSON.parse(data);
-               
+               console.log("neha sharma"+mypollJSON);
                  for(var i=0; i<mypollJSON.length;i++)
                  {  /*$("#createdPolls").append("<p><b>Title </b>"+mypollJSON[i]['title']+"</p>");
                  $("#createdPolls").append("<p><b>Description </b>"+mypollJSON[i]['description']+"</p>");
                  $("#createdPolls").append('<button type="button" class="btn btn-primary" onclick="pollResult('+parseInt(mypollJSON[i]["pid"])+')">Results</button>');
                  */
                    createPollDivs("#createdPolls",mypollJSON[i],2);         
+                   
                  }
             }
 });
@@ -156,8 +157,19 @@ $("#solvedPolls").append('<br/><br/><br/></br/>');
            success: function(data){
                
                myFollowings=data;
+               console.log("myFollowings"+myFollowings);
+               var myFollowings_array = [];
+               var temp="";
+               temp = myFollowings.toString();
+               temp = temp.trim();
+               temp = temp.substring(1,temp.length-1);
+               myFollowings_array = temp.split(",");
+               console.log(myFollowings_array);
+              // var abcd = JSON.stringify(myFollowings);
+                for(var i=0;i<myFollowings_array.length;i++)
+                 $("#following").append(myFollowings_array[i]+"<br><br>");
+               
              // var abc = JSON.stringify(myFollowings);
-                $("#following").append(myFollowings);
            
             }
            }); 
@@ -169,16 +181,23 @@ $("#followers").append('<br/><br/><br/></br/>');
            success: function(data){
                
                myFollowers=data;
+               console.log("myFollowers"+myFollowers);
+               var myFollowers_array = [];
+               var temp="";
+               temp = myFollowers.toString();
+                temp = temp.trim();
+               temp = temp.substring(1,temp.length-1);
+               myFollowers_array = temp.split(",");
+               console.log(myFollowers_array);
               // var abcd = JSON.stringify(myFollowers);
-                $("#followers").append(myFollowers);
+                for(var i=0;i<myFollowers_array.length;i++)
+                 $("#followers").append(myFollowers_array[i]+"<br><br>");
                
            
             }
            });
 
            
-
-
 });
 function pollResult(pid)
            {    
