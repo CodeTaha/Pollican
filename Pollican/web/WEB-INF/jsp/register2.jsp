@@ -40,7 +40,11 @@
         
         </div>
         <div id="page-wrapper">
+            
+            <button class="btn btn-default" onclick="validate(0)">Skip</button>
+            <button class="btn btn-default" onclick="validate(1)">Register</button>
 
+            
             <div class="container-fluid" id='accordion_div'>
                 <div class='row'>
                     <h2>Please select 10 categories that describes your interests.</h2>  
@@ -53,7 +57,6 @@
         </div>
         
         
-<button class="btn btn-default" onclick="validate()">Register</button>
    
           <div id="signUpForm" class="form-horizontal" style="visibility:hidden" >
                 <input type="text" name="dpsend2" id="dpsend2" style="visibility:hidden" value="${param.dpsend}">
@@ -203,11 +206,11 @@
        $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
    
-   function validate()
-  {
-      
+   function validate(param)
+  {   var category;
+      if(param==1)
       //var profile_pic=$("#profile_pic").val();
-      var category;//$("#category").val();
+    { //$("#category").val();
       for(var i=0; i<cat_list.length; i++)
       {if(i==0)
           {category="["+cat_list[i];}
@@ -220,7 +223,13 @@
       
       category=JSON.stringify(category+"]");
       category=JSON.stringify(cat_list);
-    //  console.log(category);
+      if(cat_list.length===0)
+          category=JSON.stringify([86]);
+    }
+      else
+      category=JSON.stringify([86]);    
+      
+     //console.log(category);
      //console.log(hashedpassword);
       $.ajax({
                                 type: "POST",       // the dNodeNameefault
@@ -237,7 +246,7 @@
                                                     window.location.assign("dashboard");
                                                 }
                                 }
-                        });
+                        }); 
   }
             </script>
 
