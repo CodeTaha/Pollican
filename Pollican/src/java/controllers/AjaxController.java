@@ -142,12 +142,12 @@ public class AjaxController extends Parent_Controller{
    {
     
        ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-       
+       connectivity conn=(connectivity)context.getBean("connectivity");
        String cat_names="";
        String title="";
        String description="";
        if(checkSetCookie(request)!=2)
-       {
+       {// redirects user if not logged in
         model.addAttribute("uid",0);
         model.addAttribute("handle","");
         model.addAttribute("redirect",true);
@@ -156,42 +156,32 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("obj", "null");
         model.addAttribute("solvable", false);
         model.addAttribute("delimiter", "../../");
-        
+        model.addAttribute("profile_pic","");
 	 
        }
        else
        {    
-        connectivity conn=(connectivity)context.getBean("connectivity");
+        
         int cansolve=conn.solvable(pid,uid);
-        Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
-        Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-        List<Category> list1 = poll_tbl.getCat_list();
         
-        System.out.print("alia bhatt :-* :-* "+list1);
-        
-        
-       cat_names = cat_names + gson.toJson(list1);
-       System.out.print("alia bhatt :-* "+cat_names);
-        title= title+poll_tbl.getTitle();
-        description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
-        if(!poll_tbl.getPoll_link().equals(ref_url))
-            {System.out.println("incorrect reflink="+poll_tbl.getPoll_link());
-                response.sendRedirect(poll_tbl.getPoll_link());
-               return "error";
-            }
         User_Detail ud=get_UserDetails(request);
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
         model.addAttribute("redirect",false);
-        
-        model.addAttribute("pid", pid);
-        model.addAttribute("obj", gson.toJson(poll_tbl));
         model.addAttribute("solvable", cansolve);
         model.addAttribute("delimiter", "../../");
         model.addAttribute("profile_pic",ud.getProfile_pic());
-	
+        model.addAttribute("pid", pid);
+        
    }
-       String keywords="pollican,viewpolls,polls,surveys"+cat_names;
+       Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+        Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+        List<Category> list1 = poll_tbl.getCat_list();
+        cat_names = cat_names + gson.toJson(list1);
+        title= title+poll_tbl.getTitle();
+        description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
+        model.addAttribute("obj", gson.toJson(poll_tbl));
+       String keywords="pollican,viewpolls,polls,surveys";
        model.addAttribute("page", "solvePoll");
        model.addAttribute("title",title);
        model.addAttribute("meta_description",description);

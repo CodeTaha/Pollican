@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UrlController extends Parent_Controller{
     
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-   private void logins(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+   private void logins(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, Exception {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();

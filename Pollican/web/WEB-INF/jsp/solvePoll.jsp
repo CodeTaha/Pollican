@@ -44,23 +44,7 @@
                // var pollJSON;
                var fulljson;
                var ip;
-               	$(document).ready(function() {
-
-	$(document).ready(function() {
-	$.getJSON("http://www.telize.com/geoip?callback=?",
-		function(json) {
-    	//	document.write("Geolocation information for IP address : ", json.ip);
-    	//	document.write("Country : ", json.country);
-    	//	document.write("Latitude : ", json.latitude);
-	//    	document.write("Longitude : ", json.longitude);
-	        ip=json.ip;
-                fulljson=JSON.stringify(json);
-                //alert(fulljson);
-            }
-	);
-});
-
-});
+             
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
@@ -97,7 +81,13 @@
                      window.location.assign("${delimiter}index?red_url=${red_url}");
                      return;
                  }
-                
+                $.getJSON("http://www.telize.com/geoip?callback=?",
+		function(json) {
+	        ip=json.ip;
+                fulljson=JSON.stringify(json);
+                //alert(fulljson);
+            }
+	);
                 pollJSON=${obj};
                 fish=pollJSON['reward'];
                  

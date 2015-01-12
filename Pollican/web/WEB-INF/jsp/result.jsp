@@ -30,7 +30,7 @@
   
  
         
-              <title>JSP Page</title>
+              <title>Pollican Result Page</title>
         <style>
         .axis {
         font: 12px sans-serif;

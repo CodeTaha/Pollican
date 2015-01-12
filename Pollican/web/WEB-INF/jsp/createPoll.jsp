@@ -596,9 +596,9 @@ $(document).ready(function(){
                    //console.log(poll_share)
                    $("#createPolldiv").hide();
                   $("#afterPollCreation").show();
-           $("#share_id").append("<div class='col-md-1 col-md-offset-3'><a  class='btn btn-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com"+poll_share[1]+"' target='_blank'><i class='fa fa-facebook'></i> | Share</a></div>");
-           $("#share_id").append("<div class='col-md-1'><a class='btn btn-twitter' href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com"+poll_share[1]+"&hashtags=pollican' target='_blank'><i class='fa fa-twitter'></i> | tweet</a></div>")
-           $("#share_id").append("<div class='col-md-4'><input class='form-control'  name='share_url' value='http://www.pollican.com"+poll_share[1]+"' type='text' size='60' title='Share link' onClick='this.setSelectionRange(0, this.value.length)' autofocus></div>");
+           $("#share_id").append("<div class='col-md-1 col-md-offset-3'><a  class='btn btn-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/solvePoll"+poll_share[1]+"' target='_blank'><i class='fa fa-facebook'></i> | Share</a></div>");
+           $("#share_id").append("<div class='col-md-1'><a class='btn btn-twitter' href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com/solvePoll"+poll_share[1]+"&hashtags=pollican' target='_blank'><i class='fa fa-twitter'></i> | tweet</a></div>")
+           $("#share_id").append("<div class='col-md-4'><input class='form-control'  name='share_url' value='http://www.pollican.com/solvePoll"+poll_share[1]+"' type='text' size='60' title='Share link' onClick='this.setSelectionRange(0, this.value.length)' autofocus></div>");
        // $("#afterPollCreation").append("<br><a href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com"+poll_share[1]+"' target='_blank'>Share on Facebook</a><br>");
        // $("#afterPollCreation").append("<a href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com"+poll_share[1]+"&hashtags=pollican' target='_blank'>Tweet</a><br>");      
         //$("#afterPollCreation").append("<br>Share the Poll Link!!  <input  name='share_url' value='http://www.pollican.com"+poll_share[1]+"' type='text' size='60' title='Share link' onClick='this.setSelectionRange(0, this.value.length)' autofocus>");
