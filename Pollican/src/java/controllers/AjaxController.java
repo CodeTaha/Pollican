@@ -97,9 +97,10 @@ public class AjaxController extends Parent_Controller{
      
    @RequestMapping(value = "/viewPollsData", method = RequestMethod.POST)
    public void viewPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-           User_Detail ud=get_UserDetails(request);
+           
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -192,9 +193,10 @@ public class AjaxController extends Parent_Controller{
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate();
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-        User_Detail ud=get_UserDetails(request);
+        
         String finalJSON=request.getParameter("finalJSON");
         int anonymous=Integer.parseInt(request.getParameter("anonymous"));
         int fish=Integer.parseInt(request.getParameter("fish"));
@@ -372,7 +374,8 @@ public class AjaxController extends Parent_Controller{
         int uidasked = Integer.parseInt(request.getParameter("uidp"));
         int created_solved=Integer.parseInt(request.getParameter("created_solved"));
         System.out.print("tk 8july"+uidasked);
-       if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
       
@@ -403,7 +406,8 @@ public class AjaxController extends Parent_Controller{
         PrintWriter out = response.getWriter();
         int  uidasked = Integer.parseInt(request.getParameter("uidp"));
         System.out.print("tk 8july"+uidasked);
-       if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
        Poll_Ans_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_Ans_TblJDBCTemplate(); 
       
@@ -421,7 +425,8 @@ public class AjaxController extends Parent_Controller{
    }
   @RequestMapping(value = "/viewUsersCategData", method = RequestMethod.POST)
    public void viewUsersCategData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
         String categs=request.getParameter("categs");
        response.setContentType("text/html;charset=UTF-8");
@@ -445,19 +450,24 @@ public class AjaxController extends Parent_Controller{
    @RequestMapping(value = "/follow", method = RequestMethod.POST)
    public void follow(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        User_Detail ud=get_UserDetails(request);
+        
+       if(ud!=null)
+       {
        PrintWriter out = response.getWriter();
-        checklogin(request);
+        
         int puid = Integer.parseInt(request.getParameter("puid"));
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         User_TblJDBCTemplate user=new User_TblJDBCTemplate();
         boolean rslt=user.follow_Unfollow(ud.getUid(), puid, cmd);
         out.println(rslt);
+       }
    }
    @RequestMapping(value = "/viewActivityData", method = RequestMethod.POST)
    public void viewActivityData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-           User_Detail ud=get_UserDetails(request);
+           
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -472,21 +482,19 @@ public class AjaxController extends Parent_Controller{
          System.out.println("view Polls PollJSON="+pollJSON);
          out.println(pollJSON);
         }
-       else
-       {
-           response.sendRedirect("index");
-       }
+      
    }
    
    @RequestMapping(value = "/getNotifications", method = RequestMethod.POST)
    public void getNotifications(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud !=null)
        {
            String ts=request.getParameter("ts");
        Notification_TblJDBCTemplate notification_TblJDBCTemplate=new Notification_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        User_Detail ud=get_UserDetails(request);
+        
         List<Notification> notifications=notification_TblJDBCTemplate.listNotifications(ts,ud.getUid());
  
          String pollJSON=gson.toJson(notifications);

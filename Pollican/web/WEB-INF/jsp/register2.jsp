@@ -41,15 +41,19 @@
         </div>
         <div id="page-wrapper">
             
-            <button class="btn btn-default" onclick="validate(0)">Skip</button>
-            <button class="btn btn-default" onclick="validate(1)">Register</button>
+            
 
             
-            <div class="container-fluid" id='accordion_div'>
+            <div class="container-fluid col-lg-6 col-md-8 col-sm-10 col-lg-offset-3 col-md-offset-2 col-sm-offset-0" id='accordion_div'>
+                <div class='row'>
+                    <button class="btn btn-default pull-left" onclick="validate(0)">Skip</button>
+                    <button class="btn btn-success pull-right" onclick="validate(1)">Register</button>
+                </div>
+                
                 <div class='row'>
                     <h2>Please select 10 categories that describes your interests.</h2>  
                 </div>
-                <div class="row col-lg-6 col-md-8 col-sm-10" id="accordion">
+                <div class="row" id="accordion">
                     
                 </div>
             

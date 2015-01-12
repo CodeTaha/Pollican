@@ -52,7 +52,7 @@
                             <div class="form-group" id="tk">
                             <button class="btn btn-primary btn-group-sm" onclick="addQuestion()" id="addQuestion">Add Question</button>
                            
-                            <input class="btn btn-success pull-right" type='button' onclick="send()" value='Submit Survey' id='Submit'>
+                            <input class="btn btn-success pull-right" type='button' onclick="send()" value='Submit Poll' id='Submit'>
                             </div>
                         </div>
                        
@@ -64,13 +64,13 @@
               
         <div class="jumbotron text-center" id="afterPollCreation">
       <div class="container">
-        <h1>Your Poll/Survey has been successfully created!</h1>
+        <h1>Your Poll has been successfully created!</h1>
         <p>Now you can Share it, tweet it or embed it with the link given below</p>
         <div class="row" id="share_id">
            
         </div>
         <p>OR</p>
-        <p><button class="btn btn-primary btn-group-lg" onclick="window.location.reload()" id="createAnother">Create Another Poll/Survey</button></p>
+        <p><button class="btn btn-primary btn-group-lg" onclick="window.location.reload()" id="createAnother">Create Another Poll</button></p>
       </div>
     </div>
     </div>
