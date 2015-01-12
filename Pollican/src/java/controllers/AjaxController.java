@@ -600,7 +600,7 @@ public class AjaxController extends Parent_Controller{
                   //  i++;
                     //}
               //  }
-                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
                 
                
                temp = temp + ud; 
@@ -637,7 +637,7 @@ public class AjaxController extends Parent_Controller{
                
              //  }   
                //else
-                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
                    
                temp = temp + ud; 
               }
@@ -705,7 +705,7 @@ public class AjaxController extends Parent_Controller{
                   //  i++;
                  //   }
                 //}
-                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
                 
                
                temp = temp + ud; 
@@ -742,7 +742,7 @@ public class AjaxController extends Parent_Controller{
                
              //  }   
              //  else
-                followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
                    
                temp = temp + ud; 
               }
