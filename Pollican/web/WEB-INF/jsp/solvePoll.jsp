@@ -167,7 +167,7 @@
                                                 $("#qtn"+(i+1)).append('<option value="'+(j+1)+'">'+answers[j]+'</option>'); 
                                             }
                                             //$("#pollArea").append('</select>');
-                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,emptyText: "select"});
+                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,width:100,emptyText: "select"});
                                             
                                       }break;
                            case "tb":{
@@ -398,7 +398,7 @@
                   console.log(finalJSON);
                //   console.log("alia bhatt"+pollJSON);
                   console.log("anonymous="+anonymous+" fish="+fish);
-                  
+
                //   console.log("profile "+ profile);
            
         $.ajax({
