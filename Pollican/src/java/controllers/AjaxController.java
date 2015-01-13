@@ -117,28 +117,7 @@ public class AjaxController extends Parent_Controller{
            response.sendRedirect("index");
        }
    }
-   @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
-   public String solvePoll(ModelMap model, HttpServletRequest request) throws IOException, SQLException {
-    
-       int pid= Integer.parseInt(request.getParameter("pid"));
-       String poll_tbl=request.getParameter("obj");
-       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-        connectivity conn=(connectivity)context.getBean("connectivity");
-        int cansolve=conn.solvable(pid,uid);
-        User_Detail ud=get_UserDetails(request);
-        model.addAttribute("uid",ud.getUid());
-        model.addAttribute("handle",ud.getHandle());
-        model.addAttribute("pid", pid);
-        model.addAttribute("obj", poll_tbl);
-        model.addAttribute("solvable", cansolve);
-        model.addAttribute("delimiter", "");//used to load source files properly
-        model.addAttribute("profile_pic",ud.getProfile_pic());
-        model.addAttribute("redirect",false);
-        model.addAttribute("page", "solvePoll");
-	   return "solvePoll";
-  
-   }
-   @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
+     @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
    public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, ServletException 
    {
     
@@ -147,15 +126,15 @@ public class AjaxController extends Parent_Controller{
        String cat_names="";
        String title="";
        String description="";
-       if(checkSetCookie(request)!=2)
+       User_Detail ud=get_UserDetails(request);
+       if(ud==null)
        {// redirects user if not logged in
         model.addAttribute("uid",0);
         model.addAttribute("handle","");
         model.addAttribute("redirect",true);
         model.addAttribute("red_url",request.getRequestURI());
         model.addAttribute("pid", pid);
-        model.addAttribute("obj", "null");
-        model.addAttribute("solvable", false);
+        model.addAttribute("solvable", true);
         model.addAttribute("delimiter", "../../");
         model.addAttribute("profile_pic","");
 	 
@@ -165,7 +144,7 @@ public class AjaxController extends Parent_Controller{
         
         int cansolve=conn.solvable(pid,uid);
         
-        User_Detail ud=get_UserDetails(request);
+        
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
         model.addAttribute("redirect",false);
@@ -190,6 +169,29 @@ public class AjaxController extends Parent_Controller{
    
           return "solvePoll";
    }
+   
+   @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
+   public String solvePoll(ModelMap model, HttpServletRequest request) throws IOException, SQLException {
+    
+       int pid= Integer.parseInt(request.getParameter("pid"));
+       String poll_tbl=request.getParameter("obj");
+       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+        connectivity conn=(connectivity)context.getBean("connectivity");
+        int cansolve=conn.solvable(pid,uid);
+        User_Detail ud=get_UserDetails(request);
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
+        model.addAttribute("pid", pid);
+        model.addAttribute("obj", poll_tbl);
+        model.addAttribute("solvable", cansolve);
+        model.addAttribute("delimiter", "");//used to load source files properly
+        model.addAttribute("profile_pic",ud.getProfile_pic());
+        model.addAttribute("redirect",false);
+        model.addAttribute("page", "solvePoll");
+	   return "solvePoll";
+  
+   }
+ 
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate();

@@ -1,7 +1,7 @@
 <html>
     <!-- If any unknown errors occurs, this page is displayed. It is mentioned in HelloWeb-servlet.xml -->
 <head>
-    <title>Spring Error Page</title>
+    <title>Pollican Error Page</title>
 </head>
 <body>
 

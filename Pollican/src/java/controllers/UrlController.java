@@ -231,11 +231,7 @@ public class UrlController extends Parent_Controller{
             Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-            if(!poll_tbl.getPoll_link().equals(ref_url))
-            {
-                response.sendRedirect(poll_tbl.getPoll_link());
-               return "error";
-            }
+          
             String rslt=gson.toJson(poll_tbl);
             model.addAttribute("poll", rslt);
             
@@ -260,7 +256,11 @@ public class UrlController extends Parent_Controller{
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
 	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
-   } 
+   }
+   @RequestMapping(value = "/result",method = RequestMethod.GET)
+   public String result_plain(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            return "index";
+   }
    @RequestMapping(value = "/report/{pid}/{ref_url}",method = RequestMethod.GET)
    public String report(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
             System.out.println("In UrlController>result ");
@@ -421,11 +421,5 @@ public class UrlController extends Parent_Controller{
            return "test";
      
    }
-   @RequestMapping(value = "/solvePoll/{pid}",method = RequestMethod.GET)
-   public void solvePoll(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
-            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
-            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
-}
    
 }

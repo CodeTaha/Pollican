@@ -134,13 +134,56 @@ public class Parent_Controller {
         }
     }
     
+   public String[] checkSetCookie2(HttpServletRequest request)
+    {
+        Cookie[] cookies2;
+        cookies2= request.getCookies();
+        String creds[]=new String[2];
+        int countcookies=0;
+        try
+        {
+        for (Cookie cookie1 : cookies2) 
+           {
+            switch (cookie1.getName()) 
+            {
+               case "handle":
+                    System.out.println("Got Handle cookie");
+                   creds[0]=cookie1.getValue();
+                   countcookies++;
+                   break;
+               case "uid":
+                   System.out.println("Got uid cookie");
+                   creds[1]=cookie1.getValue();
+                   countcookies++;
+                   break;
+            }
+           }
+        if(countcookies==0)
+        {
+            creds=null;
+            return creds;
+        }
+        else
+        {
+           
+            return creds;
+            
+        }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Parent_Controller>checksetcookie2() error-->"+e);
+            creds=null;
+            return creds;
+        }
+    }
     public User_Detail get_UserDetails(HttpServletRequest request) throws SQLException
     {
         User_Detail ud;
-        int cs= checkSetCookie(request);
-        if(cs==2)
+        String cs[]=checkSetCookie2(request);
+        if(cs!=null)
         {User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
-        ud=user.get_profile(handle);
+        ud=user.get_profile(cs[0]);
         }
         else
         {
