@@ -77,17 +77,11 @@
               
                 if(redirect)
                  {
-                     
+                     //alert();
                      window.location.assign("${delimiter}index?red_url=${red_url}");
-                     return;
+                     //return;
                  }
-                $.getJSON("http://www.telize.com/geoip?callback=?",
-		function(json) {
-	        ip=json.ip;
-                fulljson=JSON.stringify(json);
-                //alert(fulljson);
-            }
-	);
+               
                 pollJSON=${obj};
                 fish=pollJSON['reward'];
                  
@@ -398,6 +392,13 @@
                   console.log(finalJSON);
                //   console.log("alia bhatt"+pollJSON);
                   console.log("anonymous="+anonymous+" fish="+fish);
+                   $.getJSON("http://www.telize.com/geoip?callback=?",
+		function(json) {
+	        ip=json.ip;
+                fulljson=JSON.stringify(json);
+                //alert(fulljson);
+            }
+	);
                //   console.log("profile "+ profile);
            
         $.ajax({
