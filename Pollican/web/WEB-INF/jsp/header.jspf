@@ -219,7 +219,7 @@ function Alerts(alert_type,alert_mesg)
                                     <div class='row'>\n\
                                         <div class='col-sm-6 pull-right' >\n\
                                             <button type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(poll_obj["pid"])+")'>Solve</button>\n\
-                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(poll_obj["pid"])+")'>Report</button>\n\
+                                            <button type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(poll_obj["pid"])+")'>Result</button>\n\
                                         </div>\n\
                                     </div>\n\
                                 </div>\n\
