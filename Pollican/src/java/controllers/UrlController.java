@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UrlController extends Parent_Controller{
     
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-   private void logins(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+   private void logins(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, Exception {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -119,13 +119,14 @@ public class UrlController extends Parent_Controller{
    public String createPoll(ModelMap model, HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
       System.out.println("In UrlController>CreatePolls");
            try{
-               if(checklogin(request))
+               User_Detail ud=get_UserDetails(request);
+               if(ud!=null)
             {
             System.out.println("Checklogin cleared");
             Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
             List<Category> category=cat.Category_list();
             String cat_json=gson.toJson(category);
-            User_Detail ud=get_UserDetails(request);
+            
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
             System.out.println("cat list "+cat_json);
@@ -225,15 +226,12 @@ public class UrlController extends Parent_Controller{
    @RequestMapping(value = "/result/{pid}/{ref_url}",method = RequestMethod.GET)
    public String result(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
             System.out.println("In UrlController>result ");
+             User_Detail ud=get_UserDetails(request);
             
             Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-            if(!poll_tbl.getPoll_link().equals(ref_url))
-            {
-                response.sendRedirect(poll_tbl.getPoll_link());
-               return "error";
-            }
+          
             String rslt=gson.toJson(poll_tbl);
             model.addAttribute("poll", rslt);
             
@@ -243,7 +241,7 @@ public class UrlController extends Parent_Controller{
              
             model.addAttribute("result", rslt);
             model.addAttribute("page", "result");
-           if(checklogin(request))
+           if(ud!=null)
                model.addAttribute("logged", 1);
            else
                model.addAttribute("logged", 0);
@@ -258,7 +256,11 @@ public class UrlController extends Parent_Controller{
             Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
             Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
 	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
-   } 
+   }
+   @RequestMapping(value = "/result",method = RequestMethod.GET)
+   public String result_plain(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            return "index";
+   }
    @RequestMapping(value = "/report/{pid}/{ref_url}",method = RequestMethod.GET)
    public String report(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
             System.out.println("In UrlController>result ");
@@ -354,13 +356,14 @@ public class UrlController extends Parent_Controller{
    
   @RequestMapping(value = "/home", method = RequestMethod.GET)
    public String home(ModelMap model,HttpServletRequest request) throws IOException, SQLException {
-        if(checklogin(request))
+         User_Detail ud=get_UserDetails(request);
+               if(ud!=null)
        {
            model.addAttribute("dashboard_active", "active");
            model.addAttribute("viewpoll_active", "");
            model.addAttribute("createpoll_active", "");
            model.addAttribute("page", "dashboard");
-           User_Detail ud=get_UserDetails(request);
+           
         model.addAttribute("uid",ud.getUid());
         model.addAttribute("handle",ud.getHandle());
         model.addAttribute("profile_pic",ud.getProfile_pic());
@@ -380,7 +383,8 @@ public class UrlController extends Parent_Controller{
    
    @RequestMapping(value = "/notification", method = RequestMethod.GET)
    public String notication(HttpServletRequest request) throws IOException, SQLException {
-        if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+               if(ud!=null)
        {
            return "notification";
        }
@@ -417,11 +421,5 @@ public class UrlController extends Parent_Controller{
            return "test";
      
    }
-   @RequestMapping(value = "/solvePoll/{pid}",method = RequestMethod.GET)
-   public void solvePoll(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
-            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
-            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
-}
    
 }

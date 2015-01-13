@@ -44,7 +44,7 @@
                // var pollJSON;
                var fulljson;
                var ip;
-
+             
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
@@ -77,20 +77,21 @@
               
                 if(redirect)
                  {
-                     
+                     //alert();
                      window.location.assign("${delimiter}index?red_url=${red_url}");
-                     return;
+                     //return;
                  }
-                
-                pollJSON=${obj};
-                fish=pollJSON['reward'];
-                 $.getJSON("http://www.telize.com/geoip?callback=?",
+               console.log("anonymous="+anonymous+" fish="+fish);
+                   $.getJSON("http://www.telize.com/geoip?callback=?",
 		function(json) {
 	        ip=json.ip;
                 fulljson=JSON.stringify(json);
                 //alert(fulljson);
             }
-	); 
+	);
+                pollJSON=${obj};
+                fish=pollJSON['reward'];
+                 
                   
                 if(solvable===1)
                  {
@@ -167,7 +168,7 @@
                                                 $("#qtn"+(i+1)).append('<option value="'+(j+1)+'">'+answers[j]+'</option>'); 
                                             }
                                             //$("#pollArea").append('</select>');
-                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,width:100,emptyText: "select"});
+                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,emptyText: "select"});
                                             
                                       }break;
                            case "tb":{
@@ -397,8 +398,7 @@
                   console.log("Final string");
                   console.log(finalJSON);
                //   console.log("alia bhatt"+pollJSON);
-                  console.log("anonymous="+anonymous+" fish="+fish);
-
+                  
                //   console.log("profile "+ profile);
            
         $.ajax({

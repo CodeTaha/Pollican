@@ -87,17 +87,20 @@ public class AjaxController extends Parent_Controller{
         
     //    boolean rslt=poll_tblJDBCTemplate.create(Integer.parseInt(detail[0]),","+detail[3]+",",detail[1],detail[2],qtn_JSON,"",poll_link,start_ts,end_ts,reward,poll_type);
         boolean rslt2=user_tblJDBCTemplate.addreducefishes(uid,fishes,0);
-      
+      ArrayList poll_share=new ArrayList();//for sharing poll links
+      poll_share.add(detail[1]);
+      poll_share.add("/"+rslt+"/"+poll_link);
 	//if(rslt==true && rslt2==true) out.println(true);
-      if(rslt>0 && rslt2 == true) out.println(rslt);
+      if(rslt>0 && rslt2 == true) out.println(gson.toJson(poll_share));
       else out.println(0);
    }
      
    @RequestMapping(value = "/viewPollsData", method = RequestMethod.POST)
    public void viewPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-           User_Detail ud=get_UserDetails(request);
+           
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -114,6 +117,59 @@ public class AjaxController extends Parent_Controller{
            response.sendRedirect("index");
        }
    }
+     @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
+   public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, ServletException 
+   {
+    
+       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
+       connectivity conn=(connectivity)context.getBean("connectivity");
+       String cat_names="";
+       String title="";
+       String description="";
+       User_Detail ud=get_UserDetails(request);
+       if(ud==null)
+       {// redirects user if not logged in
+        model.addAttribute("uid",0);
+        model.addAttribute("handle","");
+        model.addAttribute("redirect",true);
+        model.addAttribute("red_url",request.getRequestURI());
+        model.addAttribute("pid", pid);
+        model.addAttribute("solvable", true);
+        model.addAttribute("delimiter", "../../");
+        model.addAttribute("profile_pic","");
+	 
+       }
+       else
+       {    
+        
+        int cansolve=conn.solvable(pid,uid);
+        
+        
+        model.addAttribute("uid",ud.getUid());
+        model.addAttribute("handle",ud.getHandle());
+        model.addAttribute("redirect",false);
+        model.addAttribute("solvable", cansolve);
+        model.addAttribute("delimiter", "../../");
+        model.addAttribute("profile_pic",ud.getProfile_pic());
+        model.addAttribute("pid", pid);
+        
+   }
+       Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+        Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+        List<Category> list1 = poll_tbl.getCat_list();
+        cat_names = cat_names + gson.toJson(list1);
+        title= title+poll_tbl.getTitle();
+        description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
+        model.addAttribute("obj", gson.toJson(poll_tbl));
+       String keywords="pollican,viewpolls,polls,surveys";
+       model.addAttribute("page", "solvePoll");
+       model.addAttribute("title",title);
+       model.addAttribute("meta_description",description);
+        model.addAttribute("meta_keywords_org",keywords );
+   
+          return "solvePoll";
+   }
+   
    @RequestMapping(value = "/solvePoll", method = RequestMethod.POST)
    public String solvePoll(ModelMap model, HttpServletRequest request) throws IOException, SQLException {
     
@@ -135,74 +191,14 @@ public class AjaxController extends Parent_Controller{
 	   return "solvePoll";
   
    }
-   @RequestMapping(value = "/solvePoll/{pid}/{ref_url}", method = RequestMethod.GET)
-   public String solvePoll(@PathVariable int pid,@PathVariable String ref_url,ModelMap model, HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, ServletException 
-   {
-    
-       ApplicationContext context =new ClassPathXmlApplicationContext("Beans.xml");
-       
-       String cat_names="";
-       String title="";
-       String description="";
-       if(checkSetCookie(request)!=2)
-       {
-        model.addAttribute("uid",0);
-        model.addAttribute("handle","");
-        model.addAttribute("redirect",true);
-        model.addAttribute("red_url",request.getRequestURI());
-        model.addAttribute("pid", pid);
-        model.addAttribute("obj", "null");
-        model.addAttribute("solvable", false);
-        model.addAttribute("delimiter", "../../");
-        
-	 
-       }
-       else
-       {    
-        connectivity conn=(connectivity)context.getBean("connectivity");
-        int cansolve=conn.solvable(pid,uid);
-        Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
-        Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
-        List<Category> list1 = poll_tbl.getCat_list();
-        
-        System.out.print("alia bhatt :-* :-* "+list1);
-        
-        
-       cat_names = cat_names + gson.toJson(list1);
-       System.out.print("alia bhatt :-* "+cat_names);
-        title= title+poll_tbl.getTitle();
-        description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
-        if(!poll_tbl.getPoll_link().equals(ref_url))
-            {System.out.println("incorrect reflink="+poll_tbl.getPoll_link());
-                response.sendRedirect(poll_tbl.getPoll_link());
-               return "error";
-            }
-        User_Detail ud=get_UserDetails(request);
-        model.addAttribute("uid",ud.getUid());
-        model.addAttribute("handle",ud.getHandle());
-        model.addAttribute("redirect",false);
-        
-        model.addAttribute("pid", pid);
-        model.addAttribute("obj", gson.toJson(poll_tbl));
-        model.addAttribute("solvable", cansolve);
-        model.addAttribute("delimiter", "../../");
-        model.addAttribute("profile_pic",ud.getProfile_pic());
-	
-   }
-       String keywords="pollican,viewpolls,polls,surveys"+cat_names;
-       model.addAttribute("page", "solvePoll");
-       model.addAttribute("title",title);
-       model.addAttribute("meta_description",description);
-        model.addAttribute("meta_keywords_org",keywords );
-   
-          return "solvePoll";
-   }
+ 
    @RequestMapping(value = "/submitPollAns", method = RequestMethod.POST)
    public void submitPollAns(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate();
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-        User_Detail ud=get_UserDetails(request);
+        
         String finalJSON=request.getParameter("finalJSON");
         int anonymous=Integer.parseInt(request.getParameter("anonymous"));
         int fish=Integer.parseInt(request.getParameter("fish"));
@@ -236,7 +232,7 @@ public class AjaxController extends Parent_Controller{
    
     @RequestMapping(value = "/SignUpReg", method = RequestMethod.POST)
     @SuppressWarnings("empty-statement")
-   public void SignUpReg(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
+   public void SignUpReg(@ModelAttribute Poll_Tbl poll_tbl, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, Exception {
       System.out.println("in AjaxController > SignUpReg");
         User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
         User_Detail ud;
@@ -297,8 +293,9 @@ public class AjaxController extends Parent_Controller{
    }
    
    @RequestMapping(value = "/loginFB", method = RequestMethod.POST)
-   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException {
+   private void loginFB(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException, Exception {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+       User_Detail ud=get_UserDetails(request);
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         cookies= request.getCookies();
@@ -306,15 +303,15 @@ public class AjaxController extends Parent_Controller{
        
         String username= request.getParameter("username");
         String password= request.getParameter("password");// its actually e-mail
-        user_detail=user.authenticate(username,password,2);
-        if(user_detail!=null)
+        ud=user.authenticate(username,password,2);
+        if(ud!=null)
         {
         
-        System.out.println("Adding cookie handle"+user_detail.getHandle());
-        Cookie cookie=set_Cookie("handle",user_detail.getHandle(),24);
+        System.out.println("Adding cookie handle"+ud.getHandle());
+        Cookie cookie=set_Cookie("handle",ud.getHandle(),24);
         response.addCookie(cookie); 
-        System.out.println("Adding cookie uid"+user_detail.getUid());
-        cookie=set_Cookie("uid",String.valueOf(user_detail.getUid()),24);
+        System.out.println("Adding cookie uid"+ud.getUid());
+        cookie=set_Cookie("uid",String.valueOf(ud.getUid()),24);
         response.addCookie(cookie);
        
         //System.out.print("obj json="+gson.toJson(user_detail));
@@ -336,6 +333,41 @@ public class AjaxController extends Parent_Controller{
    
    }
     
+    @RequestMapping(value = "/directLogin", method = RequestMethod.POST)
+   private void directLogin(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException, Exception {
+       User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
+       User_Detail ud=get_UserDetails(request);
+       response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        cookies= request.getCookies();
+      
+       
+        String username= request.getParameter("username");
+        String password= request.getParameter("password");// its actually e-mail
+        ud=user.authenticate(username,password,3);
+        if(ud!=null)
+        {
+        
+        System.out.println("Adding cookie handle"+ud.getHandle());
+        Cookie cookie=set_Cookie("handle",ud.getHandle(),24);
+        response.addCookie(cookie); 
+        System.out.println("Adding cookie uid"+ud.getUid());
+        cookie=set_Cookie("uid",String.valueOf(ud.getUid()),24);
+        response.addCookie(cookie);
+       
+        //System.out.print("obj json="+gson.toJson(user_detail));
+        //cookie=set_Cookie("",gson.toJson(user_detail),24);
+        //response.addCookie(cookie);
+        //response.sendRedirect("dashboard");
+       out.println(1);
+       
+        }
+        else   
+        {
+            out.println(0);
+        }
+   
+   }
    @RequestMapping(value = "/viewMyPollsData", method = RequestMethod.POST)
    public void viewMyPollsData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -344,7 +376,8 @@ public class AjaxController extends Parent_Controller{
         int uidasked = Integer.parseInt(request.getParameter("uidp"));
         int created_solved=Integer.parseInt(request.getParameter("created_solved"));
         System.out.print("tk 8july"+uidasked);
-       if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
       
@@ -375,7 +408,8 @@ public class AjaxController extends Parent_Controller{
         PrintWriter out = response.getWriter();
         int  uidasked = Integer.parseInt(request.getParameter("uidp"));
         System.out.print("tk 8july"+uidasked);
-       if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
        Poll_Ans_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_Ans_TblJDBCTemplate(); 
       
@@ -393,7 +427,8 @@ public class AjaxController extends Parent_Controller{
    }
   @RequestMapping(value = "/viewUsersCategData", method = RequestMethod.POST)
    public void viewUsersCategData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+        User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
         String categs=request.getParameter("categs");
        response.setContentType("text/html;charset=UTF-8");
@@ -417,19 +452,24 @@ public class AjaxController extends Parent_Controller{
    @RequestMapping(value = "/follow", method = RequestMethod.POST)
    public void follow(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
        User_Detail ud=get_UserDetails(request);
+        
+       if(ud!=null)
+       {
        PrintWriter out = response.getWriter();
-        checklogin(request);
+        
         int puid = Integer.parseInt(request.getParameter("puid"));
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         User_TblJDBCTemplate user=new User_TblJDBCTemplate();
         boolean rslt=user.follow_Unfollow(ud.getUid(), puid, cmd);
         out.println(rslt);
+       }
    }
    @RequestMapping(value = "/viewActivityData", method = RequestMethod.POST)
    public void viewActivityData(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud!=null)
        {
-           User_Detail ud=get_UserDetails(request);
+           
        Poll_TblJDBCTemplate poll_tblJDBCTemplate=new Poll_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -444,21 +484,19 @@ public class AjaxController extends Parent_Controller{
          System.out.println("view Polls PollJSON="+pollJSON);
          out.println(pollJSON);
         }
-       else
-       {
-           response.sendRedirect("index");
-       }
+      
    }
    
    @RequestMapping(value = "/getNotifications", method = RequestMethod.POST)
    public void getNotifications(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
-       if(checklogin(request))
+       User_Detail ud=get_UserDetails(request);
+       if(ud !=null)
        {
            String ts=request.getParameter("ts");
        Notification_TblJDBCTemplate notification_TblJDBCTemplate=new Notification_TblJDBCTemplate(); 
        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        User_Detail ud=get_UserDetails(request);
+        
         List<Notification> notifications=notification_TblJDBCTemplate.listNotifications(ts,ud.getUid());
  
          String pollJSON=gson.toJson(notifications);
@@ -506,6 +544,7 @@ public class AjaxController extends Parent_Controller{
         
    }
    
+   
    @RequestMapping(value = "/viewFollowings", method = RequestMethod.POST)
    public void viewFollowings(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -528,6 +567,7 @@ public class AjaxController extends Parent_Controller{
         int l1;
         System.out.print("Uid Followings received : "+followersString);
         
+         
         if(followersString.contains(","))
         {  String followersArr[] = followersString.split(",");
          
@@ -540,11 +580,31 @@ public class AjaxController extends Parent_Controller{
          l1=followersArr.length;
          int i,j;
         User_Detail ud ;
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array"+f_array[tk]);
+        }
         String temp = null;
+        
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               
+              // for(int k=0;k<f_array.length;k++)
+               // { if(f_array[k]==Integer.parseInt(followersArr[i]))
+                 //   { if(Integer.parseInt(followersArr[i])==uid)
+                   //     followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                     // else
+                     // followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+                     
+                  //  i++;
+                    //}
+              //  }
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                
+               
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)
@@ -556,6 +616,13 @@ public class AjaxController extends Parent_Controller{
             String followersArr[] = new String[1];
             followersArr[0]=followersString;
             User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
+        
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array"+f_array[tk]);
+        }
         
          l1=followersArr.length;
          int i,j;
@@ -564,7 +631,16 @@ public class AjaxController extends Parent_Controller{
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+              // if(f_array[0]==Integer.parseInt(followersArr[i]))
+              // {    if(Integer.parseInt(followersArr[i])==uid)
+               //    followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+               //    else
+                //   followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+               
+             //  }   
+               //else
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                   
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)
@@ -581,8 +657,10 @@ public class AjaxController extends Parent_Controller{
         System.out.println("in AjaxConnt > viewFollowers");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-      
+        System.out.println("uid is"+uid);
         String  followersString = request.getParameter("uidfollowings");
+      
+        
          System.out.print("Uid Followings received : "+followersString);
        
          if (followersString.equalsIgnoreCase("[]"))
@@ -604,15 +682,34 @@ public class AjaxController extends Parent_Controller{
         
         
        User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
-         
          l1=followersArr.length;
          int i,j;
         User_Detail ud ;
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array_doubt"+f_array[tk]);
+        }
         String temp = null;
+        
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+               
+             //  for(int k=0;k<f_array.length;k++)
+              //  { if(f_array[k]==Integer.parseInt(followersArr[i]))
+                //    { if(Integer.parseInt(followersArr[i])==uid)
+                  //      followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                  //    else
+                    //  followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+                     
+                  //  i++;
+                 //   }
+                //}
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                
+               
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)
@@ -624,7 +721,14 @@ public class AjaxController extends Parent_Controller{
             String followersArr[] = new String[1];
             followersArr[0]=followersString;
             User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+        User_Detail loggedin_user = user_tblJDBCTemplate.get_profile(uid);
+        Follow f = loggedin_user.getFollow();
+        int f_array[]=f.getFollowing();
        
+        for(int tk=0;tk<f_array.length;tk++)
+        { System.out.print("f array"+f_array[tk]);
+        }
+        
          l1=followersArr.length;
          int i,j;
         User_Detail ud ;
@@ -632,7 +736,16 @@ public class AjaxController extends Parent_Controller{
         String followersProfile[]=new String[followersArr.length];
              for( i=0;i<l1;i++)
              { ud =user_tblJDBCTemplate.get_profile(Integer.parseInt(followersArr[i]));
-               followersProfile[i]=ud.getName() + " <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a>";
+              // if(f_array[0]==Integer.parseInt(followersArr[i]))
+              // {    if(Integer.parseInt(followersArr[i])==uid)
+                //   followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                 //  else
+                  // followersProfile[i]=" <a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://localhost:8080/Pollican/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>Following";
+               
+             //  }   
+             //  else
+                followersProfile[i]=" <a href='http://www.pollican.com/profile/"+ud.getHandle()+"'><img src="+ud.getProfile_pic()+ " width='75' height='75'></a> <br>" +ud.getName() + " <br><a href='http://www.pollican.com/profile/"+ud.getHandle()+"'> @<i>"+ud.getHandle()+"</i></a><br>";
+                   
                temp = temp + ud; 
               }
            for( i=0;i<l1;i++)

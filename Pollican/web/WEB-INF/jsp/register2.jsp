@@ -13,6 +13,7 @@
         <link href="pages/resources/select2/select2.css" rel="stylesheet"/>
         <link rel="stylesheet" href="pages/resources/css/jquery-ui-timepicker-addon.css" >
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+        <!--<link rel="stylesheet" href="pages/resources/jquery-ui/jquery-ui.css">-->
         <script src="pages/resources/js/jquery.min.js"></script>
         <script src="pages/resources/select2/select2.js"></script>
         <script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
@@ -38,15 +39,28 @@
         <div id='alert_box'>
         
         </div>
-        <div id='accordion_div' > 
-    Please select 20 categories that describes your interests.
-<div id="accordion">
-    
-</div>
-    
-</div>
+        <div id="page-wrapper">
+            
+            
+
+            
+            <div class="container-fluid col-lg-6 col-md-8 col-sm-10 col-lg-offset-3 col-md-offset-2 col-sm-offset-0" id='accordion_div'>
+                <div class='row'>
+                    <button class="btn btn-default pull-left" onclick="validate(0)">Skip</button>
+                    <button class="btn btn-success pull-right" onclick="validate(1)">Register</button>
+                </div>
+                
+                <div class='row'>
+                    <h2>Please select 10 categories that describes your interests.</h2>  
+                </div>
+                <div class="row" id="accordion">
+                    
+                </div>
+            
+            </div>
+        </div>
         
-<button class="btn btn-default" onclick="validate()">Register</button>
+        
    
           <div id="signUpForm" class="form-horizontal" style="visibility:hidden" >
                 <input type="text" name="dpsend2" id="dpsend2" style="visibility:hidden" value="${param.dpsend}">
@@ -67,6 +81,7 @@
         </div> 
                 <div>
                       <input type="hidden" class="form-control" id="pwd" value="${param.hashpwd}" readonly>
+                      <input type="hidden" class="form-control" id="password" value="${param.pwd}" readonly>
                       <input type="hidden" class="form-control" id="red_url" value="${param.response_red_url}" readonly>
                 </div>
     
@@ -87,6 +102,7 @@
             var phone=document.getElementById("phone").value;
             var sex=document.getElementById("gender").value;
               var hashedpassword=document.getElementById("pwd").value;
+              var password=document.getElementById("password").value;
            var cat_json="";
  var fb=username;
  var cat_list=new Array();// maintains list for categories
@@ -109,24 +125,30 @@
                array3[cat_json[i]['group']].push(cat_json[i]);   
           }  
         }
-        console.log('arrays');
-        console.log(array2);
-        console.log(array3);
+       // console.log('arrays');
+        //console.log(array2);
+        //console.log(array3);
     $("#accordion").empty();
         for(var i=0;i<array2.length;i++)
-       { $("#accordion").append("<h3>"+array2[i]+"</h3><div id='cat_"+i+"'></div>");
+       { $("#accordion").append("<h3>"+array2[i]+"</h3><div><div id='cat_"+i+"' class='row'></div></div>");
         
         for(var j=0;j<array3[array2[i]].length;j++)
-        {
-            $("#cat_"+i).append("<input class='cat_checkbox' type='checkbox' id='"+array3[array2[i]][j].cid +" 'value='"+array3[array2[i]][j].cid+"'>"+array3[array2[i]][j].category_name+"&nbsp;&nbsp;");
+        {/*
+         * <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="">Checkbox 2
+                                    </label>
+                                </div>
+            */
+            $("#cat_"+i).append("<div class='col-lg-4'><div class='checkbox'><label><input class='cat_checkbox' type='checkbox' id='"+array3[array2[i]][j].cid +" 'value='"+array3[array2[i]][j].cid+"'>"+array3[array2[i]][j].category_name+"</label></div></div>");
         }
           
        }
         $("#accordion").accordion({
       heightStyle: "fill"
     });
-    $( "#accordion-resizer" ).resizable({
-      minHeight: 70,
+    $( "#accordion-resizer").resizable({
+      minHeight: 0,
       minWidth: 200,
       maxHeight:130,
       resize: function() {
@@ -174,7 +196,7 @@
                                 url: "getCategories",
                                 data: {},
                                 success: function(data){
-                                    console.log(data);
+                                    //console.log(data);
                                     cat_json=JSON.parse(data);
                                     get_accordion();
                                 }});
@@ -188,11 +210,11 @@
        $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
    
-   function validate()
-  {
-      
+   function validate(param)
+  {   var category;
+      if(param==1)
       //var profile_pic=$("#profile_pic").val();
-      var category;//$("#category").val();
+    { //$("#category").val();
       for(var i=0; i<cat_list.length; i++)
       {if(i==0)
           {category="["+cat_list[i];}
@@ -205,12 +227,18 @@
       
       category=JSON.stringify(category+"]");
       category=JSON.stringify(cat_list);
-    //  console.log(category);
-     console.log(hashedpassword);
+      if(cat_list.length===0)
+          category=JSON.stringify([86]);
+    }
+      else
+      category=JSON.stringify([86]);    
+      
+     //console.log(category);
+     //console.log(hashedpassword);
       $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "SignUpReg",
-                                data: {handle:handle,name:name,email:email_i,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb, password:hashedpassword},
+                                data: {handle:handle,name:name,email:email_i,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb, password:password},
                                 success: function(data){
                                   
                                        if(red_url!=="")
@@ -222,7 +250,7 @@
                                                     window.location.assign("dashboard");
                                                 }
                                 }
-                        });
+                        }); 
   }
             </script>
 
