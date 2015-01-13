@@ -1360,19 +1360,21 @@ var relist=new Array();
      //    console.log(relist);
       }
       
-          var mcmsTotal=new Array(jsonArr.length+1);
-      mcmsTotal[0]="TOTAL";
+          var tbTotal=new Array(jsonArr.length+1);
+      tbTotal[0]="TOTAL";
       //  for(var i=1;i<jsonArr.length+1;i++)
-       {
+       
         
          //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       mcmsTotal[1]=result.length;
-      }
+       tbTotal[1]=result.length;
+      
         
 
        
          //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       relist.push(mcmsTotal);    
+       relist.push(tbTotal);  
+       
+       
          }
         
         
@@ -1683,7 +1685,10 @@ var relist=new Array();
       }  
         $(tbl_id).dataTable(
           {  
-              
+              paging: false,
+          searching: false,
+          destroy: true,
+         retrieve: true,
              bJQueryUI: true,
              sPaginationType: "full_numbers",
              "bPaginate": true,
