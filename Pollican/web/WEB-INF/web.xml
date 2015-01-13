@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
                              http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     
-    <display-name>Pollican</display-name>
+    <display-name>PollingDuck</display-name>
     <servlet>
         <servlet-name>PollingDuck</servlet-name>
         <servlet-class>
@@ -37,7 +37,7 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30000
+            30
         </session-timeout>
     </session-config>
     <welcome-file-list>

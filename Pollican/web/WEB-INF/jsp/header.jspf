@@ -39,7 +39,7 @@ Gson gson=new Gson();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="icon" href="${delimiter}pages/resources/img/logo.png" type="image/png" sizes="16x16">
+   
     <meta name="author" content="">
         
         <meta name="description" content="${meta_description}">
@@ -73,7 +73,6 @@ Gson gson=new Gson();
    <link rel="stylesheet" href="${delimiter}pages/resources/css/jquery-ui.structure.css" >
    <link rel="stylesheet" href="${delimiter}pages/resources/select2/select2.css"/>
    <link rel="stylesheet" href="${delimiter}pages/resources/css/ui.dropdownchecklist.css" />
-   <link rel="stylesheet" href="${delimiter}pages/resources/template/css/social-buttons.css" />
    <script>/*Script for notifications*/
    var notify_temp;   
     var notify=new Array();
@@ -142,7 +141,7 @@ Gson gson=new Gson();
                               //$("#n_"+notify_temp[i]["nid"]).css("background-color","grey");
                           }
                       }
-                  $("#notifications").append("<li class='divider'></li><li><a href='${delimiter}notification'>View All</a></li>");
+                  $("#notifications").append("<li class='divider'></li><li><a href='notification'>View All</a></li>");
                       /* 
                       <li class="divider"></li>
                         <li>
@@ -184,20 +183,18 @@ function Alerts(alert_type,alert_mesg)
                   size=size2;
               }
                          var tags=poll_obj["cat_list"][0]["category_name"];
-                         //var tags=new Array();
                          for(var j=1;j<poll_obj["cat_list"].length;j++)
                          {
                            tags=tags+", "+poll_obj["cat_list"][j]["category_name"];
-                          // tags.push(poll_obj["cat_list"][j]["category_name"])
                          }
                          
                          $(poll_div_id).append("\n\
                     <div class='"+size+"'>\n\
-                           <div class='panel panel-primary'  style='min-height: 200px;max-height:200px;'>\n\
+                           <div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-8 col-md-8 col-lg-8'>\n\
-                                            <h4 class='panel-title'>"+poll_obj["pid"]+":"+poll_obj["title"]+"</h4>\n\
+                                            <h3 class='panel-title'>"+poll_obj["pid"]+":"+poll_obj["title"]+"</h3>\n\
                                         </div>\n\
                                         <div class='col-sm-4 col-md-4 col-lg-4  pull-right'>\n\
                                             <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/pollicoins.png' title='You will earn these Pollicoins which can\nbe redeemed by creating new Polls/Surveys'> "+poll_obj["reward"]+" \n\
@@ -212,9 +209,7 @@ function Alerts(alert_type,alert_mesg)
                                             "+poll_obj["user"]["name"]+" @ "+poll_obj["user"]["handle"]+"</a>\n\
                                     </div>\n\
                                     <div class='row'>\n\
-                                     <div class='col-sm-12' >\n\
                                              <span class='glyphicon glyphicon-tags' aria-hidden='true'></span> Tags: "+tags+"\n\
-                                     </div>\n\
                                     </div>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-6 pull-right' >\n\
@@ -232,25 +227,6 @@ function Alerts(alert_type,alert_mesg)
                      */  
                      
             }
-            
-       
-           function openPoll(i)
-       {
-        var win = window.open("${delimiter}solvePoll/"+i+"/a", '_blank');
-                win.focus();   
-           
-        }
-          
-           function pollResult(pid)
-           {
-                var win = window.open("result/"+pid, '_blank');
-                win.focus();
-                /*$( "#dialog-modal").empty().load( 'pollResult.jsp', {pid: pid}, function( response, status, xhr ) {
-                if ( status === "error" ) {
-                var msg = "Sorry but there was an error: ";
-                $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );*/
-            }
-                    
    </script>
 </head>
 
@@ -272,8 +248,8 @@ function Alerts(alert_type,alert_mesg)
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav loggedin">
-            <li class="${dashboard_active}"><a href="${delimiter}home"><i class="fa fa-fw fa-dashboard"></i> Home</a></li>
-            <%-- Uncomment when viewpoll is ready<li class="${viewpoll_active}"><a href="${delimiter}viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a></li>--%>
+            <li class="${dashboard_active}"><a href="${delimiter}home"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a></li>
+            <li class="${viewpoll_active}"><a href="${delimiter}viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a></li>
             <li class="${createpoll_active}"><a href="${delimiter}createPoll"><i class="fa fa-fw fa-edit"></i> Create Poll</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" id="loggedin">

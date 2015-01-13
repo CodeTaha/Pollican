@@ -1,80 +1,77 @@
 
 <%@include file="header.jspf" %>
-
-        
         <div id="page-wrapper">
 
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="row" id="createPolldiv">
+                <div class="row">
                     <div class="col-lg-12 form-horizontal">
                         <h1 class="page-header">
                             Create Poll
                         </h1>
-                      
-                        <div id='d1' class="col-sm-8 col-md-8 col-lg-8 col-sm-offset-0 col-md-offset-1 col-lg-offset-2">
+                        <!-- <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="Enter your FullName">
+            </div>
+        </div>-->
+                        <div id='d1'>
                             <div class="form-group">
-                                <label class="control-label col-sm-3" for="title">Title:</label>
-                                <div class="col-sm-9">
-                                <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title"  maxlength="70" required>
+                                <label class="control-label col-sm-2" for="title">Title:</label>
+                                <div class="col-sm-6">
+                                <input type="text" class="form-control" id="title" placeholder="Enter a Relevant Title" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-3" for="desc">Description:</label>
-                                <div class="col-sm-9">
+                                <label class="control-label col-sm-2" for="desc">Description:</label>
+                                <div class="col-sm-6">
                                 <textarea class="form-control" id="desc" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-3" for="category">Tag Categories:</label>
-                                <div class="col-sm-9" >
+                                <label class="control-label col-sm-2" for="category">Tag Categories:</label>
+                                <div class="col-sm-6" >
                                     <select id="category" multiple="multiple"  tabindex="-1" class="select2-offscreen" style="width: 150px;" required></select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-3" for="sd">Start Time <small>Poll will start on this time</small>:</label>
-                                <div class="col-sm-3">
+                                <label class="control-label col-sm-2" for="sd">Start Time <small>Poll will start on this time</small>:</label>
+                                <div class="col-sm-2">
                                 <input type="text" class="form-control" id="sd" name="sd"/>
                                 </div>
-                                <label class="control-label col-sm-3" for="ed">End Time:</label>
-                                <div class="col-sm-3">
+                                <label class="control-label col-sm-2" for="ed">End Time:</label>
+                                <div class="col-sm-2">
                                 <input type="text" class="form-control" id="ed" name="ed"/>
                                 </div>
                             </div>
-                            <div class="form-group" id='d2'>
-                                
-                            </div>
-                            <div class="form-group" id='d3'>
-                                
-                            </div>
                            
-                            <div class="form-group" id="tk">
-                            <button class="btn btn-primary btn-group-sm" onclick="addQuestion()" id="addQuestion">Add Question</button>
-                           
-                            <input class="btn btn-success pull-right" type='button' onclick="send()" value='Submit Poll' id='Submit'>
-                            </div>
                         </div>
-                       
-                        
+                        <div id='d2'>
+
+
+                        </div>
+                        <div id='d3'>
+                            
+                        </div>
+                        <div id="tk">
+                            <br><br><button class="btn btn-primary btn-group-sm" onclick="addQuestion()" id="addQuestion">Add Question</button>
+
+                            <input class="btn btn-success" type='button' onclick="send()" value='Submit Survey' id='Submit'>
+                        </div>
                         
                     </div>
                 </div>
-            </div>
-              
-        <div class="jumbotron text-center" id="afterPollCreation">
-      <div class="container">
-        <h1>Your Poll has been successfully created!</h1>
-        <p>Now you can Share it, tweet it or embed it with the link given below</p>
-        <div class="row" id="share_id">
-           
-        </div>
-        <p>OR</p>
-        <p><button class="btn btn-primary btn-group-lg" onclick="window.location.reload()" id="createAnother">Create Another Poll</button></p>
-      </div>
-    </div>
-    </div>
-                        
+                
+
+                 
+                             
+                                 
+                                </div>
+                            </div>
+                        <div id="afterPollCreation">
+                            <br><br><button class="btn btn-primary btn-group-sm" onclick="window.location.reload()" id="createAnother">Create Another Poll</button>
+                        </div>
  
 
 <script type="text/javascript">
@@ -583,37 +580,44 @@ $(document).ready(function(){
            url: "submitPollData",
            data: { detailJSON:detailJSON, qtnJSON:qtnJSON ,start:sd,end:ed,uid:uid },
            success: function(data){
-               
-               //console.log(currPid);
-               if (data =="0")
-               {  Alerts("alert-danger",'Sorry your poll was not created');
+               currPid = data;
+               console.log(currPid);
+               if (currPid =="0")
+               {  alert('unsuccesful');
                    
                }   
                else 
-               {    //Alerts("alert-success",'Your Poll has been created Successfully');
+               {    Alerts("alert-success",'Your Poll has been created Successfully');
                    //window.location.reload();
-                   var poll_share = JSON.parse(data);
-                   //console.log(poll_share)
-                   $("#createPolldiv").hide();
+                   $("#page-wrapper").hide();
                   $("#afterPollCreation").show();
-           $("#share_id").append("<div class='col-md-1 col-md-offset-3'><a  class='btn btn-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/solvePoll"+poll_share[1]+"' target='_blank'><i class='fa fa-facebook'></i> | Share</a></div>");
-           $("#share_id").append("<div class='col-md-1'><a class='btn btn-twitter' href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com/solvePoll"+poll_share[1]+"&hashtags=pollican' target='_blank'><i class='fa fa-twitter'></i> | tweet</a></div>")
-           $("#share_id").append("<div class='col-md-4'><input class='form-control'  name='share_url' value='http://www.pollican.com/solvePoll"+poll_share[1]+"' type='text' size='60' title='Share link' onClick='this.setSelectionRange(0, this.value.length)' autofocus></div>");
-       // $("#afterPollCreation").append("<br><a href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com"+poll_share[1]+"' target='_blank'>Share on Facebook</a><br>");
-       // $("#afterPollCreation").append("<a href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com"+poll_share[1]+"&hashtags=pollican' target='_blank'>Tweet</a><br>");      
-        //$("#afterPollCreation").append("<br>Share the Poll Link!!  <input  name='share_url' value='http://www.pollican.com"+poll_share[1]+"' type='text' size='60' title='Share link' onClick='this.setSelectionRange(0, this.value.length)' autofocus>");
-    
+                   $("#afterPollCreation").append("<div id='fb-root'></div>      <div class='fb-share-button' data-href='http://localhost:8080/Pollican/solvePoll/"+currPid+"/' data-layout='button'></div>  \n\
+<a href='twitter.com/share' data-text='Solve this awesome Poll!!!' data-url='http://localhost:8080/Pollican/solvePoll/"+currPid+"/' class='twitter-share-button' data-via='pollican' data-lang='en' >Tweet</a>\n\
+   ");
                 }
-                    
             }
-            
-            
             });
     
    
     
     }
-  
+    function sharePoll()
+    {  
+                                                
+    }
     
    </script>
             
+            
+    
+    
+    
+
+
+
+
+
+
+
+
+

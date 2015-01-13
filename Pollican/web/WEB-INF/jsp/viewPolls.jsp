@@ -93,7 +93,49 @@
                         loadData();
                     }
                 });
+        
+           function openPoll(i)
+       {
+           var poll_js=pollJSON;
+          // alert();
+           //$("#dialog-modal").empty();
+           var ind;
+           console.log('pollJSON=');
+           //console.log(pollJSONvp)
+           for(k=0; k<pollJSON.length; k++)
+           {//console.log(pollJSONvp[k])
+               if(pollJSON[k]['pid']===i)
+               {
+                   ind=k;
+                   console.log("k="+k);
+                   break;
+               }
+           }
+          
+                 
+               var pollJson_obj=pollJSON[ind];
+               console.log("In OpenPoll");
+               console.log(pollJson_obj);
+               var poll_js=pollJSON;
+              
+              var win = window.open("solvePoll/"+pollJson_obj['pid']+"/df", '_blank');
+                win.focus();
+      /* dialog.dialog( "open" );
+       $( "#dialog-modal" ).load( "solvePoll", { pid: pollJson_obj['pid'], obj:JSON.stringify(pollJson_obj), fn:1} ); 
+       */
        
+   pollJSON=poll_js;
+   }
+          
+           function pollResult(pid)
+           {
+                var win = window.open("result/"+pid, '_blank');
+                win.focus();
+                /*$( "#dialog-modal").empty().load( 'pollResult.jsp', {pid: pid}, function( response, status, xhr ) {
+                if ( status === "error" ) {
+                var msg = "Sorry but there was an error: ";
+                $( "#dialog-modal" ).html( msg + xhr.status + " " + xhr.statusText );*/
+            }
            
         </script>
  

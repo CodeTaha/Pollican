@@ -44,7 +44,7 @@
                // var pollJSON;
                var fulljson;
                var ip;
-             
+
                 var qtnJSON;
                 var ansJSON;
                 var pid=${pid};
@@ -77,11 +77,11 @@
               
                 if(redirect)
                  {
-                     //alert();
+                     
                      window.location.assign("${delimiter}index?red_url=${red_url}");
-                     //return;
+                     return;
                  }
-               
+                
                 pollJSON=${obj};
                 fish=pollJSON['reward'];
                  $.getJSON("http://www.telize.com/geoip?callback=?",

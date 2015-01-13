@@ -50,7 +50,7 @@
         
         
         
-  <div id="SignUp" class="container-fluid col-lg-8 col-md-10 col-sm-12">
+  <div id="SignUp">
    <form name="f2" method="post" action="register2" id="f2">
     <div id="signUpForm" class="form-horizontal">
         <div class="form-group">

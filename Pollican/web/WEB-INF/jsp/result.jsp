@@ -14,15 +14,14 @@
         <link rel="stylesheet" type="text/css" href="../../pages/resources/css/c3.css">
   <link rel="stylesheet" type="text/css" href="../../pages/resources/media/css/TableTools.css">
 
-<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
-<script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
-
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/TableTools.js"></script>
 
  <script type="text/javascript" charset="utf8" src="../../pages/resources/media/js/ZeroClipboard.js"></script>
  <script type="text/javascript" charset="utf8" src="../../pages/resources/js/canvg.js"></script>
+ <script type="text/javascript" charset="utf8" src="../../pages/resources/js/rgbcolor.js"></script>
+ <script type="text/javascript" charset="utf8" src="../../pages/resources/js/StackBlur.js"></script>
 
 
   <script src="../../pages/resources/bootstrap/js/bootstrap.js"></script>
@@ -30,8 +29,8 @@
   
  
         
-              <title>Pollican Result Page</title>
-        <style>
+              <title>JSP Page</title>
+  <!--     <style>
         .axis {
         font: 12px sans-serif;
               }
@@ -41,7 +40,7 @@
             stroke: #000;
             shape-rendering: crispEdges;
 }
-</style>
+</style>-->
         <script>
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll
@@ -112,7 +111,7 @@
         <script src="../../pages/resources/js/canvg.js"></script>
         
 
-<script src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
+<!--<script src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>-->
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/jspdf.plugin.addimage.js"></script>
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/jspdf.plugin.png_support.js"></script>
 <script type="text/javascript" charset="utf8" src="../../pages/resources/js/jspdf.plugin.cell.js"></script>
@@ -452,7 +451,7 @@
                      
                       var ret=plotBar(jsonArr,qtn_div,j);
                       if(ret===0)
-                      plotpie(qtn_div,j);
+                      plotpie(qtn_div,j,pieArr);
                     var retu=tablegen(qtn_div,j);
                 }
                 }
@@ -1047,17 +1046,22 @@ return chart;
  
  
 
- function downloadCanvasPie(link, canvasId, filename) {
-   
+ function downloadCanvasPie(link, canvasId, filename,p) {
+    // $("#svg_pie_"+p).children().show();
+   canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());
     link.href = document.getElementById(canvasId).toDataURL();
     link.download = filename;
 }
 
- function plotpie(qtn_div,p)
+ function plotpie(qtn_div,p,pieArr)
  {
      qtn_div="#"+qtn_div;
      var svg_id="svg_pie_"+p;
+ $(qtn_div).append("<div id='"+svg_id+"'></div>");
+     
+     svg_id="#"+svg_id;
  
+ /*
 var width = document.body.offsetWidth*0.29,
     height = width,
     radius = Math.min(width, height) / 2;
@@ -1105,18 +1109,53 @@ var svg = d3.select(qtn_div)
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
       .text(function(d) { return (d.data.label+'('+d.data.n+')'); });
-
+*/
 //});
+
+console.log(pieArr);
+ var jsonArr=JSON.stringify(pieArr);
+    jsonArr=JSON.parse(jsonArr);
+    console.log(jsonArr[0].label);
+    
+   var pieArrs=[];
+   for(var i=0;i<jsonArr.length;i++)
+   {
+       pieArrs[i]=[];
+   }
+   for(var i=0;i<jsonArr.length;i++)
+   {
+          pieArrs[i][0]=jsonArr[i].label;
+           pieArrs[i][1]=jsonArr[i].n;
+       
+   
+   }
+   
+   console.log(pieArrs);
+        
+var donutChart = c3.generate ({
+    bindto:svg_id,
+    data: {
+        columns: pieArrs,
+        type :'pie',
+        labels: true
+        
+    }
+});
+
+
+
+
+
 var canvasvar="canvas_pie_"+p;
 //console.log(canvasvar);
 var mylink="myALink_pie_"+p;
 var imgname="qtn"+p+".png";
- $("#qtn_div_"+p).append('<br> <a class="btn btn-success" id="myALink_pie_'+p+'">Download as image</a> ');
+ $("#qtn_div_"+p).append('<br> <a style="display:none;" class="btn btn-success" id="myALink_pie_'+p+'">Download as image</a> ');
  $("#qtn_div_"+p).append('<div id="can"> <canvas hidden id="canvas_pie_'+p+'" width="351px" height="351px"></canvas> </div>');
- canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());
+ //canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());
  
         document.getElementById(mylink).addEventListener('click', function() {
-    downloadCanvasPie(this, canvasvar, imgname); // <- this can be a dynamic name
+    downloadCanvasPie(this, canvasvar, imgname,p); // <- this can be a dynamic name
 }, false);
  }
  
@@ -1283,13 +1322,17 @@ var relist=new Array();
            header[1]="Answers";
        
         for(var i=0;i<header.length;i++)
+        {
+            console.log("chk tb seo");
+            console.log(header[i]);
             clistJSON.push(header[i]);
-        
+        }
         
             var Tcolumns = [];
                                               
                              for (var i=0; i< clistJSON.length; i++ ) 
                              {
+                                 
                          Tcolumns.push({
                                "sTitle": clistJSON[i],
                                "aTargets": [i]
@@ -1307,12 +1350,24 @@ var relist=new Array();
         mcssArr[1]=[result[i]['qtn'][p]['ans'][0]];
              
          
-                 relist.push(mcssArr);   
+                  relist.push(mcssArr);  
      //    console.log("relist data");
      //    console.log(relist);
       }
       
-              
+          var mcmsTotal=new Array(jsonArr.length+1);
+      mcmsTotal[0]="TOTAL";
+      //  for(var i=1;i<jsonArr.length+1;i++)
+       {
+        
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       mcmsTotal[1]=result.length;
+      }
+        
+
+       
+         //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
+       relist.push(mcmsTotal);    
          }
         
         

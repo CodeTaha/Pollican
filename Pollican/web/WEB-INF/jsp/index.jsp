@@ -19,8 +19,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to Pollican</title>
-        <link rel="icon" href="pages/resources/img/logo.png" type="image/png" sizes="16x16">
+        <title>Welcome to PollingDuck project</title>
          <link href="pages/resources/select2/select2.css" rel="stylesheet"/>
         <link rel="stylesheet" href="pages/resources/css/jquery-ui-timepicker-addon.css" >
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -29,10 +28,7 @@
         <script type="text/javascript" src="pages/resources/js/jquery-ui.js"></script>
         <!--<script type="text/javascript" src="pages/resources/js/jquery-ui-timepicker-addon.js"></script>-->
         <script src="pages/resources/template/js/bootstrap.min.js"></script>
-        
         <link href="pages/resources/template/css/bootstrap.css" rel="stylesheet">
-        <link href="pages/resources/template/font-awesome-4.1.0/css/font-awesome.css" rel="stylesheet">
-        <link href="pages/resources/template/css/social-buttons.css" rel="stylesheet">
         <script type="text/javascript">
 var name;
 var username;
@@ -418,46 +414,10 @@ function Logout()
   }
   function Alerts(alert_type,alert_mesg)
   {
-       $("#alert_box").empty().append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
+       $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
  // document.getElementById()
- function directLogin(lid)
- {
-     
-     var direct_username=$("#login_username"+lid).val();
-     var direct_pwd=$("#login_pwd"+lid).val();
-        
-     $.ajax({
-                                type: "POST",       // the dNodeNameefault
-                                url: "directLogin",
-                                data: {username:direct_username, password:direct_pwd},
-                                success: function(data){//alert(data);
-                                    console.log(data);
-                                        if(data==1)
-                                        {
-                                            if(red_url!=="" && red_url.indexOf("red_url")!==-1)
-                                                {
 
-                                                    var tmp=red_url.split("=");
-                                                   window.location.assign(tmp[1]);
-                                                }
-                                            else
-                                                {
-                                                    window.location.assign("dashboard");
-                                                }
-                                           return true;
-                                           
-                                        }
-                                        else
-                                        {
-                                            Alerts('alert-danger',"Your handle/email OR Password is incorrect. If you have forgotten your handle OR password, please login through Facebook");
-                                            return false;
-                                        }
-                                    }
-                                });
-                                       
- }
- 
 </script>
         <style>
              #accordion-resizer {
@@ -465,47 +425,6 @@ function Logout()
     width: 150px;
     height: 120px;
   }
-  .slide1, .slide2, .slide3 {
-	min-height: 560px; /* Must have a height or min-height set due to use of background images */
-	background-size: cover;
-	background-position: center center;
-}
-.slide1 {
-	background-image: url(${delimiter}pages/resources/img/slide1.png);
-}
-.slide2 {
-        background-image: url(${delimiter}pages/resources/img/slide2.png);
-}
-.slide3 {
-	background-image: url(${delimiter}pages/resources/img/slide3.png);
-}
-/* Carousel Fade Effect */
-.carousel.carousel-fade .item {
-	-webkit-transition: opacity 1s linear;
-	-moz-transition: opacity 1s linear;
-	-ms-transition: opacity 1s linear;
-	-o-transition: opacity 1s linear;
-	transition: opacity 1s linear;
-	opacity: .5;
-}
-.carousel.carousel-fade .active.item {
-	opacity: 1;
-}
-.carousel.carousel-fade .active.left,
-.carousel.carousel-fade .active.right {
-	left: 0;
-	z-index: 2;
-	opacity: 0;
-	filter: alpha(opacity=0);
-}
-/* Carousel Overlay */
-.carousel-overlay {
-	position: absolute;
-	bottom: 200px;
-	right: 0;
-	left: 0;
-}
-
         </style>
         
     </head>
@@ -529,24 +448,9 @@ function Logout()
         <div class="collapse navbar-collapse" id="myNavbar">
          
           <ul class="nav navbar-nav navbar-right">
-              <!--<li>
-                 
-                   <img src="pages/resources/img/fbconnect.png" style="cursor:pointer; width: 130px;height: 40px;margin-top: 5px;" onclick="Login()" id='fb_login_btn'/>
-              </li>-->
               <li>
                   
-                  <form class="navbar-form navbar-right" role="form" action="#" onsubmit="return directLogin(1)">
-            <div class="form-group">
-              <button class="btn btn-facebook" onclick="Login()" id='fb_login_btn'><i class="fa fa-facebook"></i> | Connect with Facebook</button>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" id="login_username1" placeholder="Handle/e-mail id">
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" id="login_pwd1" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+                    <img src="pages/resources/img/fbconnect.png" style="cursor:pointer; width: 130px;height: 40px;margin-top: 5px;" onclick="Login()" id='fb_login_btn'/>
               </li>
             <!--  
               <li>
@@ -557,72 +461,110 @@ function Logout()
         </div>
       </div>
     </nav>
-    <!--<div class="jumbotron">
-      <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><button class="btn btn-facebook" onclick="Login()" id='fb_login_btn'><i class="fa fa-facebook"></i> | Connect with Facebook</button></p>
+    <div class="container-fluid">
+        <div class="row">
+       <div id="myCarousel" class="col-sm-4 col-md-7 col-lg-8 carousel slide">
+   <!-- Carousel indicators -->
+   <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+   </ol>   
+   <!-- Carousel items -->
+   <div class="carousel-inner">
+      <div class="item active">
+         <img src="pages/resources/images/slide1.jpg" alt="First slide">
       </div>
-    </div>-->
-    <!--begin bg-carousel-->
-<div id="bg-fade-carousel" class="carousel slide carousel-fade" data-ride="carousel">
-<!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <div class="slide1"></div>
-        </div>
-        <div class="item">
-            <div class="slide2"></div>
-        </div>
-        <div class="item">
-            <div class="slide3"></div>
-        </div>
-    </div><!-- .carousel-inner --> 
-    <div class="container carousel-overlay text-center">
-        <h1 style="color: #1c1b1e;">Create Polls/Surveys, Get Answers, Take the Right Decisions</h1>
-        <h2 style="color: #1c1b1e;">It's Absolutely Free!</h2>
-        <button class="btn btn-facebook btn-lg" onclick="Login()" id='fb_login_btn2'><i class="fa fa-facebook"></i> | Connect with Facebook</button>
-       
-    </div>
-</div><!-- .carousel --> 
-<!--end bg-carousel-->
+      <div class="item">
+         <img src="pages/resources/images/slide2.gif" alt="Second slide">
+      </div>
+      <div class="item">
+         <img src="pages/resources/images/slide3.gif" alt="Third slide">
+      </div>
+   </div>
+   <!-- Carousel nav -->
+   <a class="carousel-control left" href="#myCarousel" 
+      data-slide="prev">&lsaquo;</a>
+   <a class="carousel-control right" href="#myCarousel" 
+      data-slide="next">&rsaquo;</a>
+</div>   
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-            <h2>Login/Sign-in</h2>
-           <form role="form" action="#" onsubmit="return directLogin(0)">
-            <div id="loginForm" class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-sm-5" for="name">Handle/email-ID:</label>
-                    <div class="col-sm-7">
-                    <input type="text" class="form-control" id="login_username0" placeholder="Enter your Handle or e-mail id">
-                    </div>
+        <div class="col-sm-8 col-md-5 col-lg-4">
+    <!--        
+<div id="SignUp">
+    <div id="signUpForm" class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-3 col-md-3 col-lg-4" id="dp"></div>
+            <div class="col-sm-9 col-md-9 col-lg-8">
+                <div class="input-group">
+                <span class="input-group-addon input-group">@</span>
+                <input type="text" class="form-control" id="handle" placeholder="handle" required>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-5" for="pwd">Password:</label>
-                    <div class="col-sm-7">
-                    <input type="password" class="form-control" id="login_pwd0" placeholder="Enter Your password">
-                    </div>
-                </div>
-                <div class="form-group">
-                   
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-success  pull-right">Sign in</button>
-                    </div>
-                </div>
+            
+            </div>
+        </div>
+       <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" placeholder="Enter your FullName">
+            </div>
+        </div>
+       <div class="form-group">
+            <label class="control-label col-sm-2" for="pwd">Pollican Password:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="pwd" placeholder="Enter a strong password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="c_pwd">Confirm Password:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="c_pwd">
+            </div>
+            <div class="col-sm-10" id="showMatch">
                 
             </div>
-             </form> 
+        </div>  
+        
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Email:</label>
+            <div class="col-sm-10">
+            <input type="email" class="form-control" id="email" placeholder="Enter email">
+            </div>
         </div>
-       
-      </div>
+        <div class="form-group">
+            <div class="radio col-sm-6">
+            <label><input type="radio" name="sex" value="M" id='sex_m'>Male</label>
+            </div>
+            <div class="radio col-sm-6">
+            <label><input type="radio" name="sex" value="F" id='sex_f'>Female</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="DOB">Date of Birth:</label>
+            <div class="well col-sm-10">  
+            <button id="btn2" style="float: right">manual set to 03/17/12</button>
+            <input type="text" name="dob" class="span2" data-date-format="mm/dd/yy" id="dob"> 
+            </div> 
+        </div> 
+        
+            
+            
+                
+             <button class="btn btn-default" onclick="select_categories()">Next</button>
+            </div>
+<div id='accordion_div'> 
+    Please select 20 categories that describes your interests.
+<div id="accordion">
+    
+</div>
+<button class="btn btn-default" onclick="validate()">Register</button>
+</div>
+</div>
+            -->
+  </div>
+</div><!--row -->
 
-      <hr>
-    </div>
-   
-   
+</div><!--container -->
 <form name="f1" style="visibility: hidden" method="post" action="register1" id="f1">
     <input type="hidden" id="resp" name="resp" >
             <input type="text" id="resname" name="response_name" >
