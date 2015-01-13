@@ -84,7 +84,13 @@
                
                 pollJSON=${obj};
                 fish=pollJSON['reward'];
-                 
+                 $.getJSON("http://www.telize.com/geoip?callback=?",
+		function(json) {
+	        ip=json.ip;
+                fulljson=JSON.stringify(json);
+                //alert(fulljson);
+            }
+	); 
                   
                 if(solvable===1)
                  {
@@ -392,13 +398,7 @@
                   console.log(finalJSON);
                //   console.log("alia bhatt"+pollJSON);
                   console.log("anonymous="+anonymous+" fish="+fish);
-                   $.getJSON("http://www.telize.com/geoip?callback=?",
-		function(json) {
-	        ip=json.ip;
-                fulljson=JSON.stringify(json);
-                //alert(fulljson);
-            }
-	);
+                  
                //   console.log("profile "+ profile);
            
         $.ajax({

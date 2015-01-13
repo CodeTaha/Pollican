@@ -10,7 +10,7 @@
    <property name="url" value="jdbc:mysql:///pollican"/><!--server:jdbc:mysql://54.200.121.133/pollingduck  local:jdbc:mysql:///pollingduck -->
    <property name="username" value="root"/><!-- root PollicanDuck28 -->
    <!--<property name="password" value="Pollikan290592"/>-->
-   <property name="password" value="Pollikan290592"/>
+   <property name="password" value=""/>
    </bean>
 
    <!-- Definition for studentJDBCTemplate bean
