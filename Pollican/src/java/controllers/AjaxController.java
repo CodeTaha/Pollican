@@ -558,7 +558,7 @@ public class AjaxController extends Parent_Controller{
       
         String  followersString = request.getParameter("uidfollowings");
         System.out.print("Uid Followings received : "+followersString);
-        
+        int uid=Integer.parseInt(request.getParameter("uid"));
         if(followersString.equalsIgnoreCase("[]"))
         { out.println(""); 
         
@@ -569,7 +569,7 @@ public class AjaxController extends Parent_Controller{
         
         followersString = followersString.substring(1,followersString.length()-1);
         int l1;
-        System.out.print("Uid Followings received : "+followersString);
+        System.out.print("Uid Followings received : "+uid+"tk"+followersString);
         
          
         if(followersString.contains(","))
@@ -663,7 +663,7 @@ public class AjaxController extends Parent_Controller{
         PrintWriter out = response.getWriter();
         System.out.println("uid is"+uid);
         String  followersString = request.getParameter("uidfollowings");
-      
+       int uid=Integer.parseInt(request.getParameter("uid"));
         
          System.out.print("Uid Followings received : "+followersString);
        
