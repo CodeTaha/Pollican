@@ -144,14 +144,18 @@
                      var colmax=0;
                     var q_id=poll['qtn_json'][jw]['qtn_id'];
                     var qtn_div="qtn_div_"+jw;
-                     $("#whole").append("<div class='row'>\n\
-                        <div class='panel panel-info'>\n\
+                   // <div class='panel panel-info' style='min-width:"+ (200)+"max-width:"+(200) +"'>\n\
+                         //style='min-width: 1000px;max-width:1200px;'
+                         var panwidth=document.body.offsetWidth-40;
+                     $("#whole").append("<p><div align='center' class='row'>\n\
+                        <div class='panel panel-info' style='max-width:"+panwidth+"px;'>\n\
                             <div class='panel-heading'>\n\
-                            <b>Question : "+poll['qtn_json'][jw]['qtn']+"</b>\n\
+                            <h3 class='panel-title'><b>Question : "+poll['qtn_json'][jw]['qtn']+"</b></h3>\n\
                             </div>\n\
+                            <div class='panel-body ' id='"+qtn_div+"'></div>\n\
                         </div>\n\
-                </div>");
-                    $("#whole").append("<div id='"+qtn_div+"'></div>");
+                </div></P>");
+                   // $("#whole").append("<div class='panel-body' id='"+qtn_div+"'></div>");
                     
                 var choice=poll['qtn_json'][jw]['qtn_type'];    
                 switch(choice)
