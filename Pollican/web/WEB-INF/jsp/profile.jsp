@@ -153,7 +153,7 @@ $("#solvedPolls").append('<br/><br/><br/></br/>');
             $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewFollowings",
-           data: { uidfollowings : JSON.stringify(profile['follow']['following']),uid : profile['uid'] },
+           data: { uidfollowings : JSON.stringify(profile['follow']['following']) },
            success: function(data){
                
                myFollowings=data;
@@ -177,7 +177,7 @@ $("#followers").append('<br/><br/><br/></br/>');
  $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewFollowers",
-           data: { uidfollowings : JSON.stringify(profile['follow']['followers']) ,uid : profile['uid'] },
+           data: { uidfollowings : JSON.stringify(profile['follow']['followers']) },
            success: function(data){
                
                myFollowers=data;
@@ -238,13 +238,16 @@ function follow(cmd)
     </script>
    
         <div id="page-wrapper" data-spy="scroll" data-target="#info">
+            
              <div class="container-fluid" >
                  <div class="row col-md-12"  >
                   
                    
                        <div  id="info"  style="background-color:lavender; " class="col-md-4 col-xs-12 col-sm-12 side-bar-left">
-                           <div class="sidebar-nav-fixed affix">
-                            <div id="pic_name" >
+                         
+                           
+                              
+                           <div id="pic_name" >
                                 
                                  <div id="pic" >
                                
@@ -300,11 +303,13 @@ function follow(cmd)
                                          <h3 >user experience</h3>
                                         </div>
                             </div>
-                           </div>
-                        </div>
+                           
+                              
+                           </div>    
                              
-                      <div id="csff" class="col-md-6 col-xs-12 col-sm-12 ">
-                             <ul id="myTab1" class="nav nav-tabs  affix  " style="background-color: #111111">
+                      <div id="csff" class="col-md-6 col-xs-12 col-sm-12  ">
+                          
+                             <ul id="myTab1" class="nav nav-tabs " style="background-color: #111111;">
                                 <li class="active " >
                                     <a href="#createdPolls" data-toggle="tab">
                                        Created Polls
@@ -323,7 +328,7 @@ function follow(cmd)
                                     </a>
                                 </li>
                              </ul>
-                               
+                              
                            <div id="timeline" class="tab-content">
             
                            <div class="tab-pane fade in active" id="createdPolls" style="width: 100%">
@@ -341,15 +346,18 @@ function follow(cmd)
                            </div>
         
                        </div>
-                                
-                       <div id="suggestions" style="background-color:lavender; " class="col-md-2 col-xs-12 col-sm-12">
-                           <div class="sidebar-nav-fixed pull-right affix"> 
+                       
+       
+                       <div id="suggestions" style="background-color:lavender; " class="col-md-2 col-xs-12 col-sm-12 ">
+                           
                                Suggestions
-                           </div>
+                           
                        </div> 
                </div>
+                 </div>
              </div>
-        </div>
+                
+        
             
        </body>
 </html>
