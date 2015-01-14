@@ -24,13 +24,22 @@
  <script type="text/javascript" charset="utf8" src="../../pages/resources/js/StackBlur.js"></script>
 
 
-  <script src="../../pages/resources/bootstrap/js/bootstrap.js"></script>
-  <link rel="stylesheet" href="../../pages/resources/bootstrap/css/bootstrap.css">
-  
- 
-        
+  <script src="../../pages/resources/template/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../../pages/resources/template/css/bootstrap.css">
+  <link rel="stylesheet" href="../../pages/resources/template/css/social-buttons.css" />
+    <link href="../../pages/resources/template/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-              <title>JSP Page</title>
+  <title>${title}</title>
+  <meta name="description" content="${description}">
+         <meta name="keywords" content="${keywords}">
+        <meta property="og:title"
+content="${title}" />
+      <meta property="og:site_name" content="Pollican"/>
+      <meta property="og:description" content="${description}" />
+      <meta property="og:type" content="polls and surveys" />
+      <meta property="og:url" content="${url}" />
+      <meta property="fb:app_id" content="[555702664544677]" />
+      
   <!--     <style>
 =======
               <title>Pollican Result Page</title>
@@ -138,6 +147,10 @@
                                    <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a>\n\
                            <i><a href='../../profile/"+poll['user']['handle']+"'>\n\
                              @"+poll['user']['handle']+"</a></i></b></center></h2>");
+    
+    console.log(poll);
+    $("#whole").append('<div align="right" style="margin-right:20px;" class="row" id="share_id"><a class="btn btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/result/'+poll["pid"]+'/pollican" target="_blank"><i class="fa fa-facebook"></i> | Share</a>&nbsp;<a class="btn btn-twitter" href="http://twitter.com/share?text=Amazing_Poll_on_Pollican&amp;url=http://www.pollican.com/result/'+poll["pid"]+'/pollican&hashtags=pollican" target="_blank"><i class="fa fa-twitter"></i> | tweet</a> </div>&nbsp;&nbsp;');
+
                 for(var jw=0;jw<result[0]['qtn'].length;jw++)
                 {
                      var bot=0;

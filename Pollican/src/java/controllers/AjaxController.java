@@ -157,11 +157,15 @@ public class AjaxController extends Parent_Controller{
        Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
         Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
         List<Category> list1 = poll_tbl.getCat_list();
-        cat_names = cat_names + gson.toJson(list1);
+        for(int tk=0;tk<list1.size();tk++)
+        cat_names = cat_names + "," + list1.get(tk).getCategory_name();
+        
+        System.out.println("tejas and alia here");
+       System.out.println(cat_names);
         title= title+poll_tbl.getTitle();
         description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
         model.addAttribute("obj", gson.toJson(poll_tbl));
-       String keywords="pollican,viewpolls,polls,surveys";
+       String keywords="pollican,viewpolls,polls,surveys"+cat_names;
        model.addAttribute("page", "solvePoll");
        model.addAttribute("title",title);
        model.addAttribute("meta_description",description);
