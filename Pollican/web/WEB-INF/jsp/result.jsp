@@ -29,32 +29,14 @@
   <link rel="stylesheet" href="../../pages/resources/template/css/social-buttons.css" />
     <link href="../../pages/resources/template/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-  <title>${title}</title>
-  <meta name="description" content="${description}">
+  <title property="og:title">${title}</title>
+  <meta property="og:description" name="description" content="${description}">
          <meta name="keywords" content="${keywords}">
-        <meta property="og:title"
-content="${title}" />
-      <meta property="og:site_name" content="Pollican"/>
-      <meta property="og:description" content="${description}" />
-      <meta property="og:type" content="polls and surveys" />
+      <meta property="og:site_name" content="http://www.pollican.com"/>
+      <meta property="og:type" content="Polls and Surveys" />
       <meta property="og:url" content="${url}" />
       <meta property="fb:app_id" content="[555702664544677]" />
       
-  <!--     <style>
-=======
-              <title>Pollican Result Page</title>
-        <style>
->>>>>>> origin/master
-        .axis {
-        font: 12px sans-serif;
-              }
-            .axis path,
-            .axis line {
-            fill: none;
-            stroke: #000;
-            shape-rendering: crispEdges;
-}
-</style>-->
         <script>
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll

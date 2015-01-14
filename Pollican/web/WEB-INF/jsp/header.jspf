@@ -41,13 +41,13 @@ Gson gson=new Gson();
     <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="icon" href="${delimiter}pages/resources/img/logo.png" type="image/png" sizes="16x16">
     <meta name="author" content="">
-        
-        <meta name="description" content="${meta_description}">
+       
+    <title  property="og:title">${title}</title> 
+        <meta property="og:description" name="description" content="${meta_description}">
          <meta name="keywords" content="${meta_keywords_org}">
-      <meta property="og:title"
-content="${title}" />
-      <meta property="og:site_name" content="Pollican"/>
-      <meta property="og:description" content="${meta_description}" />
+  
+      <meta property="og:site_name" content="http://www.pollican.com"/>
+   
       <meta property="og:type" content="polls and surveys" />
       <meta property="fb:app_id" content="[555702664544677]" />
   <!-- jQuery -->
@@ -60,7 +60,6 @@ content="${title}" />
     <script src="${delimiter}pages/resources/select2/select2.js"></script>
     <script src="${delimiter}pages/resources/js/ui.dropdownchecklist.js"></script>
  
-    <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="${delimiter}pages/resources/template/css/bootstrap.css" rel="stylesheet">
