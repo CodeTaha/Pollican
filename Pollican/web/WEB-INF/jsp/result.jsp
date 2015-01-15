@@ -806,15 +806,20 @@
 
 var canvasvar="canvas_"+p;
 
-var down="download"+p;
-var imgname="qtn"+p+".png";
+var downjpg="downloadjpg"+p;
+var downpng="downloadpng"+p;
+var imgnamejpg="qtn"+p+".jpg";
+var imgnamepng="qtn"+p+".png";
  $("#qtn_div_"+p).append("<canvas hidden width='500' height='300' id='canvas_"+p+"'>Sorry, no canvas available</canvas>\n\
-<a class='btn btn-success' id='download"+p+"'>Download as image</a><br>")
+<a class='btn btn-success' id='downloadjpg"+p+"'>Download as jpg</a>&nbsp<a class='btn btn-success' id='downloadpng"+p+"'>Download as png</a><br>");
 
-        document.getElementById(down).addEventListener('click', function() {
-    downloadCanvas(this, canvasvar, imgname);
+        document.getElementById(downjpg).addEventListener('click', function() {
+    downloadCanvasjpg(this, canvasvar, imgnamejpg);
 }, false);
 
+document.getElementById(downpng).addEventListener('click', function() {
+    downloadCanvasjpg(this, canvasvar, imgnamepng);
+}, false);
 //canvg('canvas_'+p, document.getElementById('svg_'+p).innerHTML);
 return 0;
  }
@@ -846,21 +851,7 @@ return 0;
               fakerow[i]=[];
             }
         }
-       /* for(var i=0;i<ansrows.length;i++)
-        {
-           {
-             countrev[i]=[];
-            }
-        }
-        for(var i=0;i<ansrows.length;i++)
-        {
-            for(var j=0;j<anscol.length;j++)
-            {
-                countrev[i][j]=count[j][i];
-            }
-        }
-        console.log("countrev");
-        console.log(countrev);*/
+     
         for(var i=0;i<ansrows.length+1;i++)
         {
             for(var j=0;j<anscol.length+1;j++)
@@ -913,6 +904,12 @@ return 0;
     axis: {
         x: {
             type: 'category' // this needed to load string x value
+        },
+         y: {
+            tick:{
+                count:10
+            },
+            label: 'no of votes'
         }
     }
 });
@@ -921,22 +918,29 @@ return 0;
 
 var canvasvar="canvas_"+p;
 
-var down="download"+p;
-var imgname="qtn"+p+".png";
+var downjpg="downloadjpg"+p;
+var downpng="downloadpng"+p;
+var imgnamejpg="qtn"+p+".jpg";
+var imgnamepng="qtn"+p+".png";
  $("#qtn_div_"+p).append("<canvas hidden width='500' height='300' id='canvas_"+p+"'>Sorry, no canvas available</canvas>\n\
-<a class='btn btn-success' id='download"+p+"'>Download as image</a>")
+<a class='btn btn-success' id='downloadjpg"+p+"'>Download as jpg</a>&nbsp<a class='btn btn-success' id='downloadpng"+p+"'>Download as png</a><br>");
 
-        document.getElementById(down).addEventListener('click', function() {
-    downloadCanvas(this, canvasvar, imgname);
+        document.getElementById(downjpg).addEventListener('click', function() {
+    downloadCanvasjpg(this, canvasvar, imgnamejpg);
 }, false);
 
+document.getElementById(downpng).addEventListener('click', function() {
+    downloadCanvasjpg(this, canvasvar, imgnamepng);
+}, false);
+//canvg('canvas_'+p, document.getElementById('svg_'+p).innerHTML);
 return 0;
  }
  
  
  
  
-  function downloadCanvas(link, canvasId, filename) {
+  function downloadCanvasjpg(link, canvasId, filename) {
+     
          for(var lkj=0;lkj<result[0]['qtn'].length;lkj++)
    {
        if(poll['qtn_json'][lkj]['qtn_type']==="tb")
@@ -985,7 +989,9 @@ return 0;
             
         },
         y: {
-            
+            tick:{
+                count:10
+            },
             label: 'no of votes'
         }
     }
@@ -1020,7 +1026,9 @@ return chart;
             
         },
         y: {
-            
+            tick:{
+                count:10
+            },
             label: 'no of votes'
         }
     }
@@ -1153,7 +1161,7 @@ var donutChart = c3.generate ({
 var canvasvar="canvas_pie_"+p;
 //console.log(canvasvar);
 var mylink="myALink_pie_"+p;
-var imgname="qtn"+p+".png";
+var imgname="qtn"+p+".jpg";
  $("#qtn_div_"+p).append('<br> <a style="display:none;" class="btn btn-success" id="myALink_pie_'+p+'">Download as image</a> ');
  $("#qtn_div_"+p).append('<div id="can"> <canvas hidden id="canvas_pie_'+p+'" width="351px" height="351px"></canvas> </div>');
  //canvg('canvas_pie_'+p, $("#svg_pie_"+p).html());

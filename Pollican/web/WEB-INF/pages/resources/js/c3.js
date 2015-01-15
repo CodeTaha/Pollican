@@ -4366,7 +4366,8 @@
                 start = values[0];
                 end = values[values.length - 1];
                 interval = (end - start) / (count + 1);
-                // re-construct unique values
+                interval=Math.round(interval);
+                end=Math.round(end);
                 tickValues = [start];
                 for (i = 0; i < count; i++) {
                     tickValue = +start + interval * (i + 1);
