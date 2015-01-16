@@ -79,7 +79,7 @@
                  {
                      //alert();
                      window.location.assign("${delimiter}index?red_url=${red_url}");
-                     //return;
+                     return;
                  }
                console.log("anonymous="+anonymous+" fish="+fish);
                    $.getJSON("http://www.telize.com/geoip?callback=?",
@@ -95,37 +95,9 @@
                   
                 if(solvable===1)
                  {
-               // console.log("dataIn solvePoll");
-               //console.log(data);
-               //pollJSON=data;//JSON.parse(data);
-               //console.log(pollJSON);
                qtnJSON=pollJSON['qtn_json'];
                console.log("qtn JSON");
-               //console.log(qtnJSON);
-               //ansJSON=JSON.parse(pollJSON['ans_json']);
-                 //alert(data);
-                 /*
-                  *
-                    <div class='panel panel-primary'>
-                                <div class='panel-heading'>
-                                    <div class='row'>
-                                        <div class='col-sm-8'>
-                                            <h3 class='panel-title'>Question</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                <div class='panel-body'>
-                                    <div class='row'>
-                                        <div class='col-sm-5'>
-                                            <button type='button' class='btn btn-sm btn-primary'>Solve</button>
-                                            <button type='button' class='btn btn-sm btn-success'>Report</button>
-                                        </div>
-                                    </div>
-                                </div>
-                    </div>
-              
-                  */
+               
               
               //$("#pollArea").append('<h1>'+pollJSON['title']+'</h1><h2>'+pollJSON['description']+'</h2>');
                   for(var i=0; i<qtnJSON.length; i++)
@@ -181,26 +153,7 @@
                                                                 </div>");
                                       }break;
                             case "moc":{
-                                          /* 
-                                          <table class='table table-hover table-striped'>
-                                <thead>
-                                    <tr>
-                                        <th>Page</th>
-                                        <th>Visits</th>
-                                        <th>% New Visits</th>
-                                        <th>Revenue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>/index.html</td>
-                                        <td>1265</td>
-                                        <td>32.3%</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                                           */
+                                  
                                            var rows=qtnJSON[i]['rows'];
                                            var columns=qtnJSON[i]['columns'];
                                           

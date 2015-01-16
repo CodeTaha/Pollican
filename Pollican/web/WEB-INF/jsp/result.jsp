@@ -32,9 +32,10 @@
   <title property="og:title">${title}</title>
   <meta property="og:description" name="description" content="${description}">
          <meta name="keywords" content="${keywords}">
-      <meta property="og:site_name" content="http://www.pollican.com"/>
+         <link rel="icon" href="${delimiter}pages/resources/img/logo.png" type="image/png" sizes="16x16">
+      <meta property="og:site_name" content="pollican"/>
       <meta property="og:type" content="Polls and Surveys" />
-      <meta property="og:url" content="${url}" />
+     <%-- <meta property="og:url" content="${url}" />--%>
       <meta property="fb:app_id" content="[555702664544677]" />
       
         <script>

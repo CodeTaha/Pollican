@@ -46,7 +46,7 @@ Gson gson=new Gson();
         <meta property="og:description" name="description" content="${meta_description}">
          <meta name="keywords" content="${meta_keywords_org}">
   
-      <meta property="og:site_name" content="http://www.pollican.com"/>
+      <meta property="og:site_name" content="pollican"/>
    
       <meta property="og:type" content="polls and surveys" />
       <meta property="fb:app_id" content="[555702664544677]" />
@@ -212,7 +212,7 @@ function Alerts(alert_type,alert_mesg)
                                \n\
                                 <div class='panel-body'>\n\
                                     <div class='row'>\n\
-                                        <a href='profile/"+poll_obj["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+poll_obj["user"]["profile_pic"]+"' alt='"+poll_obj["user"]["handle"]+"'>\n\
+                                        <a href='${delimiter}profile/"+poll_obj["user"]["handle"]+"' target='blank'><img class='img-thumbnail' style='width:50px;height:50px' src='"+poll_obj["user"]["profile_pic"]+"' alt='"+poll_obj["user"]["handle"]+"'>\n\
                                             "+poll_obj["user"]["name"]+" @ "+poll_obj["user"]["handle"]+"</a>\n\
                                     </div>\n\
                                     <div class='row'>\n\

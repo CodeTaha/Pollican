@@ -134,7 +134,7 @@ public class AjaxController extends Parent_Controller{
         model.addAttribute("redirect",true);
         model.addAttribute("red_url",request.getRequestURI());
         model.addAttribute("pid", pid);
-        model.addAttribute("solvable", true);
+        model.addAttribute("solvable", 0);
         model.addAttribute("delimiter", "../../");
         model.addAttribute("profile_pic","");
 	 
@@ -142,7 +142,7 @@ public class AjaxController extends Parent_Controller{
        else
        {    
         
-        int cansolve=conn.solvable(pid,uid);
+        int cansolve=conn.solvable(pid,ud.getUid());
         
         
         model.addAttribute("uid",ud.getUid());
