@@ -227,12 +227,15 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
         //"SELECT * FROM poll_tbl where (cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)) and (start_ts<=? and end_ts>=?) Order by start_ts desc limit 5;"; //"select * from poll_tbl";
         if(ts.equals(""))
         {System.out.println("in listPolls() if");
-            SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 10"; //"select * from poll_tbl";
+            /*SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 10";*/
+        /*uncomment when enough polls are generated and dashboard is not empty*/
+        SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 10";
             poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{dateFormat.format(date),dateFormat.format(date),uid}, new Poll_Tbl_Mapper(conn));
         }
         else
         { System.out.println("in listPolls() else");
-            SQL ="SELECT * FROM poll_tbl where start_ts<? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 5"; //"select * from poll_tbl";
+            /*SQL ="SELECT * FROM poll_tbl where start_ts<? and end_ts>=? and (uid in ("+fp+") OR ((cid_json REGEXP \""+likeClause+"\") and (pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 5"; //"select * from poll_tbl";*/
+        SQL ="SELECT * FROM poll_tbl where start_ts<=? and end_ts>=? and (uid in ("+fp+") OR ((pid NOT IN (select pid from poll_ans_tbl where uid=?)))) Order by start_ts desc limit 10";
             poll_tbl = jdbcTemplateObject.query(SQL,new Object[]{ts,dateFormat.format(date),uid}, new Poll_Tbl_Mapper(conn));
         }
       

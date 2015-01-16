@@ -204,8 +204,10 @@ function Alerts(alert_type,alert_mesg)
                                             <h4 class='panel-title'>"+poll_obj["pid"]+":"+poll_obj["title"]+"</h4>\n\
                                         </div>\n\
                                         <div class='col-sm-4 col-md-4 col-lg-4  pull-right'>\n\
-                                            <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/pollicoins.png' title='You will earn these Pollicoins which can\nbe redeemed by creating new Polls/Surveys'> "+poll_obj["reward"]+" \n\
-                                            <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/bulb.png' title='Your Experience in the given tags will increase\nby "+poll_obj["reward"]+" pts'> "+poll_obj["reward"]+"\n\
+                                            <%--<img style='width:10px;height:auto' src='${delimiter}pages/resources/images/pollicoins.png' title='You will earn these Pollicoins which can\nbe redeemed by creating new Polls/Surveys'> "+poll_obj["reward"]+" \n\
+                                            <img style='width:10px;height:auto' src='${delimiter}pages/resources/images/bulb.png' title='Your Experience in the given tags will increase\nby "+poll_obj["reward"]+" pts'> "+poll_obj["reward"]+"\n\--%>\n\
+                                                    <span class='glyphicon glyphicon-usd pull-right' aria-hidden='true' title='You will earn these Pollicoins which can\nbe redeemed by creating new Polls/Surveys'>"+poll_obj["reward"]+"</span>\n\
+                                                    <span class='glyphicon glyphicon-flash pull-right' aria-hidden='true' title='Your Experience in the given tags will increase\nby "+poll_obj["reward"]+" pts'>"+poll_obj["reward"]+"</span>\n\
                                         </div>\n\
                                     </div>\n\
                                 </div>\n\
@@ -221,12 +223,12 @@ function Alerts(alert_type,alert_mesg)
                                      </div>\n\
                                     </div>\n\
                                     <div class='row'>\n\
-                                        <div  class='col-sm-9 pull-right' >\n\
-                                            <button id='solveb' type='button' class='btn btn-sm btn-primary' onclick='openPoll("+parseInt(poll_obj["pid"])+")'>Solve</button>&nbsp\n\
-                                            <button id='reportb' type='button' class='btn btn-sm btn-success' onclick='pollResult("+parseInt(poll_obj["pid"])+")'>Report</button>&nbsp\n\
-                                         <button id='shareb' style='padding:4px;' class='btn btn-info dropdown-toggle' type='button' id='dropdownMenu1'  data-toggle='dropdown' aria-expanded='true'>\n\
-                                            <img src='${delimiter}pages/resources/images/ic_action_share.png' height='20' width='20'><span class='caret'></span>\n\
-                                         </button>\n\
+                                        <div class='col-sm-12 pull-right' >\n\
+                                            <button type='button' id='solveb' class='btn btn-sm btn-primary col-sm-3 col-sm-offset-4' onclick='openPoll("+parseInt(poll_obj["pid"])+")'><span class='glyphicon glyphicon-pencil'></span> Solve</button>\n\
+                                            <button type='button' id='reportb' class='btn btn-sm btn-success col-sm-3' onclick='pollResult("+parseInt(poll_obj["pid"])+")'><span class='glyphicon glyphicon-stats'></span> Result</button>\n\
+                                            <button  class='btn btn-sm btn-info dropdown-toggle col-sm-2' id='dropdownMenu1'  data-toggle='dropdown' aria-expanded='true'>\n\
+                                                <span class='glyphicon glyphicon-globe'></span><span class='caret'></span>\n\
+                                            </button>\n\
  <ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>\n\
     <li role='presentation'><a role='menuitem'  tabindex='-1' class='btn btn-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/solvePoll/"+poll_obj["pid"]+"/"+poll_obj["poll_link"]+"' target='_blank'><i class='fa fa-facebook'></i> | Share</a></li>\n\
     <li role='presentation'><a role='menuitem' tabindex='-1'  class='btn btn-twitter' href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com/solvePoll/"+poll_obj["pid"]+"/"+poll_obj["poll_link"]+"&hashtags=pollican' target='_blank'><i class='fa fa-twitter'></i> | tweet</a></li>\n\
@@ -267,51 +269,7 @@ function Alerts(alert_type,alert_mesg)
             window.prompt("Copy the poll-link and share!!", polllink);
           }
    </script>
-   <style>
-   #solveb:hover {
-    			-webkit-transform:scale(1.2); 
--moz-transform:scale(1.1); 
--o-transform:scale(1.1); 
-			}
-			#social {
-				-webkit-transform:scale(0.8);
-                /* Browser Variations: */
--moz-transform:scale(0.8);
--o-transform:scale(0.8); 
--webkit-transition-duration: 0.5s; 
--moz-transition-duration: 0.5s;
--o-transition-duration: 0.5s;
-			}      
-       #reportb:hover {
-    			-webkit-transform:scale(1.2); 
--moz-transform:scale(1.1); 
--o-transform:scale(1.1); 
-			}
-			#social {
-				-webkit-transform:scale(0.8);
-                /* Browser Variations: */
--moz-transform:scale(0.8);
--o-transform:scale(0.8); 
--webkit-transition-duration: 0.5s; 
--moz-transition-duration: 0.5s;
--o-transition-duration: 0.5s;
-			}      
-       #shareb:hover {
-    			-webkit-transform:scale(1.2); 
--moz-transform:scale(1.1); 
--o-transform:scale(1.1); 
-			}
-			#social {
-				-webkit-transform:scale(0.8);
-                /* Browser Variations: */
--moz-transform:scale(0.8);
--o-transform:scale(0.8); 
--webkit-transition-duration: 0.5s; 
--moz-transition-duration: 0.5s;
--o-transition-duration: 0.5s;
-			}      
-       
-   </style>
+  
 </head>
 
 <body>
@@ -332,7 +290,7 @@ function Alerts(alert_type,alert_mesg)
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav loggedin">
-            <li class="${dashboard_active}"><a href="${delimiter}home"><i class="fa fa-fw fa-dashboard"></i> Home</a></li>
+            <li class="${dashboard_active}"><a href="${delimiter}home"><i class="glyphicon glyphicon-home"></i> Home</a></li>
             <%-- Uncomment when viewpoll is ready<li class="${viewpoll_active}"><a href="${delimiter}viewPolls"><i class="fa fa-fw fa-table"></i> View Polls</a></li>--%>
             <li class="${createpoll_active}"><a href="${delimiter}createPoll"><i class="fa fa-fw fa-edit"></i> Create Poll</a></li>
           </ul>
@@ -364,41 +322,3 @@ function Alerts(alert_type,alert_mesg)
       </div>
     </nav>
     
-    <%-- <div id="wrapper">    
-    <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img src="pages/resources/img/Pollican-logo.png" style="width: 45px;height: 45px;margin-left: 35px;padding-top: 5px;"/>
-                <a class="navbar-brand" href="index"  style="width:50px; height:50px;">Pollican</a>
-            </div>
-            <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification_window" ><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                    <ul class="dropdown-menu alert-dropdown" id="notifications" style="max-height: 260px;
- overflow: auto; width:200px;">
-                        
-                        
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <%=handle %> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="profile/<%=handle%>"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        
-                        <li class="divider"></li>
-                        <li>
-                            <a href="logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>--%>
