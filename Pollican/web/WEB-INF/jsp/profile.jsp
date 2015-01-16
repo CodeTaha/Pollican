@@ -58,7 +58,7 @@ $("#follUnfoll").append("<p></p>");
 
 if(profile['uid']==uid)
 {
-    $("#pic").append('<br/><button class="btn btn-primary" onclick=editProfile();>Edit Profile</button>');
+   // $("#pic").append('<br/><button class="btn btn-primary" onclick=editProfile();>Edit Profile</button>');
     
 }
 else
