@@ -58,7 +58,7 @@ $("#follUnfoll").append("<p></p>");
 
 if(profile['uid']==uid)
 {
-   // $("#pic").append('<br/><button class="btn btn-primary" onclick=editProfile();>Edit Profile</button>');
+    $("#pic").append('<br/><button class="btn btn-primary" onclick=editProfile();>Edit Profile</button>');
     
 }
 else
@@ -230,8 +230,10 @@ function pollResult(pid)
             }
 function editProfile()
            {    
-                 alert("edit profile func called");
-            }
+                 //location.href="";
+             //$('form').attr(editProfile);
+               //window.location="editProfile";
+             }
  
 function follow(cmd)
 { 
@@ -304,7 +306,7 @@ background-color: whitesmoke;
                  <div class="row col-md-12"  >
                   
                    
-                       <div  id="info"  style=" height: auto;" class="col-md-4 col-xs-12 col-sm-12">
+                       <div  id="info"  style=" height: auto; background-color: lavender;" class="col-md-4 col-xs-12 col-sm-12">
                          
                            
                               
@@ -411,7 +413,7 @@ background-color: whitesmoke;
                        </div>
                        
        
-                       <div id="suggestions"   class="col-md-2 col-xs-12 col-sm-12 ">
+                       <div id="suggestions" style="background-color: lavender;"  class="col-md-2 col-xs-12 col-sm-12 ">
                            
                              <b>  Suggestions</b>                           
                        </div> 
