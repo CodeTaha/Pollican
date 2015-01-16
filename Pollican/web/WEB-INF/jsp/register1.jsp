@@ -63,7 +63,7 @@
          
          
         <div class="form-group">
-            <label class="control-label col-sm-2" for="handle">Handle:</label>
+            <label class="control-label col-sm-2" for="handle">Handle/Username:</label>
             <div class="col-sm-3">    
                  <div class="input-group">
                 <span class="input-group-addon input-group">@</span>
