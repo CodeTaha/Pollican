@@ -44,7 +44,7 @@ $("#user_everything").append('<br/><b>City </b>: '+city+'<br/><b> Country </b>: 
 $("#dp").append("<b> Profile Picture</b> <img width='50' height='50' src="+profile_pic+">").append("<br><b> Followers</b>:"+profile['follow']['followers'].length).append("<b> Following</b>:"+profile['follow']['following'].length);
 
 */
-$("#pic").append("<img width='100' height='100'class='media-object dp img-circle' alt='Cinque Terre'  src="+profile_pic+"><p></p>");
+$("#pic").append("<img width='100' height='100' class='media-object dp img-circle'  src="+profile_pic+"><p></p>");
 $("#name").append('<h2><b>'+name+'</b></h2><p></p>');
 $("#follow").append("<br/><b >"+profile['follow']['followers'].length+"</b>&nbsp<br/>");
 $("#followinguser").append("<br/><b >"+profile['follow']['following'].length+"</b>&nbsp<br/>");
@@ -272,6 +272,10 @@ background-color: whitesmoke;
 height: 30px;
 background-color: whitesmoke;
 }
+
+#timeline { overflow:hidden;height:600px; }
+#timeline:hover { overflow-y:scroll; }
+
        
 .media
     {
@@ -407,7 +411,7 @@ background-color: whitesmoke;
                        </div>
                        
        
-                       <div id="suggestions"  " class="col-md-2 col-xs-12 col-sm-12 ">
+                       <div id="suggestions"   class="col-md-2 col-xs-12 col-sm-12 ">
                            
                              <b>  Suggestions</b>                           
                        </div> 
