@@ -67,11 +67,11 @@ else
     {
         if(profile['follow']['followers'].indexOf(uid)!==-1)
         {
-            $("#follUnfoll").append('<button id="followUnfollow" onclick="follow(0);">Unfollow</button>');
+            $("#follUnfoll").append('<button id="followUnfollow" class="btn btn-success" onclick="follow(0);">following</button>');
         }
         else
         {
-            $("#follUnfoll").append('<button id="followUnfollow" onclick="follow(1);">Follow</button>');
+            $("#follUnfoll").append('<button id="followUnfollow" class="btn btn-primary" onclick="follow(1);">Follow</button>');
         }
         if(profile['follow']['following'].indexOf(uid)!==-1)
         {
@@ -249,7 +249,7 @@ function follow(cmd)
                    if(cmd===1)
                     {//alert(11);
                         //$("#followUnfollow").empty().append("Following").prop("onclick","follow(0);");
-                        $("#follUnfoll").empty().append('<button id="followUnfollow" class="btn btn-primary" onclick="follow(0);">Following</button>');
+                        $("#follUnfoll").empty().append('<button id="followUnfollow" class="btn btn-success" onclick="follow(0);">Following</button>');
                     }
                     else
                     {//alert(22);
@@ -337,7 +337,7 @@ background-color: whitesmoke;
                                           <b>Pollicoins</b>
                                         </div>
                             </div>
-                           
+                           <div id="spaces"><p><br/><br/></p></div>
                            <div id="follUnfoll" >
                                
                             </div>
