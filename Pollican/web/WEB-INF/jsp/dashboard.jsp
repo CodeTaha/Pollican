@@ -4,7 +4,12 @@
             <div id="page-wrapper">
 
             <div class="container-fluid" >
-                <div class="row" id="pollList">
+                <div class="row col-md-12"  >
+                    <div  id="box1"  style=" height: auto; max-height:650px ;" class="boxfeature col-md-6 col-xs-12 col-sm-12 tab-content pre-scrollable">
+                        
+                        
+                    </div>
+                <div class=" boxfeature col-md-6 col-xs-12 col-sm-12 tab-content pre-scrollable" style=" height: auto; max-height:650px ;" id="pollList">
                     
                 </div>
                
@@ -45,7 +50,56 @@
             </div>
                 
             </div>
-</div>       
+            <style>
+    .boxfeature{
+    padding: 20px 0;
+	//text-align: center;
+}
+.boxfeature > div >  div{
+	padding: 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	transition: 0.2s;
+}
+.boxfeature > div:hover > div{
+	margin-top: -10px;
+	border: 1px solid rgb(200, 200, 200);
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 5px 2px;
+	background: rgba(200, 200, 200, 0.1);
+	transition: 0.5s;
+}
+
+  #box1::-webkit-scrollbar {
+width: 15px;
+height: 15px;
+}
+#box1::-webkit-scrollbar-track-piece  {
+background-color: white;
+}
+#box1::-webkit-scrollbar-thumb:vertical {
+height: 30px;
+background-color: white;
+}
+
+#box1 { overflow:hidden;height:650px; }
+#box1:hover { overflow-y:scroll; }
+
+  #pollList::-webkit-scrollbar {
+width: 15px;
+height: 15px;
+}
+#pollList::-webkit-scrollbar-track-piece  {
+background-color: white;
+}
+#pollList::-webkit-scrollbar-thumb:vertical {
+height: 30px;
+background-color: white;
+}
+
+#pollList { overflow:hidden;height:650px; }
+#pollList:hover { overflow-y:scroll; }
+
+            </style>      
      <script>
     var pollJSONtemp;   
     var pollJSON=new Array();
@@ -106,7 +160,10 @@
                  for(var i=0; i<pollJSONtemp.length;i++)
                      { 
                          pollJSON.push(pollJSONtemp[i]);
-                         createPollDivs("#pollList",pollJSONtemp[i],1);
+                         createPollDivs("#box1",pollJSONtemp[i],1);
+                       pollJSON.push(pollJSONtemp[i+1]);  
+                       createPollDivs("#pollList",pollJSONtemp[i+1],1);
+                         i=i+1;
                      }
                
                  //alert(data);
