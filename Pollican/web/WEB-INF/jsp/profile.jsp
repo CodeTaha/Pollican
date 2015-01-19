@@ -94,29 +94,29 @@ else
                     { if(userCategJSON[i]['cid']===categs[j])
                         { //$("#uexp").append( "<b>" + userCategJSON[i]['category_name']  +"</b>") ;
                          // $("#uexp").append( " <i> "+ exp_json[j]['exp']+"</i><br/>") ;
-                           if(exp_json[j]['exp'] >=0 && exp_json[j]['exp'] <=200)
+                           if(exp_json[j]['exp'] >=1051 && exp_json[j]['exp'] <=1300)
                            {
-                               $("#uexp").append( "<span class='label label-danger'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
+                               $("#uexp").append( "<span class='label label-success'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
                            }
                            
-                           else if(exp_json[j]['exp'] >=201 && exp_json[j]['exp'] <=400)
+                           else if(exp_json[j]['exp'] >=1301 && exp_json[j]['exp'] <=1600)
                            {
                                $("#uexp").append( "<span class='label label-warning'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
                            }
                            
-                           else if(exp_json[j]['exp'] >=401 && exp_json[j]['exp'] <=600)
+                           else if(exp_json[j]['exp'] >=1000 && exp_json[j]['exp'] <=1050)
                            {
                                $("#uexp").append( "<span class='label label-info'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
                            }
                            
-                           else if(exp_json[j]['exp'] >=601 && exp_json[j]['exp'] <=800)
+                           else if(exp_json[j]['exp'] >=1601 && exp_json[j]['exp'] <=2000)
                            {
                                $("#uexp").append( "<span class='label label-primary'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
                            }
                            
                            else 
                            {
-                               $("#uexp").append( "<span class='label label-success'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
+                               $("#uexp").append( "<span class='label label-danger'><b>" + userCategJSON[i]['category_name']  +"</b>&nbsp:&nbsp<i>"+exp_json[j]['exp']+"</i>&nbsp<br/></span>") ;
                            }
                         }
                     }
