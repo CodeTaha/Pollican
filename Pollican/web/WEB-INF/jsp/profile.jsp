@@ -177,7 +177,7 @@ $("#solvedPolls").append('<br/><br/><br/></br/>');
             $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewFollowings",
-           data: { uidfollowings : JSON.stringify(profile['follow']['following']) },
+           data: { uidfollowings : JSON.stringify(profile['follow']['following']),uid : profile['uid'] },
            success: function(data){
                
                myFollowings=data;
@@ -201,7 +201,7 @@ $("#followers").append('<br/><br/><br/></br/>');
  $.ajax({
            type: "POST",       // the dNodeNameefault
            url: "../viewFollowers",
-           data: { uidfollowings : JSON.stringify(profile['follow']['followers']) },
+           data: { uidfollowings : JSON.stringify(profile['follow']['followers']) ,uid : profile['uid'] },
            success: function(data){
                
                myFollowers=data;
