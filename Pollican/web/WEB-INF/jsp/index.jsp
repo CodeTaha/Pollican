@@ -51,106 +51,134 @@ var gender;
             var array3 = new Object();
     $(document).ready(function(){
         
-      
-       
-    //    $("#SignUp").hide();
         $("#alert_box").hide();
-        /*$("#dob").datepicker({
-          
-           dateFormat:"mm/dd/yy" 
-                   });*/
-   
-      //  $('#dob').datepicker();
-          
-                                                     
-    
-    });
-     window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '555702664544677', // App ID
-       status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true  // parse XFBML
-    });
-    
-    
-	FB.Event.subscribe('auth.authResponseChange', function(response) 
-	{
- 	 if (response.status === 'connected') 
-  	{
-  		//getUserInfo();
-  		
-  	}	 
-	else if (response.status === 'not_authorized') 
-    {
-    	//document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
-
-		//FAILED
-    } else 
-    {
-    	//document.getElementById("message").innerHTML +=  "<br>Logged Out";
-
-    	//UNKNOWN ERROR
+    });//555702664544677
+    // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+       Alerts('alert-warning','Please log into APP');;
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      Alerts('alert-warning','Please log into fb');
+     
     }
-	});	
-	
-    };
-    
-   	function Login()
-	{
-	
-		FB.login(function(response) {
-		   if (response.authResponse) 
-		   {
-		    	getUserInfo();
-  			} else 
-  			{
-  	    	 console.log('User cancelled login or did not fully authorize.');
-   			}
-		 },{scope: 'email,user_location,user_hometown,user_birthday,user_friends,user_interests'});
-	}
-function Logout()
-	{
-		FB.logout(function(){document.location.reload();});
-	}
+  }
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '555702664544677',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.1' // use version 2.1
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  /* uncomment when redirecting a user without login
+   * FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });*/
+
+  };
 
   // Load the SDK asynchronously
-  (function(d){
-     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement('script'); js.id = id; js.async = true;
-     js.src = "//connect.facebook.net/en_US/all.js";
-     ref.parentNode.insertBefore(js, ref);
-   }(document));
-  
-    
-    function getUserInfo() {
-	    FB.api('/me', function(response) {
-  
- 
-  console.log('response');
-    console.log(response);
-      console.log('responseend');
- name = response.name;
- username=response.username;
- userid = response.id;
- email = response.email;
- link = response.link; 
- birthdate = response.birthday;
- gender=response.gender;
- fb=username;
- //profile_pic=response.data.url;
- 
- FB.api('/me/picture?type=normal', function(response) {
-                  profile_pic=response.data.url;
-               
-               //   $("#dp").empty().append("<img src='"+profile_pic+"'/>");
-    });
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
 
-  	$.ajax({
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      console.log(response)
+      Alerts('alert-success"',response.name);
+      
+    });
+  }
+function Login()
+	{
+            FB.login(function(response) {
+               if (response.status === 'connected') {
+            
+            getUserInfo(response);
+           
+               
+             } else if (response.status === 'not_authorized') {
+               alert(2)
+             } else {
+               // The person is not logged into Facebook, so we're not sure if
+               // they are logged into this app or not.
+             }
+            }, {scope: 'public_profile,email,user_location,user_hometown,user_birthday,user_friends,user_interests'});
+        }	
+     
+  function getUserInfo(response1) {
+        var auth_response=response1;
+	FB.api('/me', function(response) {
+                
+                    console.log('response');
+                     console.log(auth_response);
+                      console.log(response);
+
+                        console.log('responseend');
+                   name = response.name;
+                   username=response.username;
+                   userid = response.id;
+                   email = response.email;
+                   link = response.link; 
+                   birthdate = response.birthday;
+                   gender=response.gender;
+                   fb=username;
+                   var fb_response=response;
+                   //profile_pic=response.data.url;
+                   FB.api('/me/picture?type=normal', function(response) {
+                       
+                                    profile_pic=response.data.url;
+                                    
+                                var auth1=auth_response.authResponse.accessToken;
+                                console.log(profile_pic);
+                                console.log(auth1);
+                                        $.ajax({
                                 type: "POST",       // the dNodeNameefault
                                 url: "loginFB",
-                                data: {username:username, password:email},
+                                data: {username:username, password:email,fb_response:JSON.stringify(fb_response),auth_token:auth1,profile_pic:profile_pic},
                                 success: function(data){//alert(data);
                                         if(data==1)
                                         {
@@ -171,47 +199,8 @@ function Logout()
                                      
                                         else
                                         {
-                                           // $("#SignUp").show();
-                                          //  cat_json=JSON.parse(data);
-                                            /*document.getElementById("email").value =email;
-                                            document.getElementById("email").readOnly = true;
-                                            document.getElementById("dob").value =birthdate;
-                                            document.getElementById("dob").readOnly = true;  */
-                                           // document.getElementById("name").value=name; 
-                                          //  document.getElementById("name").readOnly=true;
-                                          /*  if(gender=='female')
-                                            {
-                                                $("#sex_f").attr('checked', 'checked');
-                                                
-                                                
-                                            }
-                                            else
-                                            {
-                                                $("#sex_m").attr('checked', 'checked');
-                                                
-                                            }
-                                           // document.getElementById("gender").readOnly=true;
-                                            $("#sex_f").attr('disabled', 'disabled');
-                                            $("#sex_m").attr('disabled', 'disabled'); */
-                                            //console.log(cat_json);
+                                          
                                            
-                                          /*    for(var i=0; i<cat_json.length; i++)
-                                                        {
-                                                            cat_list.push({id:cat_json[i]['cid'], text:cat_json[i]['category_name']});
-                                                            $("#category").append("<option value="+cat_json[i]['cid']+">"+cat_json[i]['category_name']+"</option>");
-                                                        }
-                                                       
-                                           */
-                                            // get_accordion();
-                                          //     window.location.assign("signUp1");      
-                                          document.getElementById("resname").value=response.name;
-                                          document.getElementById("resusername").value=response.username;
-                                          document.getElementById("resuserid").value=response.id;
-                                          document.getElementById("resemail").value=response.email;
-                                          document.getElementById("reslink").value=response.link;
-                                          document.getElementById("resbirthdate").value=response.birthday;
-                                          document.getElementById("resgender").value=response.gender;
-                                          document.getElementById("resdp").value=profile_pic;
                                           if(red_url!=="" && red_url.indexOf("red_url")!==-1)
                                                 {
 
@@ -231,191 +220,11 @@ function Logout()
                                         
                                 }
                         });
-                        
-    });
-    }
-	function get_accordion()
-     {  for(var i=0; i<cat_json.length;i++)
-        { if( array2.indexOf(cat_json[i]['group'])===-1)
-            {
-                array2.push(cat_json[i]['group']);
-                array3[cat_json[i]['group']]=new Array();
-                array3[cat_json[i]['group']].push(cat_json[i]);
-            }
-          else
-          {
-               array3[cat_json[i]['group']].push(cat_json[i]);   
-          }  
-        }
-        console.log('arrays');
-        console.log(array2);
-        console.log(array3);
-    $("#accordion").empty();
-        for(var i=0;i<array2.length;i++)
-       { $("#accordion").append("<h3>"+array2[i]+"</h3><div id='cat_"+i+"'></div>");
-        
-        for(var j=0;j<array3[array2[i]].length;j++)
-        {
-            $("#cat_"+i).append("<input class='cat_checkbox' type='checkbox' id='"+array3[array2[i]][j].cid +" 'value='"+array3[array2[i]][j].cid+"'>"+array3[array2[i]][j].category_name+"&nbsp;&nbsp;");
-        }
           
-       }
-        $("#accordion").accordion({
-      heightStyle: "fill"
+                      });
+              
     });
-    $( "#accordion-resizer" ).resizable({
-      minHeight: 70,
-      minWidth: 200,
-      maxHeight:130,
-      resize: function() {
-        $( "#accordion" ).accordion( "refresh" );
-      }
-    });
-    $('.cat_checkbox').click(function() {//for checkbox
-       
-    var mcCbxCheck = $(this);
-    //console.log(mcCbxCheck.val())
-    if(mcCbxCheck.is(':checked')) {
-        if(cat_list.length<20)
-        {
-        addRemoveList(mcCbxCheck.val(),1);
-        }
-        else
-        { Alerts('alert-danger',"You can select maximum of 20 categories");
-            return false;}
-    
     }
-    else{
-       addRemoveList(mcCbxCheck.val(),0);
-        
-    }
-        });
-       $( "#accordion_div" ).hide(); 
-     }
-     
-     
-    
-    function addRemoveList(cat_id,addRemove)
-    {
-        if(addRemove==1)
-        {
-           cat_list.push(parseInt(cat_id));
-        }
-        else
-        {
-             cat_list.splice(cat_list.indexOf(cat_id), 1);
-        }
-        
-    }
-    
-    function select_categories()
-    {
-       handle=$("#handle").val();
-       name=$("#name").val();
-       email_i=$("#email").val();;
-       country="";//$("#country").val();
-       state="";//$("#state").val();
-       city="";//$("#city").val();
-       zip="";//$("#zip").val();
-       religion="";
-       sex=$('input[name=sex]:checked').val();
-       dob=$("#dob").val();
-       phone=$("#phone").val();
-        if(handle==null || handle==''|| name==null||name=='')
-      {alert();
-          return;
-      }
-        
-        $("#signUpForm").hide();
-        $("#accordion_div").show();
-    }
-   
-   function validate()
-  {
-      
-      //var profile_pic=$("#profile_pic").val();
-      var category;//$("#category").val();
-      for(var i=0; i<cat_list.length; i++)
-      {if(i==0)
-          {category="["+cat_list[i];}
-       else
-       {
-          category=category+","+cat_list[i];
-      }
-      }
-      fb=username;// Enter fb username here//it was testfb earlier
-      
-      category=JSON.stringify(category+"]");
-      category=JSON.stringify(cat_list);
-      console.log(category);
-      var tmp1;
-      if(red_url!=="" && red_url.indexOf("red_url")!==-1)
-                                                {
-
-                                                    var tmp=red_url.split("=");
-                                                   tmp1=tmp[1];
-                                                }
-                                            else
-                                                {
-                                                    tmp1='dashboard';
-                                                }
-      
-     $("body").append("<form id='final_form' action='SignUpReg' method='POST'>\n\
-                        <input type='hidden' name='handle' value='"+handle+"'/>\n\\n\
-        <input type='hidden' name='name' value='"+name+"'/>\n\\n\
-        <input type='hidden' name='email' value='"+email_i+"'/>\n\\n\
-        <input type='hidden' name='country' value='"+country+"'/>\n\\n\
-        <input type='hidden' name='state' value='"+state+"'/>\n\\n\
-        <input type='hidden' name='city' value='"+city+"'/>\n\\n\
-        <input type='hidden' name='zip' value='"+zip+"'/>\n\\n\
-        <input type='hidden' name='religion' value='"+religion+"'/>\n\\n\
-        <input type='hidden' name='sex' value='"+sex+"'/>\n\
-        <input type='hidden' name='dob' value='"+dob+"'/>\n\
-        <input type='hidden' name='phone' value='0'/>\n\
-        <input type='hidden' name='category' value='"+category+"'/>\n\
-        <input type='hidden' name='profile_pic' value='"+profile_pic+"'/>\n\\n\
-        <input type='hidden' name='fb' value='"+fb+"'/>\n\\n\\n\
-        <input type='hidden' name='red' value='"+tmp1+"'/>\n\
-        <input type='submit' id='final_submit'/>\n\
-                        </form>");
-        $("#final_form").hide();
-        $("#final_submit").click();
-      /*$.ajax({
-                                type: "POST",       // the dNodeNameefault
-                                url: "SignUpReg",
-                                data: {handle:handle,name:name,email:email_i,country:country,state:state,city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category,profile_pic:profile_pic , fb:fb},
-                                success: function(data){
-                                       if(red_url!=="" && red_url.indexOf("red_url")!==-1)
-                                                {
-
-                                                    var tmp=red_url.split("=");
-                                                   window.location.assign(tmp[1]);
-                                                }
-                                            else
-                                                {
-                                                    window.location.assign("dashboard");
-                                                }
-                                }
-                        });*/
-  }
-  function SignUp()
-  {
-      fb="";
-      profile_pic="pages/profile_pics/egg.jpg";
-    $("#SignUp").show();
-      $.ajax({
-                                type: "POST",       // the dNodeNameefault
-                                url: "getCategories",
-                                data: {},
-                                success: function(data){
-                                    console.log(data);
-                                    cat_json=JSON.parse(data);
-                                    get_accordion();
-                                }});
-                                          
-                                
-      //Alerts('alert-warning','<strong>Sorry for the inconvenience!</strong>As we are currently developing our system and we want to keep scamters away. Please use <strong>Facebook login</strong>');
-  }
   function Alerts(alert_type,alert_mesg)
   {
        $("#alert_box").empty().append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
@@ -537,7 +346,7 @@ function Logout()
                   
                   <form class="navbar-form navbar-right" role="form" action="#" onsubmit="return directLogin(1)">
             <div class="form-group">
-              <button class="btn btn-facebook" onclick="Login()" id='fb_login_btn'><i class="fa fa-facebook"></i> | Connect with Facebook</button>
+              <!--<button class="btn btn-facebook" onclick="Login()" id='fb_login_btn'><i class="fa fa-facebook"></i> | Connect with Facebook</button>-->
             </div>
             <div class="form-group">
               <input type="text" class="form-control" id="login_username1" placeholder="Handle/e-mail id">
@@ -582,7 +391,8 @@ function Logout()
         <h1 style="color: #1c1b1e;">Create Polls/Surveys, Get Answers, Take the Right Decisions</h1>
         <h2 style="color: #1c1b1e;">It's Absolutely Free!</h2>
         <button class="btn btn-facebook btn-lg" onclick="Login()" id='fb_login_btn2'><i class="fa fa-facebook"></i> | Connect with Facebook</button>
-       
+        
+     
     </div>
 </div><!-- .carousel --> 
 <!--end bg-carousel-->

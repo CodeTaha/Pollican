@@ -198,7 +198,7 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
              con=conn.getDataSource().getConnection();
              System.out.println("10 dec 4pm"); 
              st=con.prepareCall("call createUser2('"+handle+"','"+name+"','"+email+"','"+country+"','"+state+"','"+city+"','"+zip+"','"+religion+"','"+sex+"'"
-                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+1000+",'"+password+"')");
+                    + ",'"+dob+"','"+phone+"','"+profile_pic+"','"+fb+"','"+category_list_json+"','"+exp_json+"',"+0+",'"+password+"')");
              st.executeQuery();
              con.close();
              System.out.println("11 dec 2am");

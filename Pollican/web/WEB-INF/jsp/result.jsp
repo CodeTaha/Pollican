@@ -100,7 +100,7 @@
       </div>
     </nav>
         
-        <button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>
+        <!--<button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>-->
         <div id="whole" style="background-color:whitesmoke">
         <script src="../../pages/resources/js/d3.min.js"></script>
         <script src="../../pages/resources/js/c3.js"></script>
@@ -124,12 +124,12 @@
                     if(logged===0)
                         $("#whole").append("<p>still not a member..hurry..<a href='../../index'>sign up nw</a></p>");
   // $(document).ready(function(){       
-                $("#whole").append("<div class='container'><div class='row' ><h1><center>TITLE : "+poll['title']+"</center></h1></div></div>");
-                $("#whole").append("<h2><center>Poll created by: <a href='../../profile/"+poll['user']['handle']+"'>\n\
+                $("#whole").append("<div class='container'><div class='row' ><h2><center>"+poll['title']+"</center></h2></div></div>");
+                $("#whole").append("<h3><center>Description: "+pollJSON['description']+"</center></h3><h4><center>Poll created by: <a href='../../profile/"+poll['user']['handle']+"'>\n\
                                     <img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> \n\
                                    <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a>\n\
                            <i><a href='../../profile/"+poll['user']['handle']+"'>\n\
-                             @"+poll['user']['handle']+"</a></i></b></center></h2>");
+                             @"+poll['user']['handle']+"</a></i></b></center></h4>");
     
     console.log(poll);
     $("#whole").append('<div align="right" style="margin-right:20px;" class="row" id="share_id"><a class="btn btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/result/'+poll["pid"]+'/pollican" target="_blank"><i class="fa fa-facebook"></i> | Share</a>&nbsp;<a class="btn btn-twitter" href="http://twitter.com/share?text=Amazing_Poll_on_Pollican&amp;url=http://www.pollican.com/result/'+poll["pid"]+'/pollican&hashtags=pollican" target="_blank"><i class="fa fa-twitter"></i> | tweet</a> </div>&nbsp;&nbsp;');

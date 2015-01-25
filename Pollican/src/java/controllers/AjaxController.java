@@ -15,14 +15,18 @@ import User_Manager.Exp_Json;
 import User_Manager.Follow;
 import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
+import com.google.gson.Gson;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +40,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.connectivity;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.omg.CORBA.Object;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -242,8 +249,6 @@ public class AjaxController extends Parent_Controller{
         User_Detail ud;
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        //handle:handle,email:email,country:country,state:state
-        //city:city,zip:zip,religion:religion,sex:sex,dob:dob,phone:phone,category:category 
         String handle=request.getParameter("handle");
         String name=request.getParameter("name");
         String email= request.getParameter("email");
@@ -307,7 +312,22 @@ public class AjaxController extends Parent_Controller{
        
         String username= request.getParameter("username");
         String password= request.getParameter("password");// its actually e-mail
-        ud=user.authenticate(username,password,2);
+        String auth= request.getParameter("auth_token");//
+        String profile_pic= request.getParameter("profile_pic");//
+        String g = "https://graph.facebook.com/me?access_token=" + auth;
+			URL u = new URL(g);
+			URLConnection c = u.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					c.getInputStream()));
+			String inputLine;
+			StringBuilder b = new StringBuilder();
+			while ((inputLine = in.readLine()) != null)
+				b.append(inputLine).append("\n");
+			in.close();
+			String graph = b.toString();
+			System.out.println(graph);
+JSONObject json = (JSONObject)new JSONParser().parse(graph);
+        ud=user.authenticate(json.get("id").toString(),json.get("email").toString(),2);
         if(ud!=null)
         {
         
@@ -327,12 +347,50 @@ public class AjaxController extends Parent_Controller{
         }
         else   
         {
-            System.out.println("Calling Signup");
+            /*System.out.println("Calling Signup");
             Category_TblJDBCTemplate cat=new Category_TblJDBCTemplate();
             List<Category> category=cat.Category_list();
             String cat_json=gson.toJson(category);
-          
             out.println(cat_json);
+                    */
+           User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+       
+        response.setContentType("text/html;charset=UTF-8");
+        
+        String handle1=json.get("name").toString().replaceAll("[^a-zA-Z0-9 ]+","").replace(" ","_");
+        String name=json.get("name").toString();
+        String email= json.get("email").toString();
+        String country="";
+        String state= "";
+        String city="";
+        String zip= "";
+        String religion= "";
+        String sex= json.get("gender").toString();
+        String dob= json.get("birthday").toString();
+        String phone= "";
+        //String profile_pic= request.getParameter("profile_pic");
+        String fb= json.get("id").toString();
+        
+        int category[]={86};
+        //System.out.println("cat list= "+Arrays.toString(category));
+        
+        
+       String hashedpassword="";
+       
+       
+            boolean rslt=user_tblJDBCTemplate.createUser(handle1,name,email,country,state,city,zip,religion,sex,dob,phone,profile_pic,category,fb,hashedpassword);
+            if(rslt)
+            {
+            ud=user.authenticate(handle1,email,2);
+        System.out.println("Adding cookie handle"+ud.getHandle());
+        Cookie cookie=set_Cookie("handle",ud.getHandle(),24);
+        response.addCookie(cookie); 
+        System.out.println("Adding cookie uid"+ud.getUid());
+        cookie=set_Cookie("uid",String.valueOf(ud.getUid()),24);
+        response.addCookie(cookie);
+        out.println(1);
+            } 
+            
         }
    
    }

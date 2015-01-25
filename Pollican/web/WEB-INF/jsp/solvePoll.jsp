@@ -19,6 +19,10 @@
                 
                
                 <div class='row' >
+                    <div class='col-sm-12 col-md-12 col-lg-12 center' id="titleArea">
+                       
+                        
+                    </div>
                   
                     <div class='col-sm-12 col-md-8 col-lg-6 col-sm-offset-0 col-md-offset-2 col-lg-offset-3' id="pollArea">
                        <input type="checkbox" id="anonymous"/>Solve Anonymously
@@ -95,10 +99,17 @@
                   
                 if(solvable===1)
                  {
+                  
                qtnJSON=pollJSON['qtn_json'];
                console.log("qtn JSON");
-               
-              
+               console.log(pollJSON);
+              $("#titleArea").append("<h2><center>"+pollJSON['title']+"</center></h2>");
+                $("#titleArea").append("<h3><center>Description: "+pollJSON['description']+"</center></h3><h4><center>Poll created by: <a href='${delimiter}profile/"+pollJSON['user']['handle']+"'>\n\
+                                    <img height='40px' width='40px' src='"+pollJSON['user']['profile_pic']+"'></a> \n\
+                                   <b><a href='../../profile/"+pollJSON['user']['handle']+"'>"+pollJSON['user']['name']+"</a>\n\
+                           <i><a href='../../profile/"+pollJSON['user']['handle']+"'>\n\
+                             @"+pollJSON['user']['handle']+"</a></i></b></center></h4>");
+        
               //$("#pollArea").append('<h1>'+pollJSON['title']+'</h1><h2>'+pollJSON['description']+'</h2>');
                   for(var i=0; i<qtnJSON.length; i++)
                   {
