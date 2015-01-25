@@ -43,6 +43,9 @@
             </div>
 </div>      
 </div>
+ <script src="../../pages/resources/js/jquery.multiselect.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../pages/resources/css/jquery.multiselect.css">
+        
         <script>
                 //console.log("In solvePoll");
                // var pollJSON;
@@ -151,8 +154,8 @@
                                                 $("#qtn"+(i+1)).append('<option value="'+(j+1)+'">'+answers[j]+'</option>'); 
                                             }
                                             //$("#pollArea").append('</select>');
-                                            $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,emptyText: "select"});
-                                            
+                                        //    $("#qtn"+(i+1)).dropdownchecklist({maxDropHeight:120,emptyText: "select"});
+                                            $("#qtn"+(i+1)).multiselect();
                                       }break;
                            case "tb":{
                                        //console.log(ansJSON[i]);

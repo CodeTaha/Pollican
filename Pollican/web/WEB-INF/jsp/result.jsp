@@ -125,7 +125,7 @@
                         $("#whole").append("<p>still not a member..hurry..<a href='../../index'>sign up nw</a></p>");
   // $(document).ready(function(){       
                 $("#whole").append("<div class='container'><div class='row' ><h2><center>"+poll['title']+"</center></h2></div></div>");
-                $("#whole").append("<h3><center>Description: "+pollJSON['description']+"</center></h3><h4><center>Poll created by: <a href='../../profile/"+poll['user']['handle']+"'>\n\
+                $("#whole").append("<h3><center>Description: "+poll['description']+"</center></h3><h4><center>Poll created by: <a href='../../profile/"+poll['user']['handle']+"'>\n\
                                     <img height='40px' width='40px' src='"+poll['user']['profile_pic']+"'></a> \n\
                                    <b><a href='../../profile/"+poll['user']['handle']+"'>"+poll['user']['name']+"</a>\n\
                            <i><a href='../../profile/"+poll['user']['handle']+"'>\n\
