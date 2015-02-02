@@ -438,5 +438,58 @@ public class UrlController extends Parent_Controller{
            return "test";
      
    }
+   @RequestMapping(value = "/geoviz/{pid}/{ref_url}",method = RequestMethod.GET)
+   public String geoviz(@PathVariable int pid,@PathVariable String ref_url , ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            System.out.println("In UrlController>result ");
+             User_Detail ud=get_UserDetails(request);
+             String cat_names="";
+       String title="";
+       String description="";
+            Poll_Ans_TblJDBCTemplate poll_ans_tbl=new Poll_Ans_TblJDBCTemplate();
+            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+          List<Category> list1 = poll_tbl.getCat_list();
+         for(int tk=0;tk<list1.size();tk++)
+        cat_names = cat_names  + "," + list1.get(tk).getCategory_name();
+        
+       
+       title= title+poll_tbl.getTitle();
+        description = description + poll_tbl.getTitle() +"   " + poll_tbl.getDescription();
+       String keywords="pollican,viewpolls,polls,surveys"+cat_names;
+     
+       model.addAttribute("title",title);
+       model.addAttribute("description",description);
+        model.addAttribute("keywords",keywords );
+        String url="www.pollican.com/result/"+pid+"/a";
+            model.addAttribute("url",url);
+	
+            String rslt=gson.toJson(poll_tbl);
+            model.addAttribute("poll", rslt);
+            
+            List<Poll_Ans_Tbl> poll_ans_tbl_list=poll_ans_tbl.get_PollResult(pid);
+           
+            rslt=gson.toJson(poll_ans_tbl_list);
+             
+            model.addAttribute("result", rslt);
+            model.addAttribute("page", "result");
+           if(ud!=null)
+               model.addAttribute("logged", 1);
+           else
+               model.addAttribute("logged", 0);
+           
+            
+       
+           return "geoviz";
+   } 
    
+  @RequestMapping(value = "/geoviz/{pid}",method = RequestMethod.GET)
+   public void geoviz(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            Poll_TblJDBCTemplate poll_tbljdbc=new Poll_TblJDBCTemplate();
+            Poll_Tbl poll_tbl=poll_tbljdbc.getPoll(pid);
+	   response.sendRedirect(pid+"/"+poll_tbl.getPoll_link());
+   }
+   @RequestMapping(value = "/geoviz",method = RequestMethod.GET)
+   public String geoviz_plain(@PathVariable int pid, ModelMap model,HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException {
+            return "index";
+   }
 }
