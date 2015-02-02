@@ -187,7 +187,7 @@ public class UrlController extends Parent_Controller{
 	   return "index";
    }
   
-    @RequestMapping(value = "/register1", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/register1", method = RequestMethod.POST)
    public String signUp1(ModelMap model,HttpServletRequest request){
      
        //model.addAttribute("response",request.getParameter("resp"));
@@ -204,7 +204,7 @@ public class UrlController extends Parent_Controller{
            return "register2";
        }
        
-   
+   */
     
    @RequestMapping(value = "/redirect", method = RequestMethod.GET)
    public String redirect() {

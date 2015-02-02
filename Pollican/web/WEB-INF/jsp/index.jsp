@@ -50,6 +50,7 @@ var gender;
    var array2 = new Array();
             var array3 = new Object();
     $(document).ready(function(){
+        $("#loading").hide();
         
         $("#alert_box").hide();
     });//555702664544677
@@ -134,37 +135,41 @@ var gender;
   }
 function Login()
 	{
+            $("#fb_login_btn2").hide();
+            $("#loading").show();
             FB.login(function(response) {
                if (response.status === 'connected') {
             
             getUserInfo(response);
-           
+            
                
              } else if (response.status === 'not_authorized') {
-               alert(2)
+                 $("#fb_login_btn2").show();
+                 $("#loading").hide();
+               
+               Alerts('alert-danger',"Please authenticate Pollican on facebook to login");
              } else {
+                 $("#fb_login_btn2").show();
+            $("#loading").hide();
+               
                // The person is not logged into Facebook, so we're not sure if
                // they are logged into this app or not.
+               Alerts('alert-danger',"Please login into facebook and authenticate Pollican");
              }
-            }, {scope: 'public_profile,email,user_location,user_hometown,user_birthday,user_friends,user_interests'});
+            }, {scope: 'public_profile,email,user_location,user_birthday,user_friends'});
+        
+        
         }	
      
   function getUserInfo(response1) {
         var auth_response=response1;
 	FB.api('/me', function(response) {
                 
-                    console.log('response');
-                     console.log(auth_response);
-                      console.log(response);
-
-                        console.log('responseend');
-                   name = response.name;
+                    
+                  
                    username=response.username;
-                   userid = response.id;
+                  
                    email = response.email;
-                   link = response.link; 
-                   birthdate = response.birthday;
-                   gender=response.gender;
                    fb=username;
                    var fb_response=response;
                    //profile_pic=response.data.url;
@@ -199,38 +204,24 @@ function Login()
                                      
                                         else
                                         {
-                                          
-                                           
-                                          if(red_url!=="" && red_url.indexOf("red_url")!==-1)
-                                                {
-
-                                                    var tmp=red_url.split("=");
-                                                    document.getElementById("resred_url").value=tmp[1];
-                                                   
-                                                }
-                                          else
-                                                {
-                                                    document.getElementById("resred_url").value="";
-                                                }
-                                          
-                                           // $("#f1").append("<input type='hidden' name='response' value='"+response+"'");
-                                           document.getElementById("resp").value=JSON.stringify(response);
-                                            document.f1.submit();
+                                          Alerts('alert-danger',"Please login into facebook and authenticate Pollican");
                                         }
                                         
                                 }
                         });
           
                       });
-              
+              $("#fb_login_btn2").show();
+            $("#loading").hide();
     });
+    return true;
     }
   function Alerts(alert_type,alert_mesg)
   {
        $("#alert_box").empty().append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
  // document.getElementById()
- function directLogin(lid)
+ /*function directLogin(lid)
  {
      
      var direct_username=$("#login_username"+lid).val();
@@ -266,7 +257,7 @@ function Login()
                                 });
                                        
  }
- 
+ */
 </script>
         <style>
              #accordion-resizer {
@@ -344,9 +335,9 @@ function Login()
               </li>-->
               <li>
                   
-                  <form class="navbar-form navbar-right" role="form" action="#" onsubmit="return directLogin(1)">
+                 <!-- <form class="navbar-form navbar-right" role="form" action="#" onsubmit="return directLogin(1)">
             <div class="form-group">
-              <!--<button class="btn btn-facebook" onclick="Login()" id='fb_login_btn'><i class="fa fa-facebook"></i> | Connect with Facebook</button>-->
+              
             </div>
             <div class="form-group">
               <input type="text" class="form-control" id="login_username1" placeholder="Handle/e-mail id">
@@ -355,7 +346,7 @@ function Login()
               <input type="password" class="form-control" id="login_pwd1" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+          </form>-->
               </li>
             <!--  
               <li>
@@ -366,13 +357,7 @@ function Login()
         </div>
       </div>
     </nav>
-    <!--<div class="jumbotron">
-      <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><button class="btn btn-facebook" onclick="Login()" id='fb_login_btn'><i class="fa fa-facebook"></i> | Connect with Facebook</button></p>
-      </div>
-    </div>-->
+    
     <!--begin bg-carousel-->
 <div id="bg-fade-carousel" class="carousel slide carousel-fade" data-ride="carousel">
 <!-- Wrapper for slides -->
@@ -388,10 +373,11 @@ function Login()
         </div>
     </div><!-- .carousel-inner --> 
     <div class="container carousel-overlay text-center">
+        
         <h1 style="color: #1c1b1e;">Create Polls/Surveys, Get Answers, Take the Right Decisions</h1>
         <h2 style="color: #1c1b1e;">It's Absolutely Free!</h2>
         <button class="btn btn-facebook btn-lg" onclick="Login()" id='fb_login_btn2'><i class="fa fa-facebook"></i> | Connect with Facebook</button>
-        
+        <img id="loading" src="${delimiter}pages/resources/img/load_bar_4.gif"/>
      
     </div>
 </div><!-- .carousel --> 
@@ -401,7 +387,7 @@ function Login()
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-            <h2>Login/Sign-in</h2>
+            <!--<h2>Login/Sign-in</h2>
            <form role="form" action="#" onsubmit="return directLogin(0)">
             <div id="loginForm" class="form-horizontal">
                 <div class="form-group">
@@ -424,7 +410,7 @@ function Login()
                 </div>
                 
             </div>
-             </form> 
+             </form> -->
         </div>
        
       </div>
