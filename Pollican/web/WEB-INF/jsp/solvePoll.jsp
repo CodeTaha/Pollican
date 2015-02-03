@@ -13,22 +13,23 @@
 <%@page import="User_Manager.User_Detail"%>
 <%@include file="header.jspf" %>
         
-        <div id="page-wrapper">
+        <div id="page-wrapper" >
 
             <div class="container-fluid" >
                 
                
                 <div class='row' >
-                    <div class='col-sm-12 col-md-12 col-lg-12 center' id="titleArea">
+                    <div  class='col-sm-12 col-md-12 col-lg-12 center' id="titleArea">
                        
                         
                     </div>
                   
                     <div class='col-sm-12 col-md-8 col-lg-6 col-sm-offset-0 col-md-offset-2 col-lg-offset-3' id="pollArea">
-                       <input type="checkbox" id="anonymous"/>Solve Anonymously
-                        
+                       <p></p>
+                        <input type="checkbox" id="anonymous"/><b>Solve Anonymously</b>
+                     <p></p>    
                     </div>
-                     
+                    
                 </div>
                 <div class='row'>
                      <div class='col-sm-12 col-md-8 col-lg-6 col-sm-offset-0 col-md-offset-2 col-lg-offset-3' id='submitSurvey'>
@@ -41,8 +42,7 @@
             </div>
                 
             </div>
-</div>      
-</div>
+
  <script src="../../pages/resources/js/jquery.multiselect.js"></script>
         <link rel="stylesheet" type="text/css" href="../../pages/resources/css/jquery.multiselect.css">
         

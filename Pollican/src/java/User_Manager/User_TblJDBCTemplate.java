@@ -347,6 +347,26 @@ IN profile_pic_i varchar(45),IN fb_i varchar(100), IN category_list_json_i varch
        return true;
     }
     
+   public boolean updateCreatedUser(String citystr,String countrystr, int useruid)
+   {
+      System.out.println(citystr);System.out.println(countrystr);
+      //System.out.println(datebirth);
+      System.out.println(useruid);
+      SQL="update user_detail set country=? , city=?   where uid=?";
+      try
+      {
+          jdbcTemplateObject.update(SQL,countrystr,citystr,useruid);
+      
+      }
+     catch(DataAccessException e)
+        {
+            System.out.println("Error occured in User_TblJDBC>updateCreatedUser "+e);
+           return false;
+        }
+       return true;
+   
+   }
+    
     public boolean follow_Unfollow(int loggedin_user, int profile_user, int cmd) throws SQLException
     {
         /* 

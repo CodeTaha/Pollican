@@ -1,6 +1,8 @@
 <%@include file="header.jspf" %>
-    <script>
-        var followers,following;
+
+<script>
+
+    var followers,following;
          var profile=${profile}; 
         var loggedin=${loggedin};
         var uid=${uid};
@@ -44,22 +46,22 @@ $("#user_everything").append('<br/><b>City </b>: '+city+'<br/><b> Country </b>: 
 $("#dp").append("<b> Profile Picture</b> <img width='50' height='50' src="+profile_pic+">").append("<br><b> Followers</b>:"+profile['follow']['followers'].length).append("<b> Following</b>:"+profile['follow']['following'].length);
 
 */
-$("#pic").append("<img width='100' height='100' class='media-object dp img-circle'  src="+profile_pic+"><p></p>");
+$("#pic").append("<img width='135' height='135' style='z-index:2000;' class='media-object dp img-circle'  src="+profile_pic+"><p></p>");
 $("#name").append('<h2><b>'+name+'</b></h2><p></p>');
 $("#follow").append("<br/><b >"+profile['follow']['followers'].length+"</b>&nbsp<br/>");
 $("#followinguser").append("<br/><b >"+profile['follow']['following'].length+"</b>&nbsp<br/>");
 $("#fishes").append("<br/><b >"+fish+"</b>&nbsp<br/>");
-$("#handle").append("<p></p><b>Pollican Handle : @"+handle+"</b>");
-$("#city").append("<b>City : "+city+"</b>");
-$("#country").append("<b>Country : "+country+"</b>");
-$("#sex").append("<b>Gender : "+sex+"</b>");
-$("#dob").append("<b>Date of Birth : "+dob+"</b>");
+$("#handle").append("<p></p>&nbsp&nbsp<b>Pollican Handle : @"+handle+"</b>");
+$("#city").append("&nbsp&nbsp<b>City : "+city+"</b>");
+$("#country").append("&nbsp&nbsp<b>Country : "+country+"</b>");
+$("#sex").append("&nbsp&nbsp<b>Gender : "+sex+"</b>");
+$("#dob").append("&nbsp&nbsp<b>Date of Birth : "+dob+"</b>");
 $("#follUnfoll").append("<p></p>");
-
+//$("#timeline_pic").append("<img id='bigpic'  src="+profile_pic+">");
 if(profile['uid']==uid)
 {
-   // $("#pic").append('<br/><button class="btn btn-primary" onclick=editProfile();>Edit Profile</button>');
-    
+    $("#pic").append('<br/><left><button id="editprofile" class="btn btn-primary" onclick=editProfile();>Edit Profile</button></left>');
+  
 }
 else
 {
@@ -228,13 +230,96 @@ function pollResult(pid)
                      var win = window.open("../result/"+pid, '_blank');
                 win.focus();    
             }
+            
+  var cityfetched=JSON.stringify(profile['city']).substring(1,JSON.stringify(profile['city']).length-1);
+  var countryfetched=JSON.stringify(profile['country']).substring(1,JSON.stringify(profile['country']).length-1);
 function editProfile()
            {    
-                 //location.href="";
-             //$('form').attr(editProfile);
-               //window.location="editProfile";
-             }
+               $("#editprofile").hide();
+               $("#dob").append("<div id='temporary' style='background-color:white;'><br/></div>");
+               $("#temporary").show();
+                  $("#city").empty();
+       $("#city").append("<div class='form-group'><label class='control-label' for='"+city+"'>&nbsp City:</label><textarea  id='editcity' value='"+city+"' class='form-control' ></textarea></div>");
+     //  console.log("city");
+     var citystr=cityfetched; 
+        var citylen=citystr.length;
+        $("#editcity").val(citystr);
+        
+     
+                  $("#country").empty();
+       $("#country").append("<div class='form-group'><label class='control-label' for='"+country+"'>&nbsp Country:</label><textarea  id='editcountry' value='"+country+"' class='form-control' ></textarea></div>");
+        var countrystr=countryfetched; 
+        var clen=countrystr.length;
+        $("#editcountry").val(countrystr);
+        
+        
+      //  $("#sex").empty();
+       //$("#sex").append("<div class='form-group'><label class='control-label' for='"+sex+"'>Sex:</label><textarea  id='editsex' value='"+sex+"' class='form-control' ></textarea></div>");
+        //var sexstr=JSON.stringify(profile['sex']); 
+        //var sexlen=sexstr.length;
+        //$("#editsex").val(sexstr.substring(1,sexlen-1));
+        
+  //      $("#dob").empty();
+    //   $("#dob").append("<div class='form-group'><label class='control-label' for='"+dob+"'>DOB:</label><textarea  id='editdob' value='"+dob+"' class='form-control' ></textarea></div>");
+  //var datebirth=JSON.stringify(profile['dob']);
+    //    var dlen=datebirth.length;
+      //  $("#editdob").val(datebirth.substring(1,dlen-1));
+   
+       $("#submitchanges").append('<br/><left><button class="btn btn-success" onclick="submittedchanges()";>Submit Changes</button></left><p></p>');       
+        
+        
+    }
  
+ function submittedchanges()
+ {
+    // console.log(JSON.stringify(profile['dob']));
+   //  console.log(profile['uid']);
+     
+      cityfetched=$("#editcity").val();
+      countryfetched=$("#editcountry").val();
+    // var dobfetched=$("#editdob").val();
+     console.log(cityfetched);console.log(countryfetched);
+     //console.log(dobfetched);
+        
+                     $.ajax({
+                                type: "POST",       // the dNodeNameefault
+                                url: "../editprofiledetails",
+                                data: {citystr : cityfetched, countrystr : countryfetched, uidp : profile['uid']},
+                                success: function(data){
+                                            //alert(data);
+                                            console.log("data passed");
+                                                                    
+                                }
+                        });
+        
+     $("#editprofile").show();
+     $("#temporary").remove();
+      var citystr=cityfetched; 
+      var countrystr=countryfetched;    
+     // var datebirth=JSON.stringify(profile['dob']);        
+      
+     $("#city").empty();$("#country").empty();
+    // $("#sex").empty();
+   //  $("#dob").empty();
+   
+        var citylen=citystr.length;
+        $("#city").append("&nbsp&nbsp<b>City : "+citystr+"</b>");
+ 
+     
+        var clen=countrystr.length;   
+        $("#country").append("&nbsp&nbsp<b>Country : "+countrystr+"</b>");
+
+ //var sexstr=JSON.stringify(profile['sex']); 
+   //     var sexlen=sexstr.length;
+   //$("#sex").append("&nbsp&nbsp<b>Gender : "+sexstr.substring(1,sexlen-1)+"</b>");
+
+
+      //  var dlen=datebirth.length;
+        //$("#dob").append("&nbsp&nbsp<b>Date of Birth : "+datebirth.substring(1,dlen-1)+"</b>");
+   
+        
+        $("#submitchanges").empty();
+ }
 function follow(cmd)
 { 
     $.ajax({
@@ -261,22 +346,41 @@ function follow(cmd)
            }
     });
 }
+//$("#timeline").niceScroll({cursorcolor:"#111111"});
     </script>
    <style>
-     #timeline::-webkit-scrollbar {
+        #timeline::-webkit-scrollbar {
 width: 15px;
 height: 15px;
 }
 #timeline::-webkit-scrollbar-track-piece  {
-background-color: whitesmoke;
+//background-color: #DFDCD9;
+//background: linear-gradient(to bottom,#DFDCD9,white);
 }
 #timeline::-webkit-scrollbar-thumb:vertical {
 height: 30px;
-background-color: whitesmoke;
+//background-color: #DFDCD9;
+//background: linear-gradient(to bottom,#DFDCD9,white);
 }
 
 #timeline { overflow:hidden;height:600px; }
 #timeline:hover { overflow-y:scroll; }
+
+  #uexp::-webkit-scrollbar {
+width: 15px;
+height: 15px;
+}
+#uexp::-webkit-scrollbar-track-piece  {
+background-color: whitesmoke;
+
+}
+#uexp::-webkit-scrollbar-thumb:vertical {
+height: 30px;
+background-color: whitesmoke;
+}
+
+#uexp { overflow:hidden;height:250px; }
+#uexp:hover { overflow-y:scroll; }
 
        
 .media
@@ -293,20 +397,51 @@ background-color: whitesmoke;
     .dp:hover
     {
         border:2px solid #eee;
-        transform:rotate(360deg);
-        -ms-transform:rotate(360deg);  
-        -webkit-transform:rotate(360deg);  
+        transform: scale3d;
+        //transform:rotate(360deg);
+        //-ms-transform:rotate(360deg);  
+        //-webkit-transform:rotate(360deg);  
         /*-webkit-font-smoothing:antialiased;*/
     }
+    
+  //  #bigpic{
+    //    width: 100%;
+      // min-height:100px;
+      // max-height: 280px;
+      // z-index:3000;
+     //background-color: white;
+    //}
+    
+    #pic{
+        margin-top: 10px;
+       // z-index: 2000;
+        margin-left: 40px;
+       // background-color:white; 
+    }
+  //  #timeline_pic{
+    //    margin-left: -14px;
+       // background: linear-gradient(to bottom, #9c9e9f, #f6f6f6);
+    //}
+    
+    #page-wrapper {
+   // position: fixed;
+  background: linear-gradient(to bottom, whitesmoke, white); 
+}
+
+    #csff {
+   // position: fixed;
+  //background: linear-gradient(to bottom,#DFDCD9,white); 
+}
+
    </style>
    
-   <div id="page-wrapper" data-spy="scroll" data-target="#info" style="background-color:whitesmoke ">
+   <div id="page-wrapper" data-spy="scroll" data-target="#info" style="">
             
              <div class="container-fluid" >
-                 <div class="row col-md-12"  >
                   
-                   
-                       <div  id="info"  style=" height: auto; background-color: lavender;" class="col-md-4 col-xs-12 col-sm-12">
+                
+                 <div class="row col-md-12" style="background-color:white" >
+                       <div  id="info"  style=" height: auto; background-color: white;" class="col-md-4 col-xs-12 col-sm-12 col-lg-4">
                          
                            
                               
@@ -329,7 +464,7 @@ background-color: whitesmoke;
                                           <b>followers</b>
                                         </div>
 
-                                        <div id="followinguser"  class="col-md-4 label label-primary">
+                               <div id="followinguser"  class="col-md-4 label label-primary">
                                           <b>followings</b>
                                         </div>
 
@@ -344,35 +479,39 @@ background-color: whitesmoke;
                                  
                            <div id="handle_city_country_sex_dob_uexp"  >
                                
-                                        <div id="handle" >
+                                        <div id="handle" style="background-color:#d4d4d4">
                                           
                                         </div>
-
-                                        <div id="city" >
+                                           <div id="sex" style="background-color:#d4d4d4" >
 
                                         </div>
 
-                                        <div id="country">
+                                     <div id="dob" style="background-color:#d4d4d4">
+
+                                        </div>
+                                       
+                                       <div id="city" style="background-color:#d4d4d4" >
+
+                                        </div>
+
+                                        <div id="country" style="background-color:#d4d4d4">
 
                                         </div>
                                         
-                                        <div id="sex" >
-
+                                    
+                                        
+                                        <div id="submitchanges">
+                                   
                                         </div>
-
-                                        <div id="dob" >
-
-                                        </div>
-
-                                        <div id="uexp">
-                                         <h3 >user experience</h3>
+                                        <div id="uexp" class="tab-content pre-scrollable " style="background-color:whitesmoke; height: auto; max-height:264px;scrollbar-base-color:F5F5F5; scrollbar-arrow-color:F5F5F5; " >
+                                         <center><h2>user experience</h2></center>
                                         </div>
                             </div>
                            
                               
                            </div>    
                              
-                      <div id="csff" class="col-md-6 col-xs-12 col-sm-12" >
+                      <div id="csff" class="col-md-6 col-xs-12 col-sm-12 col-lg-6" style="background-color:#DFDCD9" >
                           
                              <ul id="myTab1" class="nav nav-tabs " style="background-color: #111111;">
                                 <li class="active " >
@@ -394,7 +533,7 @@ background-color: whitesmoke;
                                 </li>
                              </ul>
                               
-                           <div id="timeline" class="tab-content pre-scrollable " style=" height: auto; max-height:500px;scrollbar-base-color:F5F5F5; scrollbar-arrow-color:F5F5F5; ">
+                           <div id="timeline" class="tab-content pre-scrollable " style=" height: auto; max-height:644px;scrollbar-base-color:F5F5F5; scrollbar-arrow-color:F5F5F5; ">
             
                            <div class="tab-pane fade in active" id="createdPolls" style="width: 100%">
                            </div>
@@ -412,8 +551,7 @@ background-color: whitesmoke;
         
                        </div>
                        
-       
-                       <div id="suggestions" style="background-color: lavender;"  class="col-md-2 col-xs-12 col-sm-12 ">
+       <div id="suggestions" style="background-color:white ;height:auto; max-height:500px;"  class="col-md-2 col-xs-12 col-sm-12 col-lg-2 ">
                            
                              <b>  Suggestions</b>                           
                        </div> 

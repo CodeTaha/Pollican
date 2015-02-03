@@ -394,7 +394,37 @@ JSONObject json = (JSONObject)new JSONParser().parse(graph);
         }
    
    }
-    
+
+   @RequestMapping(value = "/editprofiledetails", method = RequestMethod.POST)
+   private void editprofiledetails( HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException, Exception {
+      
+          User_TblJDBCTemplate user_tblJDBCTemplate=new User_TblJDBCTemplate(); 
+       
+        response.setContentType("text/html;charset=UTF-8");
+       System.out.println("Ajax controller->editprofiledetails");
+       
+       String citystr= request.getParameter("citystr");
+       String countrystr= request.getParameter("countrystr");
+    //   String datebirth= request.getParameter("datebirth");
+      int useruid = Integer.parseInt(request.getParameter("uidp"));
+     //int useruid=1;
+      System.out.println("value of city"+citystr);System.out.println("value of country"+countrystr);
+      //System.out.println("value of dob"+datebirth);
+      System.out.println("value of uid"+useruid);
+      boolean rslt=user_tblJDBCTemplate.updateCreatedUser(citystr,countrystr,useruid);
+   if(rslt)
+   {
+     System.out.println("successful");
+   }
+   else
+   {
+     System.out.println("unsuccessful");
+   }
+   
+   }
+   
+   
+   
     @RequestMapping(value = "/directLogin", method = RequestMethod.POST)
    private void directLogin(HttpServletRequest request,HttpServletResponse response) throws SQLException, IOException, ServletException, Exception {
        User_Manager.User_TblJDBCTemplate user=new User_TblJDBCTemplate();
