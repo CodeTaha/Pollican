@@ -11,6 +11,12 @@ import User_Manager.User_TblJDBCTemplate;
 import com.google.gson.Gson;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 /**
  *
  * @author abc
@@ -18,9 +24,21 @@ import java.util.List;
 public class Poll_Ans_Tbl {
     private int poll_ans_key,pid,uid,anonymous;
     List<Qtn> qtn;
-    String solve_ts;
+    String solve_ts; 
+    String  geo_json;
     Gson gson=new Gson();
    User_Detail user;
+
+    public String getGeo_json() {
+        return geo_json;
+    }
+
+    public void setGeo_json(String geo_json) {
+    
+            
+            this.geo_json = "["+geo_json+"]";
+       
+    }
 
    
     public List<Qtn> getQtn() {
@@ -53,10 +71,6 @@ public class Poll_Ans_Tbl {
 
     public void setUid(int uid){
         this.uid = uid;
-        
-       
- 
-     
     }
 
     

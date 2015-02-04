@@ -477,7 +477,7 @@ public class UrlController extends Parent_Controller{
            else
                model.addAttribute("logged", 0);
            
-            
+            model.addAttribute("delimiter", "../../");
        
            return "geoviz";
    } 

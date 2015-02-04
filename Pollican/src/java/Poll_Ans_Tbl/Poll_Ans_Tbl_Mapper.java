@@ -10,6 +10,9 @@ import User_Manager.User_Detail;
 import User_Manager.User_TblJDBCTemplate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.parser.ParseException;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -27,6 +30,7 @@ public class Poll_Ans_Tbl_Mapper implements RowMapper<Poll_Ans_Tbl> {
       
       poll_ans_tbl.setSolve_ts(rs.getString("solve_ts"));
       poll_ans_tbl.setQtn(rs.getString("ans_json"));
+      poll_ans_tbl.setGeo_json(rs.getString("geolocation_json"));
       int anonymous=rs.getInt("anonymous");
       poll_ans_tbl.setAnonymous(anonymous);
       User_Detail user=new User_Detail();
