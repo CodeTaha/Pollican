@@ -299,7 +299,7 @@ response.setDateHeader("Expires", 0); // Proxies.
             });
             
             function submitAns()
-            {
+            {   $("#submitAns").prop("disabled", true);
                 var finalAns=new Array();
                 console.log("In submit ans");
                 console.log(qtnJSON);
@@ -383,11 +383,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                                         {
                                             $("#pollArea").empty();
                                             $("#submitSurvey").empty();
-         /*  $("#submitSurvey").append("<a class='btn btn-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/result/"+pid+"/pollican' target='_blank'><i class='fa fa-facebook'></i> | Share</a>");
-           $("#submitSurvey").append("<a class='btn btn-twitter' href='http://twitter.com/share?text=Amazing_Poll_on_Pollican&url=http://www.pollican.com/result/"+pid+"/pollican&hashtags=pollican' target='_blank'><i class='fa fa-twitter'></i> | tweet</a><br/>");
-           $("#submitSurvey").append("Share Link : <input class='form-control'  name='share_url' value='http://www.pollican.com/result/"+pid+"/pollican' type='text' size='40' title='Share link' onClick='this.setSelectionRange(0, this.value.length)' autofocus></div>");
-       */
-      $("#submitSurvey").append('<h1>Your solution has been successfully submitted!</h1><p>Now you can View Result, Share it, tweet it or embed it with the link given below</p>');
+       $("#submitSurvey").append('<h1>Your solution has been successfully submitted!</h1><p>Now you can View Result, Share it, tweet it or embed it with the link given below</p>');
       $("#submitSurvey").append("<center><a href='${delimiter}result/"+pid+"/pollican' style=' text-decoration: none;'><button class='btn btn-success'>View Result</button></a><center>");
                                         
       $("#submitSurvey").append('<div class="row" id="share_id"><a class="btn btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.pollican.com/result/'+pid+'/pollican" target="_blank"><i class="fa fa-facebook"></i> | Share</a>&nbsp;<a class="btn btn-twitter" href="http://twitter.com/share?text=Amazing_Poll_on_Pollican&amp;url=http://www.pollican.com/result/'+pid+'/pollican&hashtags=pollican" target="_blank"><i class="fa fa-twitter"></i> | tweet</a><p></p><input class="form-control" name="share_url" value="http://www.pollican.com/result/'+pid+'/pollican" type="text" size="40" title="Share link" onclick="this.setSelectionRange(0, this.value.length)" autofocus=""></div>');
@@ -395,7 +391,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                                         }
                                                 //location.reload(true);
                                 }
-                        });
+                        });  
               
             }
         </script>
