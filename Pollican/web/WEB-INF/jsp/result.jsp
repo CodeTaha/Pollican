@@ -1408,26 +1408,53 @@ var relist=new Array();
            var x=0,h=0;
             var y=1,g=0;
             var i12=1;
+            var count=0;
+            var datastore=new Array();
+           var j2=0;
+           var index=0;
+           var loopchk=0;
+            console.log("json array");console.log(jsonArr);console.log("array length");console.log(jsonArr.length/jsonArr[1]["label"].length);
+            console.log("jsonArr[1]['label'].length");console.log(jsonArr["label"]);
         for(var i=0;i<jsonArr.length;i++)
         {
             x=0;
             y=1;
             h=0;
             g=0;
-            //i12=1;
+          //  j2=0;
+          // index=0;
             for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
             {   
                 if(jsonArr[i]["label"].slice(x,y)==="+")
             {
                 h=x;
-                g=y;            
+                g=y;
+                var tem=jsonArr[i]["label"].slice(0,h);
+               if(match(jsonArr[j2]["label"].slice(0,h),tem))
+               { 
+                   count++;
+                   if(loopchk===0)
+                datastore[index]=jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);index++;   
+               }
+               if(jsonArr[j2]["label"].slice(0,h)!==tem)
+               {
+                   j2=i;
+                   count=0;
+                   loopchk++;;
+               }
+               //if(i===0)
+               //{   
                 
-               // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
+                //}
+     // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
                  // for(var i=1;i<jsonArr.length+1;i++)
-      // {
-        header[i12]="row:"+jsonArr[i]["label"].slice(0,h)+", column:"+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
+       if(count===1)
+       {  header[i12]=jsonArr[i]["label"].slice(0,h);
+          
             i12++;
-       // }     
+            
+           // count=0;
+        }     
              }
             x++;
             y++;
@@ -1435,14 +1462,21 @@ var relist=new Array();
             }       
          }
       
-        
+        function match(text,text1)
+        {
+           if(text===text1) 
+            return true;
+            else 
+            return false;
+        }
          //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
  
        //}
       
        //$(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
-       
+       console.log("datastore");
+       console.log(datastore);
        for(var i=0;i<header.length;i++)
             clistJSON.push(header[i]);
         
@@ -1459,54 +1493,66 @@ var relist=new Array();
                         }
        
        
-        var myArr = new Array(noOfRows);
-        for(var pdr=0;pdr<noOfRows;pdr++)
-          myArr[pdr]=new Array(noOfColumns);
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-            myArr[pdr][pdc]=0;
-        }
+     //   var myArr = new Array(noOfRows);
+      //  for(var pdr=0;pdr<noOfRows;pdr++)
+        //  myArr[pdr]=new Array(noOfColumns);
+        //for(var pdr = 0; pdr < noOfRows ; pdr++)
+          //  for(var pdc=0; pdc <noOfColumns ; pdc++ )
+        //{
+          //  myArr[pdr][pdc]=0;
+        //}
      
        // for(var pdr = 0; pdr < noOfRows ; pdr++)
          //   for(var pdc=0; pdc <noOfColumns ; pdc++ )
        // {
           // console.log("alia"+myArr[pdr][pdc]);
        // }
-       
+        var totvalue=new Array(header.length);
+          for(var ind=1;ind<header.length;ind++)
+        {
+            totvalue[ind]=0;
+        }
+      
        
         for(var i=0 ; i < result.length;i++ )
         {
-               var mocArr=new Array(noOfColumns*noOfRows+1);
-             for(var t=0 ; t < mocArr.length;t++ )
-        { 
-            mocArr[t]=0;
-        }
+               var mocArr=new Array(noOfColumns+1);
+        //     for(var t=0 ; t < mocArr.length;t++ )
+        //{ 
+         //   mocArr[t]=0;
+        //}
              
                     //var tUID="<td>"+result[i]['uid']+"</td>"; 
            mocArr[0]="<i><a href='../../profile/"+result[i]['user']['handle']+"'>@"+result[i]['user']['handle']+"</a></i>";
        //    console.log("f1 "+mocArr[0]);
            var i12=1;
                     
-            for(var pdr = 0; pdr < noOfRows ; pdr++)
-            {  for(var pdc=0; pdc <noOfColumns ; pdc++ )
-               {  
-                    myArr[pdr][pdc]=0;
+          //  for(var pdr = 0; pdr < noOfRows ; pdr++)
+           // { 
+            var pdr=0;
+            
+                   // myArr[pdr][pdc]=0;
+                   
                  for(var temp2 = 0; temp2 < result[i]['qtn'][p]['ans'].length; temp2++)
                  {
+                    
+                   for(var pdc=0; pdc <noOfColumns ; pdc++ )
+                 {           
                      if(result[i]['qtn'][p]['ans'][temp2] ===(pdr+","+pdc))
                      { 
-                         myArr[pdr][pdc] = 1;
-                         
+                         mocArr[i12] = datastore[pdc];
+                         i12++;
+                          totvalue[pdr+1]=totvalue[pdr+1]+1;
                      }    
              
                  }
+                 pdr++;
                  //tUID = tUID + "<td>"+myArr[pdr][pdc]+"</td>";
                //for(i12=1 ; i12<mocArr.length;i12++)
-                 mocArr[i12++]=myArr[pdr][pdc]; 
+                 //mocArr[i12++]=myArr[pdr][pdc]; 
                  
                }
-            }
+          //  }
            // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
          //  console.log("lll "+mocArr);
             relist.push(mocArr);
@@ -1531,7 +1577,7 @@ var relist=new Array();
        {
         
          //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       mocTotal[i5]=jsonArr[i5-1]["n"];
+       mocTotal[i5]=totvalue[i5];
       }
         
 
@@ -1545,29 +1591,77 @@ var relist=new Array();
           if(poll['qtn_json'][j]['qtn_type']==="momc" )
            {
            var x=0,h=0;
-            var y=1,g=0;var i12=1;
+            var y=1,g=0;
+            var i12=1;
+            var count=0;
+            var datastore=new Array();
+           var j2=0;
+           var index=0;
+           var loopchk=0;
+            console.log("json array");console.log(jsonArr);console.log("array length");console.log(jsonArr.length/jsonArr[1]["label"].length);
+            console.log("jsonArr[1]['label'].length");console.log(jsonArr["label"]);
         for(var i=0;i<jsonArr.length;i++)
         {
             x=0;
             y=1;
             h=0;
             g=0;
+          //  j2=0;
+          // index=0;
             for(var j1=0;j1<jsonArr[i]["label"].length;j1++)
             {   
                 if(jsonArr[i]["label"].slice(x,y)==="+")
             {
                 h=x;
-                g=y;            
+                g=y;
+                var tem=jsonArr[i]["label"].slice(0,h);
+               if(match(jsonArr[j2]["label"].slice(0,h),tem))
+               { 
+                   count++;
+                   if(loopchk===0)
+                datastore[index]=jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);index++;   
+               }
+               if(jsonArr[j2]["label"].slice(0,h)!==tem)
+               {
+                   j2=i;
+                   count=0;
+                   loopchk++;;
+               }
+               //if(i===0)
+               //{   
                 
-               // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
-                header[i12]="row:"+jsonArr[i]["label"].slice(0,h)+", column:"+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length);
-            i12++;     
+                //}
+     // td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";       
+                 // for(var i=1;i<jsonArr.length+1;i++)
+       if(count===1)
+       {  header[i12]=jsonArr[i]["label"].slice(0,h);
+          
+            i12++;
+            
+           // count=0;
+        }     
              }
             x++;
             y++;
         
             }       
          }
+      
+        function match(text,text1)
+        {
+           if(text===text1) 
+            return true;
+            else 
+            return false;
+        }
+         //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
+        // var td2="<td>"+jsonArr[i]["n"]+"</td>";
+ 
+       //}
+      
+       //$(tbl_id).append("<thead><tr>"+td1+"</tr></thead>"); 
+       console.log("datastore for momc");
+       console.log(datastore);
        // console.log("values of moc");
         //console.log(h);console.log(g);console.log(jsonArr.length);
         //console.log("values of jsonArr");
@@ -1605,27 +1699,34 @@ var relist=new Array();
         
         
         
-              var myArr = new Array(noOfRows);
-        for(var pdr=0;pdr<noOfRows;pdr++)
-          myArr[pdr]=new Array(noOfColumns);
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
-            myArr[pdr][pdc]=0;
-        }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
+       //       var myArr = new Array(noOfRows);
+       // for(var pdr=0;pdr<noOfRows;pdr++)
+         // myArr[pdr]=new Array(noOfColumns);
+        //for(var pdr = 0; pdr < noOfRows ; pdr++)
+          //  for(var pdc=0; pdc <noOfColumns ; pdc++ )
+        //{
+          //  myArr[pdr][pdc]=0;
+        //}
+       // for(var pdr = 0; pdr < noOfRows ; pdr++)
+         //   for(var pdc=0; pdc <noOfColumns ; pdc++ )
+        //{
            //console.log("alia"+myArr[pdr][pdc]);
+        //}
+        var chklen=header.length;
+        var totvalue=new Array(header.length);
+          for(var ind=1;ind<header.length;ind++)
+        {
+            totvalue[ind]=0;
         }
+      
         for(var i=0 ; i < result.length;i++ )
         {   
            // var tUID="<td>"+result[i]['uid']+"</td>"; 
-               var momcArr=new Array(noOfColumns*noOfRows+1);
-             for(var t=0 ; t < momcArr.length;t++ )
-        { 
-            momcArr[t]=0;
-        }
+               var momcArr=new Array();
+           //  for(var t=0 ; t < momcArr.length;t++ )
+        //{ 
+          //  momcArr[t]=0;
+        //}
              
                     //var tUID="<td>"+result[i]['uid']+"</td>";
                     //<i><a href='../../profile/"+poll['user']['handle']+"'>@"+poll['user']['handle']+"</a></i>
@@ -1634,8 +1735,55 @@ var relist=new Array();
            var i12=1;
            
                     
+            var pdr=0;
+            var counter=0;
+           
+          var emptychecker=0;
+                   // myArr[pdr][pdc]=0;
+                   console.log("no fo cols");console.log(noOfColumns);
+                   
+                 for(var temp2 = 0; temp2 < result[i]['qtn'][p]['ans'].length; temp2++)
+                 {
+                    console.log("result[i]['qtn'][p]['ans'][temp2]");console.log(result[i]['qtn'][p]['ans'][temp2]);
+                   for(var pdc=0; pdc <noOfColumns ; pdc++ )
+                 {           
+                     if(result[i]['qtn'][p]['ans'][temp2] ===(pdr+","+pdc))
+                     { 
+                        if(counter>0)
+                        {
+                            momcArr[i12]=momcArr[i12]+", "+datastore[pdc];
+                            counter++;
+                            temp2++;
+                            totvalue[pdr+1]=totvalue[pdr+1]+1;
+                            console.log("totvalue array");console.log(totvalue);
+                        }
+                        else
+                        { momcArr[i12] = datastore[pdc];
+                            totvalue[pdr+1]=totvalue[pdr+1]+1;
+                         counter++;
+                         temp2++;
+                         console.log("totvalue array");console.log(totvalue);
+                        }  
+                          emptychecker=1;
+                        
+                     }    
+                   console.log("momc array");console.log(momcArr[i12]);console.log("pdc");console.log(pdc);console.log("pdr");console.log(pdr);
+               
                     
-            for(var pdr = 0; pdr < noOfRows ; pdr++)
+                }
+                 
+                 if(emptychecker===0)
+                 {
+                   momcArr[i12]=" ";
+                 }
+                temp2--; 
+                emptychecker=0;
+                 i12++;
+                 pdr++;
+                 counter=0;
+                 
+               }         
+         /*   for(var pdr = 0; pdr < noOfRows ; pdr++)
             {  for(var pdc=0; pdc <noOfColumns ; pdc++ )
                {  
                     myArr[pdr][pdc]=0;
@@ -1652,14 +1800,26 @@ var relist=new Array();
                   momcArr[i12++]=myArr[pdr][pdc]; 
                }
             }
-           // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+        */ 
+        // $(tbl_id).append("<tbody><tr>"+tUID+"</tr></tbody>"); 
+        console.log("momcArr");console.log(momcArr);console.log(datastore.length);console.log(momcArr.length);
+     var ll=momcArr.length;
+        for(var sb=0;sb<(chklen-momcArr.length);sb++)
+        {
+         momcArr[ll]=" ";
+          ll++;
+        }
+        
+        
+        
+        
            relist.push(momcArr);
         }
-        for(var pdr = 0; pdr < noOfRows ; pdr++)
-            for(var pdc=0; pdc <noOfColumns ; pdc++ )
-        {
+      //  for(var pdr = 0; pdr < noOfRows ; pdr++)
+        //    for(var pdc=0; pdc <noOfColumns ; pdc++ )
+        //{
            //console.log("bhatt"+myArr[pdr][pdc]);
-        }
+        //}
                 
               //  var td11="<td>TOTAL :</td>";
       // $(tbl_id).append("<td>"+poll['uid']+"</td>");
@@ -1673,14 +1833,14 @@ var relist=new Array();
         
      //   $(tbl_id).append("<tbody><tr>"+td11+"</tr></tbody>"); 
 
-
+console.log("final totvalue array");console.log(totvalue);
       var momcTotal=new Array(jsonArr.length+1);
       momcTotal[0]="TOTAL";
         for(var i5=1;i5<jsonArr.length+1;i5++)
        {
         
          //td11=td11+"<td>"+jsonArr[i]["n"]+"</td>";
-       momcTotal[i5]=jsonArr[i5-1]["n"];
+       momcTotal[i5]=totvalue[i5];
       }
         
 
@@ -1691,8 +1851,11 @@ var relist=new Array();
        
         }
       }  
+   //   $.fn.dataTable.ext.errMode = 'throw';
+
         $(tbl_id).dataTable(
           {  
+             
               paging: false,
           searching: false,
           destroy: true,
