@@ -339,7 +339,9 @@ $(document).ready(function(){
                
         qtnArray2[4]=JSON.stringify(rows.split("\n"));
         qtnArray2[5]=JSON.stringify(columns.split("\n"));
-        
+         columns=columns.replace(/\n/g, "<br>");
+        rows=rows.replace(/\n/g, "<br>");
+       
         
   
         $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-primary'>\n\
@@ -348,11 +350,11 @@ $(document).ready(function(){
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
+                                         <label class='control-label col-sm-6' for='name'>Type : <small>"+qtnTypeforDisplay+"</small></label>\n\
                                 </div>\n\
                       <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Columns : <small>"+columns+"</small></label>\n\
-                                          <label class='control-label col-sm-2' for='name'>Rows : <small>"+rows+"</small></label>\n\
+                                         <label class='control-label col-sm-6' for='name'>Columns : <small>"+columns+"</small></label>\n\
+                                          <label class='control-label col-sm-6' for='name'>Rows : <small>"+rows+"</small></label>\n\
                                     </div>\n\
                                     </div> \n\
                                   </div>\n\
@@ -369,19 +371,19 @@ $(document).ready(function(){
         qtnArray2[4]=JSON.stringify(rows.split("\n"));
         qtnArray2[5]=JSON.stringify(columns.split("\n"));
         
-        
-  
+        columns=columns.replace(/\n/g, "<br>");
+        rows=rows.replace(/\n/g, "<br>");
         $("#"+divsqid).append("<p><p><br></p></p><div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                         <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
-                                    <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type:<small>"+qtnTypeforDisplay+"</small></label>\n\
+                                    <div class='form-group '>\n\
+                                         <label class='control-label col-sm-6' for='name'>Type : <small>"+qtnTypeforDisplay+"</small></label>\n\
                                 </div>\n\
                       <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Columns :<small>"+columns+"</small></label>\n\
-                                          <label class='control-label col-sm-2' for='name'>Rows :<small>"+rows+"</small></label>\n\
+                                         <label class='control-label col-sm-6 ' for='name'>Columns : <small>"+columns+"</small></label>\n\
+                                          <label class='control-label col-sm-6 ' for='name'>Rows : <small>"+rows+"</small></label>\n\
                                   </div> \n\
                                   </div>\n\
                                   </div>\n\
@@ -397,18 +399,19 @@ $(document).ready(function(){
                 var answers=$("#answers"+selectbutton).val();
                
               qtnArray2[4]=JSON.stringify(answers.split("\n"));
-        qtnArray2[5]="";
+               qtnArray2[5]="";
         
+                answers=answers.replace(/\n/g, "<br>");
         $("#divsq"+selectbutton).append("<p><p><br></p></p><div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                         <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
+                                         <label class='control-label col-sm-6' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
                                 </div>\n\
                       <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Options : <small>"+answers+"</small></label>\n\
+                                         <label class='control-label' for='name'>Options : <small>"+answers+"</small></label>\n\
                                   </div> \n\
                                   </div>\n\
                                   </div>\n\
@@ -418,19 +421,20 @@ $(document).ready(function(){
             else
             {
               var answers=$("#"+answer).val();
+              
                 qtnArray2[4]=JSON.stringify(answers.split("\n"));
                  qtnArray2[5]="";
-                
+               answers=answers.replace(/\n/g, "<br>");
                $("#"+divsqid).append("<p><p><br></p></p> <div class='panel panel-primary'>\n\
                                 <div class='panel-heading'>\n\
                                         <h3 class='panel-title'>"+question+"</h3>\n\
                                 </div>\n\
                                 <div class='panel-body'>\n\
                                     <div class='form-group'>\n\
-                                         <label class='control-label col-sm-2' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
+                                         <label class='control-label col-sm-6' for='name'>Type: <small>"+qtnTypeforDisplay+"</small></label>\n\
                                     </div>\n\
                                     <div class='form-group'>\n\
-                                <label class='control-label col-sm-2' for='name'>Options : <small>"+answers+"</small></label>\n\
+                                <label class='control-label' for='name'>Options : <small>"+answers+"</small></label>\n\
                                      </div>\n\
                                   </div>\n\
                                   </div>\n\
@@ -441,6 +445,8 @@ $(document).ready(function(){
          }
         console.log("qtnArray2=");
         console.log(qtnArray2);
+        console.log("answers=");
+        console.log(answers);
         
         if(flag===1)
         {
