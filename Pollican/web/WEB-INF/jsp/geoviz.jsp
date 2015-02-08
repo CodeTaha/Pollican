@@ -10,9 +10,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../../pages/resources/js/jquery.min.js"></script>
+        <style>
+            div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;	/* Gets overriden by D3-assigned height below */
+				margin-right: 2px;
+				background-color: teal;
+			}
+        </style>
 
-
-
+<link rel="stylesheet" type="text/css" href="${delimiter}pages/resources/css/c3.css">
 
   <script src="../../pages/resources/template/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="../../pages/resources/template/css/bootstrap.css">
@@ -22,6 +30,7 @@
     <script src="${delimiter}pages/resources/js/d3.min.js"></script>
     <script src="${delimiter}pages/resources/js/topojson.min.js"></script>
     <script src="${delimiter}pages/resources/js/datamaps.all.min.js"></script>
+    <script src="${delimiter}pages/resources/js/c3.js"></script>
 <!-- Geo vizualization libraries ENDS HERE-->
 
   <title property="og:title">${title}</title>
@@ -56,10 +65,14 @@
     </nav>
         
         <!--<button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>-->
-        <div id="container" style="position: relative; width: 1000px; height: 800px;">
+        <div id="container" style="position: relative; width: 2000px; height: 1200px;">
         </div>
       
-  
+        <div id="test"></div>
+        
+        <div id="chart2">
+        <div id="chart"></div>
+        </div>
      <script>
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll
@@ -73,6 +86,7 @@
            for(var i=0;i<result.length;i++)
            {
                var temp2=JSON.parse(result[i]["geo_json"]);
+               
                geo_obj[i]=new Array();
                geo_obj[i]["geo_json"]=temp2;
                geo_obj[i]["qtn"]=result[i]["qtn"];
@@ -133,36 +147,73 @@
                }
                console.log('x');
                console.log(x);
-               
+               console.log('array_of_countries');
+               console.log(array_of_countries);
+               console.log('country_results');
+               console.log(country_results);
+               console.log(country_count);
+               var tempdata={};
+                for(var i=0;i<array_of_countries.length;i++)
+                {
+                    
+                    tempdata[array_of_countries[i]]={};
+                    //tempdata[array_of_countries[i]]['fillKey'] = "LOW";
+
+                        //calculate how much the positive values are in percentage
+                        
+                        for(var j=0;j<country_results[i].length-1;j++)
+                        {
+                        var percentage = (country_results[i][j]/country_count[i])*100 ;
+                       tempdata[array_of_countries[i]]['country_results'] = country_results[i];    
+                       
+                        if(percentage > 66)
+                            tempdata[array_of_countries[i]]['fillKey'] = "HIGH";    
+                        else if (percentage > 33)
+                            tempdata[array_of_countries[i]]['fillKey'] = "MEDIUM";
+                        else
+                            tempdata[array_of_countries[i]]['fillKey'] = "LOW";
+                    }
+
+                   // map.updateChoropleth(tempdata);
+                    //datamap.push(tempdata)
+                }
+                console.log(tempdata)
                var map = new Datamap({
 							element: document.getElementById('container'),
 							//scope:'usa',
 							fills: 	{
                                                             
-									HIGH: '#afafaf',
-									LOW: '#123456',
-									MEDIUM: 'blue',
-									UNKNOWN: 'rgb(0,0,0)',
-									defaultFill: 'green'
+									HIGH: '#005F7F',
+                                                                        MEDIUM: '#00BEFE',
+									LOW: '#82A7D3',
+									defaultFill: '#EDD75A'
 									},
-							data: 	{
+							data: 	tempdata,
+                                                                             /* {
 									IRL: {
 										fillKey: 'LOW',
-										numberOfThings: 2002
+										numberO: [34,35,36]
 										},
 									USA: {
-										fillKey: 'MEDIUM',numberOfThings: 10381},
+										fillKey: 'MEDIUM',numberOfThin: 10381},
 										
-									},
+									},*/
 				
 							geographyConfig:{
 											//highlightOnHover: false,
 											//popupOnHover: false
 											 popupTemplate: function(geo, data) {
-                return ['<div class="hoverinfo"><strong>',
+                                                                                             //console.log(data)
+                                                                                             //console.log(data.country_results)
+                                                                                             if(data!=null)
+                                                                                             {plotbar(data.country_results,rows);
+                                                                                             var tempstr="'<div class=\"hoverinfo\"><strong>','Number of things in '" + geo.properties.name+",': '" + data.numberOfThings+",'</strong></div>'";
+                                                                                             return $("#chart2").html();
+                                                                                            }
+               /* return ['<div class="hoverinfo"><strong>',
                         'Number of things in ' + geo.properties.name,
                         ': ' + data.numberOfThings,
-                        '</strong></div>'].join('');
+                        '</strong></div>'].join('');*/
 											}
 							}
 						});
@@ -170,11 +221,13 @@
 		//draw a legend for this map
 		map.legend();
 		
-		map.updateChoropleth({
+		/*map.updateChoropleth({
                                         USA: {fillKey: 'LOW'},
                                         CAN: '#0fa0fa'
-                                     });
+                                     });*/
+        /*console.log('array_of_countries');
                console.log(array_of_countries);
+               console.log('country_results');
                console.log(country_results);
                console.log(country_count);
                
@@ -182,13 +235,75 @@
                 {
                     var tempdata = new Array();
                     tempdata[array_of_countries[i]]=new Array();
-                    tempdata[array_of_countries[i]]['fillKey'] = "LOW";
+                    //tempdata[array_of_countries[i]]['fillKey'] = "LOW";
+
+                        //calculate how much the positive values are in percentage
+                        
+                        for(var j=0;j<country_results[i].length-1;j++)
+                        {
+                        var percentage = (country_results[i][j]/country_count[i])*100 ;
+                       tempdata[array_of_countries[i]]['country_results'] = country_results[i];    
+                       
+                        if(percentage > 66)
+                            tempdata[array_of_countries[i]]['fillKey'] = "HIGH";    
+                        else if (percentage > 33)
+                            tempdata[array_of_countries[i]]['fillKey'] = "MEDIUM";
+                        else
+                            tempdata[array_of_countries[i]]['fillKey'] = "LOW";
+                    }
+
                     map.updateChoropleth(tempdata);
-                }
+                }*/
+                
            }
    
-    
+   function plotbar(country_resultsi,rows)
+  
+   {
+       country_resultsi.pop();
+        console.log(rows,country_resultsi)
+      var tt=[['data1', 30, 200, 100, 400, 150, 250],
+            ['data2', 130, 100, 140, 200, 150, 50]];
+        console.log(tt)
+$('#test').empty();
+/*d3.select("#test").selectAll("div")
+    .data(country_resultsi)
+    .enter()
+    .append("div")
+    .attr("class", "bar")
+    .style("height", function(d) {
+        var barHeight = d * 5;
+        return barHeight + "px";
+    });*/
+    var bar_data=new Array();
+    for (var i=0;i<rows.length;i++)
+    {
+        bar_data[i]=new Array();
+        bar_data[i].push(rows[i])
+        bar_data[i].push(country_resultsi[i]);
+    }
+    console.log(bar_data)
+    var chart = c3.generate({
+    bindto: '#chart',
+    size: {
+        height: 200,
+        width: 150
+    },
+    data: {
+        columns: bar_data,
+        type: 'bar'
+    },
+    bar: {
+        width: {
+            ratio: 0.3 // this makes bar width 50% of length between ticks
+        }
+        // or
+        //width: 100 // this makes bar width 100px
+    }
+});
+
+}
+
         </script>
-     
     </body>
 </html>
