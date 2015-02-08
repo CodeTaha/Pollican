@@ -786,9 +786,9 @@
            //     console.log("herre what happens");
            //     console.log("<button onclick='verticalbar("+svg_id+","+jsonArr+")'>vertical bar</button> ");
                 $(qtn_div_pie).append("<button class='btn btn-info' onclick='horizontalbar("+svg_id+","+jsonArr+")'>horizontal bar</button>");
-                $(qtn_div_pie).append("<button class='btn btn-info' onclick='spline("+svg_id+","+jsonArr+")'>spline</button> ");
-                $(qtn_div_pie).append("<button class='btn btn-info' onclick='line("+svg_id+","+jsonArr+")'>line</button> ");
-                $(qtn_div_pie).append("<button class='btn btn-info' onclick='area("+svg_id+","+jsonArr+")'>area</button> ");
+            //    $(qtn_div_pie).append("<button class='btn btn-info' onclick='spline("+svg_id+","+jsonArr+")'>spline</button> ");
+            //    $(qtn_div_pie).append("<button class='btn btn-info' onclick='line("+svg_id+","+jsonArr+")'>line</button> ");
+            //    $(qtn_div_pie).append("<button class='btn btn-info' onclick='area("+svg_id+","+jsonArr+")'>area</button> ");
     
     
      $(qtn_div_pie).append("<div id='"+svg_id+"'></div>");
@@ -1857,7 +1857,9 @@ console.log("final totvalue array");console.log(totvalue);
           {  
              
               paging: false,
-          searching: false,
+          searching: true,
+           "scrollY": 200,
+        "scrollX": true,
           destroy: true,
          retrieve: true,
              bJQueryUI: true,
