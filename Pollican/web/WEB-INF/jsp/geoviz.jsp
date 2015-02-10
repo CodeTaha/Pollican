@@ -66,18 +66,17 @@
     <div class="container-fluid">
         <div class="row">
         <!--<button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>-->
-        <div id="container" class="col-lg-8" style="height: 1300px;">
+        <div id="container" class="col-lg-8" style="height: 800px;">
         </div>
         <div class="col-lg-3" style="height: 1300px;border-left: solid grey;">
             <div id="chart2">
             <div id="chart"></div>
             </div>
+            <div id="chart3"></div>
         </div>
         </div>
     </div>
-        <div id="map_points" style="position: relative; width: 2000px; height: 1200px;">
-        </div>
-        <div id="test"></div>
+        
         
         
      <script>
@@ -197,7 +196,22 @@
                 console.log(tempdata)
                var map = new Datamap({
 							element: document.getElementById('container'),
+                                                        responsive: true,
+                                                        height: 600, //if not null, datamaps will grab the height of 'element'
+                                                        width: 800,
 							//scope:'usa',
+                                                         setProjection: function(element) {
+                                                             console.log('element',element)
+                                                                var projection = d3.geo.equirectangular()
+                                                                  .center([23, -3])
+                                                                  .rotate([4.4, 0])
+                                                                  .scale(400)
+                                                                  .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+                                                                var path = d3.geo.path()
+                                                                  .projection(projection);
+
+                                                                return {path: path, projection: projection};
+                                                              },
 							fills: 	{
                                                             
 									HIGH: '#005F7F',
@@ -231,87 +245,28 @@
               
 											}
 							}
+                                                        
 						});
 		
 		map.legend();
 		plotpoints(map,plotpts);
-                
+                window.addEventListener('resize', function() {
+        map.resize();
+    });
+
+    //alternatively with d3
+    d3.select(window).on('resize', function() {
+        map.resize();
+    });
+
+    //alternatively with jQuery
+    $(window).on('resize', function() {
+       map.resize();
+    });
            }
    function plotpoints(map,plotpts)
    {
-       var bombMap = new Datamap({
-    element: document.getElementById('map_points'),
-    scope: 'world',
-    geographyConfig: {
-        popupOnHover: false,
-        highlightOnHover: false
-    },
-    fills: {
-        'USA': '#1f77b4',
-        'RUS': '#9467bd',
-        'PRK': '#ff7f0e',
-        'PRC': '#2ca02c',
-        'IND': '#e377c2',
-        'GBR': '#8c564b',
-        'FRA': '#d62728',
-        'PAK': '#7f7f7f',
-        defaultFill: '#EDDC4E'
-    },
-    data: {
-        'RUS': {fillKey: 'RUS'},
-        'PRK': {fillKey: 'PRK'},
-        'PRC': {fillKey: 'PRC'},
-        'IND': {fillKey: 'IND'},
-        'GBR': {fillKey: 'GBR'},
-        'FRA': {fillKey: 'FRA'},
-        'PAK': {fillKey: 'PAK'},
-        'USA': {fillKey: 'USA'}
-    }
-});
 
-     var bombs = [{
-        name: 'Joe 4',
-        radius: 25,
-        yeild: 400,
-        country: 'USSR',
-        fillKey: 'RUS',
-        significance: 'First fusion weapon test by the USSR (not "staged")',
-        date: '1953-08-12',
-        latitude: 50.07,
-        longitude: 78.43
-      },{
-        name: 'RDS-37',
-        radius: 40,
-        yeild: 1600,
-        country: 'USSR',
-        fillKey: 'RUS',
-        significance: 'First "staged" thermonuclear weapon test by the USSR (deployable)',
-        date: '1955-11-22',
-        latitude: 50.07,
-        longitude: 78.43
-
-      },{
-        name: 'Tsar Bomba',
-        radius: 75,
-        yeild: 50000,
-        country: 'USSR',
-        fillKey: 'RUS',
-        significance: 'Largest thermonuclear weapon ever tested—scaled down from its initial 100 Mt design by 50%',
-        date: '1961-10-31',
-        latitude: 73.482,
-        longitude: 54.5854
-      }
-    ];
-//draw bubbles for bombs
-bombMap.bubbles(bombs, {
-    popupTemplate: function (geo, data) { 
-            return ['<div class="hoverinfo">' +  data.name,
-            '<br/>Payload: ' +  data.yeild + ' kilotons',
-            '<br/>Country: ' +  data.country + '',
-            '<br/>Date: ' +  data.date + '',
-            '</div>'].join('');
-    }
-});
 map.bubbles(plotpts, {
     highlightOnHover: true,
     popupOnHover: true,
@@ -322,6 +277,8 @@ map.bubbles(plotpts, {
             '</div>'].join('');
     }
 });
+
+//map.setProjection
    }
    function plotbar(country_resultsi,rows,geo)
   
@@ -340,8 +297,8 @@ map.bubbles(plotpts, {
     var chart = c3.generate({
     bindto: '#chart',
     size: {
-        height: 400,
-        width: 600
+        height: 200,
+        width: 400
     },
     data: {
         columns: bar_data,
@@ -367,8 +324,26 @@ map.bubbles(plotpts, {
     },
 });
 
-//chart.text("Value vs Date Graph");
+d3.select('#chart svg').append('text')
+    .attr('x', d3.select('#chart svg').node().getBoundingClientRect().width / 2)
+    .attr('y', 16)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '1.4em')
+    .text(geo.properties.name);
 
+var donut1 = c3.generate({
+    bindto: '#chart3',
+    data: {
+        columns: bar_data,
+        type : 'donut',
+        onclick: function (d, i) { console.log("onclick", d, i); },
+        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },
+    donut: {
+        title: geo.properties.name
+    }
+});
 }
 
         </script>
