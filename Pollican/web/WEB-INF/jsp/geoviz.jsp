@@ -63,16 +63,23 @@
         </div>
       </div>
     </nav>
-        
+    <div class="container-fluid">
+        <div class="row">
         <!--<button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>-->
-        <div id="container" style="position: relative; width: 2000px; height: 1200px;">
+        <div id="container" class="col-lg-8" style="height: 1300px;">
         </div>
-      
+        <div class="col-lg-3" style="height: 1300px;border-left: solid grey;">
+            <div id="chart2">
+            <div id="chart"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+        <div id="map_points" style="position: relative; width: 2000px; height: 1200px;">
+        </div>
         <div id="test"></div>
         
-        <div id="chart2">
-        <div id="chart"></div>
-        </div>
+        
      <script>
             var poll=${poll};// Poll Object
             var result=${result};// Result of the poll
@@ -91,7 +98,7 @@
                geo_obj[i]["geo_json"]=temp2;
                geo_obj[i]["qtn"]=result[i]["qtn"];
            }
-           console.log(geo_obj);
+           console.log("geo_obj",geo_obj);
            for(i=0;i<poll["qtn_json"].length;i++)
            {
                switch(poll["qtn_json"][i]["qtn_type"])
@@ -114,8 +121,16 @@
                var country_results=new Array();//stores the final results
                var country_count=new Array();//stores the count for number of results for each country
                var x=new Array(); //array storing answers given by user for every location
+               var plotpts=new Array();// array for plotting points
                for(var i=0;i<geo_obj.length;i++)
                {
+                   plotpts[i]={};
+                   plotpts[i]['geo']=geo_obj[i]['geo_json'][0];
+                   plotpts[i]['latitude']=geo_obj[i]['geo_json'][0]['latitude'];
+                   plotpts[i]['longitude']=geo_obj[i]['geo_json'][0]['longitude'];
+                   plotpts[i]['radius']=4;
+                   plotpts[i]['fillKey']='RUS';
+                   plotpts[i]['ans']=new Array();
                    var y=new Array(rows.length+1);
                    for(k=0;k<y.length;k++)
                    {
@@ -125,6 +140,7 @@
                    
                    for(j=0;j<geo_obj[i]["qtn"][qtn_num]["ans"][0].length;j++)
                    {
+                       plotpts[i]['ans'].push(parseInt(geo_obj[i]["qtn"][qtn_num]["ans"][0][j]));
                        y[parseInt(geo_obj[i]["qtn"][qtn_num]["ans"][0][j])-1]=1;
                    }
                    y[rows.length]=country_code;// setting the country code in last column
@@ -145,6 +161,7 @@
                     }
                    x.push(y);
                }
+               console.log('plotpts',plotpts);
                console.log('x');
                console.log(x);
                console.log('array_of_countries');
@@ -205,76 +222,113 @@
 											 popupTemplate: function(geo, data) {
                                                                                              //console.log(data)
                                                                                              //console.log(data.country_results)
+                                                                                             console.log('geo',geo)
                                                                                              if(data!=null)
-                                                                                             {plotbar(data.country_results,rows);
+                                                                                             {plotbar(data.country_results,rows,geo);
                                                                                              var tempstr="'<div class=\"hoverinfo\"><strong>','Number of things in '" + geo.properties.name+",': '" + data.numberOfThings+",'</strong></div>'";
                                                                                              return $("#chart2").html();
                                                                                             }
-               /* return ['<div class="hoverinfo"><strong>',
-                        'Number of things in ' + geo.properties.name,
-                        ': ' + data.numberOfThings,
-                        '</strong></div>'].join('');*/
+              
 											}
 							}
 						});
-						
-		//draw a legend for this map
-		map.legend();
 		
-		/*map.updateChoropleth({
-                                        USA: {fillKey: 'LOW'},
-                                        CAN: '#0fa0fa'
-                                     });*/
-        /*console.log('array_of_countries');
-               console.log(array_of_countries);
-               console.log('country_results');
-               console.log(country_results);
-               console.log(country_count);
-               
-                for(var i=0;i<array_of_countries.length;i++)
-                {
-                    var tempdata = new Array();
-                    tempdata[array_of_countries[i]]=new Array();
-                    //tempdata[array_of_countries[i]]['fillKey'] = "LOW";
-
-                        //calculate how much the positive values are in percentage
-                        
-                        for(var j=0;j<country_results[i].length-1;j++)
-                        {
-                        var percentage = (country_results[i][j]/country_count[i])*100 ;
-                       tempdata[array_of_countries[i]]['country_results'] = country_results[i];    
-                       
-                        if(percentage > 66)
-                            tempdata[array_of_countries[i]]['fillKey'] = "HIGH";    
-                        else if (percentage > 33)
-                            tempdata[array_of_countries[i]]['fillKey'] = "MEDIUM";
-                        else
-                            tempdata[array_of_countries[i]]['fillKey'] = "LOW";
-                    }
-
-                    map.updateChoropleth(tempdata);
-                }*/
+		map.legend();
+		plotpoints(map,plotpts);
                 
            }
-   
-   function plotbar(country_resultsi,rows)
+   function plotpoints(map,plotpts)
+   {
+       var bombMap = new Datamap({
+    element: document.getElementById('map_points'),
+    scope: 'world',
+    geographyConfig: {
+        popupOnHover: false,
+        highlightOnHover: false
+    },
+    fills: {
+        'USA': '#1f77b4',
+        'RUS': '#9467bd',
+        'PRK': '#ff7f0e',
+        'PRC': '#2ca02c',
+        'IND': '#e377c2',
+        'GBR': '#8c564b',
+        'FRA': '#d62728',
+        'PAK': '#7f7f7f',
+        defaultFill: '#EDDC4E'
+    },
+    data: {
+        'RUS': {fillKey: 'RUS'},
+        'PRK': {fillKey: 'PRK'},
+        'PRC': {fillKey: 'PRC'},
+        'IND': {fillKey: 'IND'},
+        'GBR': {fillKey: 'GBR'},
+        'FRA': {fillKey: 'FRA'},
+        'PAK': {fillKey: 'PAK'},
+        'USA': {fillKey: 'USA'}
+    }
+});
+
+     var bombs = [{
+        name: 'Joe 4',
+        radius: 25,
+        yeild: 400,
+        country: 'USSR',
+        fillKey: 'RUS',
+        significance: 'First fusion weapon test by the USSR (not "staged")',
+        date: '1953-08-12',
+        latitude: 50.07,
+        longitude: 78.43
+      },{
+        name: 'RDS-37',
+        radius: 40,
+        yeild: 1600,
+        country: 'USSR',
+        fillKey: 'RUS',
+        significance: 'First "staged" thermonuclear weapon test by the USSR (deployable)',
+        date: '1955-11-22',
+        latitude: 50.07,
+        longitude: 78.43
+
+      },{
+        name: 'Tsar Bomba',
+        radius: 75,
+        yeild: 50000,
+        country: 'USSR',
+        fillKey: 'RUS',
+        significance: 'Largest thermonuclear weapon ever tested—scaled down from its initial 100 Mt design by 50%',
+        date: '1961-10-31',
+        latitude: 73.482,
+        longitude: 54.5854
+      }
+    ];
+//draw bubbles for bombs
+bombMap.bubbles(bombs, {
+    popupTemplate: function (geo, data) { 
+            return ['<div class="hoverinfo">' +  data.name,
+            '<br/>Payload: ' +  data.yeild + ' kilotons',
+            '<br/>Country: ' +  data.country + '',
+            '<br/>Date: ' +  data.date + '',
+            '</div>'].join('');
+    }
+});
+map.bubbles(plotpts, {
+    highlightOnHover: true,
+    popupOnHover: true,
+    popupTemplate: function (geo, data) { 
+            return ['<div class="hoverinfo">',
+            '<br/>latitude: ' +  data.latitude + ' kilotons',
+            '<br/>longitude: ' +  data.longitude + '',
+            '</div>'].join('');
+    }
+});
+   }
+   function plotbar(country_resultsi,rows,geo)
   
    {
        country_resultsi.pop();
         console.log(rows,country_resultsi)
-      var tt=[['data1', 30, 200, 100, 400, 150, 250],
-            ['data2', 130, 100, 140, 200, 150, 50]];
-        console.log(tt)
-$('#test').empty();
-/*d3.select("#test").selectAll("div")
-    .data(country_resultsi)
-    .enter()
-    .append("div")
-    .attr("class", "bar")
-    .style("height", function(d) {
-        var barHeight = d * 5;
-        return barHeight + "px";
-    });*/
+      
     var bar_data=new Array();
     for (var i=0;i<rows.length;i++)
     {
@@ -286,8 +340,8 @@ $('#test').empty();
     var chart = c3.generate({
     bindto: '#chart',
     size: {
-        height: 200,
-        width: 150
+        height: 400,
+        width: 600
     },
     data: {
         columns: bar_data,
@@ -299,8 +353,21 @@ $('#test').empty();
         }
         // or
         //width: 100 // this makes bar width 100px
-    }
+    },
+     axis: {
+        x: {
+            type: 'category' // this needed to load string x value
+        },
+         y: {
+            tick:{
+                count:10
+            },
+            label: 'no of votes'
+        }
+    },
 });
+
+//chart.text("Value vs Date Graph");
 
 }
 
