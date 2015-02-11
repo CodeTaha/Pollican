@@ -1385,7 +1385,13 @@ var relist=new Array();
        
          }
         
-        
+        function match(text,text1)
+        {
+           if(text===text1) 
+            return true;
+            else 
+            return false;
+        }
            if(poll['qtn_json'][j]['qtn_type']==="moc" || poll['qtn_json'][j]['qtn_type']==="momc" )
        {
            
@@ -1462,13 +1468,7 @@ var relist=new Array();
             }       
          }
       
-        function match(text,text1)
-        {
-           if(text===text1) 
-            return true;
-            else 
-            return false;
-        }
+        //match was here
          //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
  
@@ -1646,14 +1646,7 @@ var relist=new Array();
         
             }       
          }
-      
-        function match(text,text1)
-        {
-           if(text===text1) 
-            return true;
-            else 
-            return false;
-        }
+      //match was here 2
          //td1=td1+"<th>"+"row: "+jsonArr[i]["label"].slice(0,h)+" and column: "+jsonArr[i]["label"].slice(g,jsonArr[i]["label"].length)+"</th>";
         // var td2="<td>"+jsonArr[i]["n"]+"</td>";
  
