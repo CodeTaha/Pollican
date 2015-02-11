@@ -64,6 +64,14 @@
       </div>
     </nav>
     <div class="container-fluid">
+        <div class="row" id="qtn">
+            
+        </div>
+        <div class="row">
+            <select class="col-lg-offset-4" id="select_cat" onchange="generateData(this.value)">
+                
+            </select>
+        </div>
         <div class="row">
         <!--<button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>-->
         <div id="container" class="col-lg-8" style="height: 800px;">
@@ -88,6 +96,13 @@
             console.log("Poll_Ans_Tbl");
             console.log(poll);// use poll to get all the qtns,answers, title etc which defines the poll
             console.log(result);// use result which is the compilation of all the answers users have submitted
+            //var array_of_countries=new Array();//stores intermediate results
+               var country_results=new Array();//stores the final results
+               var country_count=new Array();//stores the count for number of results for each country
+               var x=new Array(); //array storing answers given by user for every location
+               var plotpts=new Array();// array for plotting points
+               var array_of_countries=new Array();
+               var rows;
           // console.log(temp);
            for(var i=0;i<result.length;i++)
            {
@@ -105,22 +120,21 @@
                    case "moc":{}break;
                    case "momc":{}break;
                    case "mcss":{}break;
-                   case "mcms":{plot_mcms(i,poll["qtn_json"][i]["rows"])}break;
+                   case "mcms":{
+                           $("#qtn").append("<h2>"+poll['qtn_json'][i]['qtn']+"</h2>")
+                           plot_mcms(i,poll["qtn_json"][i]["rows"])}break;
                    case "tb":{}break;
                }
            }
            
-           
-           function plot_mcms(qtn_num,rows)
+            
+           function plot_mcms(qtn_num,rows1)
            {
+               rows=rows1;
                console.log("plot_mcms");
                console.log(qtn_num);
                console.log(rows);
-               var array_of_countries=new Array();//stores intermediate results
-               var country_results=new Array();//stores the final results
-               var country_count=new Array();//stores the count for number of results for each country
-               var x=new Array(); //array storing answers given by user for every location
-               var plotpts=new Array();// array for plotting points
+              
                for(var i=0;i<geo_obj.length;i++)
                {
                    plotpts[i]={};
@@ -128,7 +142,7 @@
                    plotpts[i]['latitude']=geo_obj[i]['geo_json'][0]['latitude'];
                    plotpts[i]['longitude']=geo_obj[i]['geo_json'][0]['longitude'];
                    plotpts[i]['radius']=4;
-                   plotpts[i]['fillKey']='RUS';
+                   plotpts[i]['fillKey']='USERS';
                    plotpts[i]['ans']=new Array();
                    var y=new Array(rows.length+1);
                    for(k=0;k<y.length;k++)
@@ -161,63 +175,87 @@
                    x.push(y);
                }
                console.log('plotpts',plotpts);
-               console.log('x');
-               console.log(x);
-               console.log('array_of_countries');
-               console.log(array_of_countries);
-               console.log('country_results');
-               console.log(country_results);
-               console.log(country_count);
-               var tempdata={};
+               console.log('array_of_countries',array_of_countries);
+               console.log('country_results',country_results);
+               console.log('country_count',country_count);
+               for(var i=0;i<rows.length;i++)
+               {
+                   $("#select_cat").append("<option value="+i+" onclick='generateData("+i+")'>"+rows[i]+"</option>");
+               }
+               generateData(0);
+function generateData(m)
+    {
+        var tempdata={};
                 for(var i=0;i<array_of_countries.length;i++)
                 {
                     
                     tempdata[array_of_countries[i]]={};
-                    //tempdata[array_of_countries[i]]['fillKey'] = "LOW";
-
-                        //calculate how much the positive values are in percentage
-                        
-                        for(var j=0;j<country_results[i].length-1;j++)
-                        {
-                        var percentage = (country_results[i][j]/country_count[i])*100 ;
-                       tempdata[array_of_countries[i]]['country_results'] = country_results[i];    
-                       
-                        if(percentage > 66)
+                        tempdata[array_of_countries[i]]['country_results'] = country_results[i];    
+                        var percentage = (country_results[i][m]/country_count[i])*100 ;
+                       if(percentage > 66)
                             tempdata[array_of_countries[i]]['fillKey'] = "HIGH";    
                         else if (percentage > 33)
                             tempdata[array_of_countries[i]]['fillKey'] = "MEDIUM";
                         else
                             tempdata[array_of_countries[i]]['fillKey'] = "LOW";
-                    }
-
-                   // map.updateChoropleth(tempdata);
-                    //datamap.push(tempdata)
                 }
-                console.log(tempdata)
-               var map = new Datamap({
+               
+                plotMap(m,tempdata,plotpts,rows)
+    }
+           }
+    
+    function plotMap(m,tempdata,plotpts,rows)
+    {
+        var colorss=[{
+            HIGH: '#1F77B4',
+            MEDIUM: '#15507A',
+            LOW: '#0C2E46',
+            USERS:'#96C9ED',
+            defaultFill: '#EDD75A'
+      },{
+            HIGH: '#FF7F0E',
+            MEDIUM: '#00BEFE',
+            LOW: '#82A7D3',
+            USERS:'#3366FF',
+            defaultFill: '#EDD75A'
+
+      },{
+            HIGH: '#2CA02C',
+            MEDIUM: '#00BEFE',
+            LOW: '#82A7D3',
+            USERS:'#3366FF',
+            defaultFill: '#EDD75A'
+      }
+      ,{
+            HIGH: '#D62728',
+            MEDIUM: '#00BEFE',
+            LOW: '#82A7D3',
+            USERS:'#3366FF',
+            defaultFill: '#EDD75A'
+      }
+      ,{
+            HIGH: '#AE8CCC',
+            MEDIUM: '#00BEFE',
+            LOW: '#82A7D3',
+            USERS:'#3366FF',
+            defaultFill: '#EDD75A'
+      }
+    ];
+        $('#container').empty();
+                var map = new Datamap({
 							element: document.getElementById('container'),
                                                         responsive: true,
                                                         height: 600, //if not null, datamaps will grab the height of 'element'
                                                         width: 800,
 							//scope:'usa',
-                                                         setProjection: function(element) {
-                                                             console.log('element',element)
-                                                                var projection = d3.geo.equirectangular()
-                                                                  .center([23, -3])
-                                                                  .rotate([4.4, 0])
-                                                                  .scale(400)
-                                                                  .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
-                                                                var path = d3.geo.path()
-                                                                  .projection(projection);
-
-                                                                return {path: path, projection: projection};
-                                                              },
+                                                        
 							fills: 	{
                                                             
-									HIGH: '#005F7F',
-                                                                        MEDIUM: '#00BEFE',
-									LOW: '#82A7D3',
-									defaultFill: '#EDD75A'
+									HIGH: colorss[m]['HIGH'],
+                                                                        MEDIUM: colorss[m]['MEDIUM'],
+									LOW: colorss[m]['LOW'],
+                                                                        USERS:colorss[m]['USERS'],
+									defaultFill: colorss[m]['defaultFill']
 									},
 							data: 	tempdata,
                                                                              /* {
@@ -250,29 +288,23 @@
 		
 		map.legend();
 		plotpoints(map,plotpts);
-                window.addEventListener('resize', function() {
-        map.resize();
-    });
-
-    //alternatively with d3
-    d3.select(window).on('resize', function() {
-        map.resize();
-    });
-
-    //alternatively with jQuery
-    $(window).on('resize', function() {
-       map.resize();
-    });
-           }
+              
+    }
    function plotpoints(map,plotpts)
    {
 
 map.bubbles(plotpts, {
     highlightOnHover: true,
     popupOnHover: true,
-    popupTemplate: function (geo, data) { 
+    popupTemplate: function (geo, data) {
+        console.log('data',data);
+        var tempstr="This User is willing to share his ";
+        for(var i=0; i<data.ans.length;i++)
+        {
+            tempstr=tempstr+","+rows[data.ans[i]-1];
+        }
             return ['<div class="hoverinfo">',
-            '<br/>latitude: ' +  data.latitude + ' kilotons',
+            '<br/>'+ tempstr+ '<br/> latitude: ' +  data.latitude+'',
             '<br/>longitude: ' +  data.longitude + '',
             '</div>'].join('');
     }
