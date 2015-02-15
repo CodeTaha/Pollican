@@ -18,6 +18,16 @@
 				margin-right: 2px;
 				background-color: teal;
 			}
+                        
+            .node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
         </style>
 
 <link rel="stylesheet" type="text/css" href="${delimiter}pages/resources/css/c3.css">
@@ -74,14 +84,20 @@
         </div>
         <div class="row">
         <!--<button onclick="createpdf()"  style="float: right" class="btn btn-info">whole page as pdf</button>-->
-        <div id="container" class="col-lg-8" style="height: 800px;">
+        <div id="container" class="col-lg-8" style="height: 700px;">
         </div>
-        <div class="col-lg-3" style="height: 1300px;border-left: solid grey;">
+        <div class="col-lg-3" style="height: 700px;border-left: solid grey;">
             <div id="chart2">
             <div id="chart"></div>
             </div>
             <div id="chart3"></div>
         </div>
+        </div>
+        <div class="row" >
+            <h2> User Force Directed Graph</h2>
+            <div id="FDG">
+                
+            </div>
         </div>
     </div>
         
@@ -111,8 +127,9 @@
                geo_obj[i]=new Array();
                geo_obj[i]["geo_json"]=temp2;
                geo_obj[i]["qtn"]=result[i]["qtn"];
+               geo_obj[i]["user"]=result[i]["user"];
            }
-           console.log("geo_obj",geo_obj);
+           //console.log("geo_obj",geo_obj);
            for(i=0;i<poll["qtn_json"].length;i++)
            {
                switch(poll["qtn_json"][i]["qtn_type"])
@@ -131,9 +148,9 @@
            function plot_mcms(qtn_num,rows1)
            {
                rows=rows1;
-               console.log("plot_mcms");
-               console.log(qtn_num);
-               console.log(rows);
+               //console.log("plot_mcms");
+              // console.log(qtn_num);
+              // console.log(rows);
               
                for(var i=0;i<geo_obj.length;i++)
                {
@@ -141,9 +158,10 @@
                    plotpts[i]['geo']=geo_obj[i]['geo_json'][0];
                    plotpts[i]['latitude']=geo_obj[i]['geo_json'][0]['latitude'];
                    plotpts[i]['longitude']=geo_obj[i]['geo_json'][0]['longitude'];
-                   plotpts[i]['radius']=4;
+                   plotpts[i]['radius']=3;
                    plotpts[i]['fillKey']='USERS';
                    plotpts[i]['ans']=new Array();
+                   plotpts[i]['user']=geo_obj[i]['user'];
                    var y=new Array(rows.length+1);
                    for(k=0;k<y.length;k++)
                    {
@@ -175,14 +193,16 @@
                    x.push(y);
                }
                console.log('plotpts',plotpts);
-               console.log('array_of_countries',array_of_countries);
-               console.log('country_results',country_results);
-               console.log('country_count',country_count);
+               //console.log('array_of_countries',array_of_countries);
+               //console.log('country_results',country_results);
+               //console.log('country_count',country_count);
                for(var i=0;i<rows.length;i++)
                {
                    $("#select_cat").append("<option value="+i+" onclick='generateData("+i+")'>"+rows[i]+"</option>");
                }
                generateData(0);
+               generateFDG(plotpts, rows);
+           }
 function generateData(m)
     {
         var tempdata={};
@@ -202,35 +222,35 @@ function generateData(m)
                
                 plotMap(m,tempdata,plotpts,rows)
     }
-           }
+           
     
     function plotMap(m,tempdata,plotpts,rows)
     {
         var colorss=[{
-            HIGH: '#1F77B4',
+            HIGH: '#0C2E46',
             MEDIUM: '#15507A',
-            LOW: '#0C2E46',
-            USERS:'#96C9ED',
+            LOW: '#1F77B4',
+            USERS:'#ff470d',
             defaultFill: '#EDD75A'
       },{
-            HIGH: '#FF7F0E',
-            MEDIUM: '#00BEFE',
-            LOW: '#82A7D3',
+            HIGH: '#ff470d',
+            MEDIUM: '#FF7F0E',
+            LOW: '#ffb40d',
             USERS:'#3366FF',
             defaultFill: '#EDD75A'
 
       },{
-            HIGH: '#2CA02C',
-            MEDIUM: '#00BEFE',
-            LOW: '#82A7D3',
-            USERS:'#3366FF',
+            HIGH: '#124012',
+            MEDIUM: '#2CA02C',
+            LOW: '#7FDC7F',
+            USERS:'#2b78a1',
             defaultFill: '#EDD75A'
       }
       ,{
-            HIGH: '#D62728',
-            MEDIUM: '#00BEFE',
-            LOW: '#82A7D3',
-            USERS:'#3366FF',
+            HIGH: '#791616',
+            MEDIUM: '#D62728',
+            LOW: '#E98686',
+            USERS:'#d6274e',
             defaultFill: '#EDD75A'
       }
       ,{
@@ -251,11 +271,11 @@ function generateData(m)
                                                         
 							fills: 	{
                                                             
-									HIGH: colorss[m]['HIGH'],
-                                                                        MEDIUM: colorss[m]['MEDIUM'],
-									LOW: colorss[m]['LOW'],
-                                                                        USERS:colorss[m]['USERS'],
-									defaultFill: colorss[m]['defaultFill']
+									HIGH: colorss[m%5]['HIGH'],
+                                                                        MEDIUM: colorss[m%5]['MEDIUM'],
+									LOW: colorss[m%5]['LOW'],
+                                                                        USERS:colorss[m%5]['USERS'],
+									defaultFill: colorss[m%5]['defaultFill']
 									},
 							data: 	tempdata,
                                                                              /* {
@@ -274,10 +294,10 @@ function generateData(m)
 											 popupTemplate: function(geo, data) {
                                                                                              //console.log(data)
                                                                                              //console.log(data.country_results)
-                                                                                             console.log('geo',geo)
+                                                                                             //console.log('geo',geo)
                                                                                              if(data!=null)
                                                                                              {plotbar(data.country_results,rows,geo);
-                                                                                             var tempstr="'<div class=\"hoverinfo\"><strong>','Number of things in '" + geo.properties.name+",': '" + data.numberOfThings+",'</strong></div>'";
+                                                                                             //var tempstr="'<div class=\"hoverinfo\"><strong>','Number of things in '" + geo.properties.name+",': '" + data.numberOfThings+",'</strong></div>'";
                                                                                              return $("#chart2").html();
                                                                                             }
               
@@ -287,17 +307,32 @@ function generateData(m)
 						});
 		
 		map.legend();
-		plotpoints(map,plotpts);
+		plotpoints(m,map,plotpts);
               
     }
-   function plotpoints(map,plotpts)
+   function plotpoints(m,map,plotpts)
    {
-
-map.bubbles(plotpts, {
+      // console.log('plotpts1',plotpts,m);
+       var temp_plotpts=new Array();
+       
+               //temp_plotpts.push(plotpts[i]);
+               
+           
+       for(var i=0;i<plotpts.length;i++)
+       {
+        //   console.log('true',plotpts[i]['ans'].indexOf(m+1),plotpts[i])
+           if(plotpts[i]['ans'].indexOf(m+1)!=-1)
+           {
+               temp_plotpts.push(plotpts[i]);
+               //console.log('true',plotpts[i]['ans'].indexOf(m+1))
+           }
+       }
+//console.log('tempplotpts',temp_plotpts);
+map.bubbles(temp_plotpts, {
     highlightOnHover: true,
     popupOnHover: true,
     popupTemplate: function (geo, data) {
-        console.log('data',data);
+        //console.log('data',data);
         var tempstr="This User is willing to share his ";
         for(var i=0; i<data.ans.length;i++)
         {
@@ -308,6 +343,7 @@ map.bubbles(plotpts, {
             '<br/>longitude: ' +  data.longitude + '',
             '</div>'].join('');
     }
+    
 });
 
 //map.setProjection
@@ -316,8 +352,8 @@ map.bubbles(plotpts, {
   
    {
        country_resultsi.pop();
-        console.log(rows,country_resultsi)
-      
+       // console.log(rows,country_resultsi)
+      $("#chart").empty();
     var bar_data=new Array();
     for (var i=0;i<rows.length;i++)
     {
@@ -325,7 +361,7 @@ map.bubbles(plotpts, {
         bar_data[i].push(rows[i])
         bar_data[i].push(country_resultsi[i]);
     }
-    console.log(bar_data)
+    //console.log(bar_data)
     var chart = c3.generate({
     bindto: '#chart',
     size: {
@@ -368,14 +404,90 @@ var donut1 = c3.generate({
     data: {
         columns: bar_data,
         type : 'donut',
-        onclick: function (d, i) { console.log("onclick", d, i); },
-        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+        onclick: function (d, i) { //console.log("onclick", d, i); 
+                                },
+        onmouseover: function (d, i) { //console.log("onmouseover", d, i); 
+                                      },
+        onmouseout: function (d, i) { 
+                                    //console.log("onmouseout", d, i); 
+                                    }
     },
     donut: {
         title: geo.properties.name
     }
 });
+}
+
+function generateFDG(temp_plotpts,rows)
+{
+    var graph={
+                "nodes":[],
+                "links":[]
+              }
+    console.log('temp_plotpts',temp_plotpts, rows,graph);
+    for(var i=0; i<rows.length; i++)
+    {
+        graph['nodes'].push({"name":rows[i],"group":rows[i],"rad":10})
+    }
+    for(var i=0; i<temp_plotpts.length; i++)
+    {
+        var tempstr=new Array();
+        for(var j=0; j<temp_plotpts[i]['ans'].length;j++)
+        {
+        graph['links'].push({"source":(i+rows.length),"target":temp_plotpts[i]['ans'][j]-1,"value":1});
+        tempstr.push(rows[temp_plotpts[i]['ans'][j]-1]);
+        }
+        graph['nodes'].push({"name":temp_plotpts[i]['user']['handle'],"group":tempstr,"rad":5});
+        
+    }
+
+console.log(graph)
+var width = 960,
+    height = 500;
+
+var color = d3.scale.category20();
+
+var force = d3.layout.force()
+    .charge(-120)
+    .linkDistance(30)
+    .size([width, height]);
+
+var svg = d3.select("#FDG").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+  force
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .start();
+
+  var link = svg.selectAll(".link")
+      .data(graph.links)
+    .enter().append("line")
+      .attr("class", "link")
+      .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+  var node = svg.selectAll(".node")
+      .data(graph.nodes)
+    .enter().append("circle")
+      .attr("class", "node")
+      .attr("r", function(d) { return d.rad; })
+      .style("fill", function(d) { return color(d.group); })
+      .call(force.drag);
+
+  node.append("title")
+      .text(function(d) { return d.name; });
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+  });
 }
 
         </script>
