@@ -84,7 +84,7 @@ Gson gson=new Gson();
     var ts="";
     var canLoadMore=true;
    $("#alert_box").hide();
-     
+        
           
                 loadData();
           
@@ -174,10 +174,22 @@ function Alerts(alert_type,alert_mesg)
   {
        $("#alert_box").append("<div class='bs-example' ><div class='alert "+alert_type+"'><a href='#' class='close' data-dismiss='alert'>&times;</a>"+alert_mesg+"</div></div>").show();
   }
+ /* function listmecategories(cat_div_id,poll_obj,div_size)
+  {
+      var alltags=poll_obj["cat_list"][0]["category_name"];
+       for(var j=1;j<poll_obj["cat_list"].length;j++)
+                         {
+                           alltags=alltags+", "+poll_obj["cat_list"][j]["category_name"];
+                          // tags.push(poll_obj["cat_list"][j]["category_name"])
+                         }
+                         console.log("neha sharma"+alltags);
+                         $(cat_div_id).append(""+alltags);
+      
+  } */
    function createPollDivs(poll_div_id,poll_obj,div_size)
             {
-                var size1="col-sm-6 col-md-4 col-lg-3 col-md-offset-0 col-lg-offset-0";
-                var size2="col-sm-12 col-md-8 col-lg-7 col-md-offset-0 col-lg-offset-0";
+                var size1="col-sm-6 col-md-6 col-lg-6 col-md-offset-0 col-lg-offset-0";
+                var size2="col-sm-12 col-md-9 col-lg-9 col-md-offset-0 col-lg-offset-0";
                 var size;
               if(div_size==1)
               {
@@ -197,7 +209,7 @@ function Alerts(alert_type,alert_mesg)
                          
                          $(poll_div_id).append("\n\
                     <div class='"+size+"'>\n\
-                           <div class='panel panel-primary'  style='min-height: 200px;max-height:200px;'>\n\
+                           <div class='panel panel-primary'  style='min-height:200px;'>\n\
                                 <div class='panel-heading'>\n\
                                     <div class='row'>\n\
                                         <div class='col-sm-8 col-md-8 col-lg-8'>\n\
