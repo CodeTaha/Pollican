@@ -5,12 +5,13 @@
             
            
             
-                <div class="row col-md-12"  id="pollListmain">
+                <div class="row col-md-12 col-lg-12"  id="pollListmain" style="background-color:whitesmoke">
                     <div id="categories" class="col-md-2 col-sm-2 col-xs-2 "  style="background-color:#939393;border-top: 21px solid#939393;border-bottom: 25px solid#939393; ">
                      
                     </div>
                     
-                    <div id="pollList" class="col-md-10 col-lg-10 col-sm-10 col-xs-10 tab-content pre-scrollable"  style="background-color:white; height:auto; max-height:670px;scrollbar-base-color:F5F5F5; scrollbar-arrow-color:F5F5F5;"  >
+                    <div id="pollList" class="col-md-10 col-lg-10 col-sm-10 col-xs-10 tab-content pre-scrollable"  style="background-color:whitesmoke; height:auto; max-height:670px;scrollbar-base-color:F5F5F5; scrollbar-arrow-color:F5F5F5;"  >
+                        <div id="countcategories" class="row col-md-12 col-lg-12 col-sm-12 col-xs-12"  style="background-color:whitesmoke;border-bottom: 25px solid whitesmoke;"><br/></div>
                         <br/>
                     </div>
                         
@@ -129,7 +130,9 @@ height: 30px;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-
+b{
+    color: whitesmoke;
+}
     </style>
      <script>
     var pollJSONtemp;   
@@ -152,7 +155,9 @@ height: 30px;
     var catremovedata=new Array();
     var removeind=0;
     var buttonselect=new Array();
+    var categorytrack=new Array();var catindex=0;
     var chkind=0;
+    var totalcount=0;
     $(window).bind("load", function() {
        $.getScript('${delimiter}pages/resources/js/social.js', function() {});
     });
@@ -189,6 +194,18 @@ height: 30px;
                pollJSONtemp=JSON.parse(data);
                console.log("pollJSONtemp");
                console.log(pollJSONtemp);
+                totalcount=totalcount + pollJSONtemp.length;
+                $("#countcategories").empty();
+                if(totalcount===0)
+                    { $("#countcategories").append('<center><label style="background-color:#62b1d0;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp There are no polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  );}
+                else if(totalcount===1)
+                { $("#countcategories").append('<center><label style="background-color:#62b1d0;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp There are '+totalcount+' poll to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); }
+                
+                else
+                {
+                        $("#countcategories").append('<center><label style="background-color:#62b1d0;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp There are '+totalcount+' polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  );
+                }           
+            
                if(pollJSONtemp==[] || pollJSONtemp==null || pollJSONtemp=="")
                {
                    console.log("end of data reached");
@@ -331,10 +348,12 @@ height: 30px;
             }//loaddata() ends
             function hidePoll(id)
              {      
+                 var countselectcat=0;
                  var no=id;
                  console.log("id"+no);
                  var catdivchange="catdiv"+id;
                    selectbutton=document.getElementById(id).value;
+                   categorytrack[catindex]=selectbutton;catindex++;
                   // buttonselect[chkind]=selectbutton;
                   // chkind++;
                  console.log("selectbutton");console.log(selectbutton);
@@ -347,11 +366,65 @@ height: 30px;
                     $("#div"+ind).hide(); 
                   //  $("#"+catdivchange).empty();
                     //$("#"+catdivchange).append('<button class="btn btn-success" id="'+no+'" value="'+selectbutton+'" onclick="showPoll(id)">'+selectbutton+'</button><br/><p></p>');
-                  } 
+                  }
+                  else{
+                      if(catindex===1)
+                      {
+                          countselectcat++;
+
+                      }
+                  if(catindex>1)
+                  {
+                      var tempcounter=0;
+                      for(var marker=0;marker<categorytrack.length;marker++)
+                      {
+                          if(dataextracted.indexOf(categorytrack[marker])!==-1)
+                          {
+                              tempcounter++;
+                          }
+                        }
+                      if(tempcounter===catindex)
+                      {
+                          countselectcat++;
+                      }
+                  }
+                  }
                  } 
                    $("#"+catdivchange).empty();
-                    $("#"+catdivchange).append('<button class="btn btn-sm1 " id="'+no+'" value="'+selectbutton+'" onclick="showPoll(id)"><i class="fa fa-5x" >'+selectbutton+'</i></button><br/>');
-            catremove[removeind]=no;
+                   $("#"+catdivchange).append('<button class="btn btn-sm1 " id="'+no+'" value="'+selectbutton+'" onclick="showPoll(id)"><i class="fa fa-5x" >'+selectbutton+'</i></button><br/>');
+                   $("#countcategories").empty();
+                  if(catindex===1)
+                  {  if(countselectcat===1)
+                  {
+                      $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp This '+selectbutton+' category has '+countselectcat+' poll to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); 
+                  }
+                  if(countselectcat===0)
+                  {
+                      $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b>&nbsp&nbsp&nbsp Sorry this '+selectbutton+' category has no polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); 
+                  }
+                  if(countselectcat>1)
+                  {    
+                  $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This '+selectbutton+' category has '+countselectcat+' polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); 
+                  }
+                 }
+               else
+                  {
+                        if(countselectcat===1)
+                  {
+                      $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This group of categories  has ' +countselectcat+' poll to be solved &nbsp&nbsp&nbsp </b></label></center>'  ); 
+                  }
+                  if(countselectcat===0)
+                  {
+                      $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp Sorry this group of categories has no polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); 
+                  }
+                  if(countselectcat>1)
+                  {
+            
+                    $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This group of categories  has '+countselectcat+' polls to be solved &nbsp&nbsp&nbsp </b></label></center>'  ); 
+                  }
+                  }
+        
+        catremove[removeind]=no;
          //   var tejastemp = catremovedata.indexOf(selectbutton); 
         //    if(tejastemp==-1)
           //  {
@@ -367,11 +440,21 @@ height: 30px;
               
               function showPoll(id)
               {     
+                   var countselectcat=0;
                    var no=id;
                  var catdivchange="catdiv"+id;
                    selectbutton=document.getElementById(id).value;
                  console.log("selectbutton");console.log(selectbutton);
-                 
+                 console.log("categorytrackprev");console.log(categorytrack);         
+        for(var xxx=0;xxx<categorytrack.length;xxx++)
+                 {
+                     if(categorytrack[xxx]===selectbutton)
+                     {
+                         categorytrack.splice(xxx,1);
+                     }
+                 }
+                 console.log("categorytrack");console.log(categorytrack);
+                 catindex--;
                  for(var ind=0;ind<createdpollhide.length;ind++)
                  {     
                  var dataextracted=createdpollhide[ind].toString().split(";");
@@ -381,7 +464,71 @@ height: 30px;
                     //$("#"+catdivchange).empty();
                     //$("#"+catdivchange).append('<button class="btn btn-primary" id="'+no+'" value="'+selectbutton+'" onclick="hidePoll(id)">'+selectbutton+'</button><br/><p></p>');
                   } 
-                 }     
+                 } 
+                
+               for(var ind=0;ind<createdpollhide.length;ind++)
+                 {     
+                 var dataextracted=createdpollhide[ind].toString().split(";");
+                     
+                  if(catindex>=1)
+                  {
+                      var tempcounter=0;
+                      for(var marker=0;marker<categorytrack.length;marker++)
+                      {
+                          if(dataextracted.indexOf(categorytrack[marker])!==-1)
+                          {
+                              tempcounter++;
+                          }
+                        }
+                      if(tempcounter===catindex)
+                      {
+                          countselectcat++;
+                      }
+                  }
+                 }
+                 $("#countcategories").empty();
+                 
+                 //var selbtn=categorytrack[0];
+                 if(catindex===0)
+                 {  
+                    $("#countcategories").empty();
+                    if(totalcount===0)
+                    { $("#countcategories").append('<center><label style="background-color:#62b1d0;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp There are no polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  );}
+                else if(totalcount===1)
+                { $("#countcategories").append('<center><label style="background-color:#62b1d0;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp There are '+totalcount+' poll to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); }
+                
+                else
+                {
+                        $("#countcategories").append('<center><label style="background-color:#62b1d0;height:30px; border-bottom: 4px solid#939393;"><b>&nbsp&nbsp&nbsp There are '+totalcount+' polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  );
+                }           
+              }
+               else
+                  {
+                        if(catindex>1)
+                  {
+                    if(countselectcat===0)
+                    $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp Sorry this group of categories has no polls to be solved &nbsp&nbsp&nbsp </b></label></center>'  ); 
+                    else if(countselectcat===1)
+                    $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This group of categories  has ' +countselectcat+' poll to be solved &nbsp&nbsp&nbsp </b></label></center>'  ); 
+                   else
+                   $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This group of categories  has ' +countselectcat+' polls to be solved &nbsp&nbsp&nbsp </b></label></center>'  ); 
+                  }
+             //     if(catindex===0)
+               //   {
+                 //     $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp Sorry this group of categories has no polls to be solved &nbsp&nbsp&nbsp </b></label></center>'  ); 
+                  //}
+                  if(catindex===1)
+                  {
+                    if(countselectcat===0)
+                    $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This  '+categorytrack[0]+' category  has no polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  );     
+                   else if(countselectcat===1)
+                       $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This  '+categorytrack[0]+' category  has '+countselectcat+' poll to be solved &nbsp&nbsp&nbsp</b></label></center>'  );
+                   else
+                    $("#countcategories").append('<center><label style="background-color:#17818b;height:30px; border-bottom: 4px solid#939393"><b> &nbsp&nbsp&nbsp This  '+categorytrack[0]+' category  has '+countselectcat+' polls to be solved &nbsp&nbsp&nbsp</b></label></center>'  ); 
+                  }
+                  }
+                
+                 
                   $("#"+catdivchange).empty();
                   $("#"+catdivchange).append('<button class="btn btn-sm2" id="'+no+'" value="'+selectbutton+'" onclick="hidePoll(id)"><i class="fa  fa-5x" >'+selectbutton+'</i></button><br/>');
                   var toberemove=catremovedata.indexOf(selectbutton);
